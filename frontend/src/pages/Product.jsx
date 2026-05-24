@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Star } from 'lucide-react';
 import { ShopContext } from '../context/ShopContext';
 import { useLanguage } from '../context/LanguageContext';
+import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
 import ReviewSystem from '../components/ReviewSystem';
 import VideoReview from '../components/VideoReview';
@@ -42,6 +43,9 @@ const copyByLanguage = {
         productDescription: 'M\u00f4 t\u1ea3 s\u1ea3n ph\u1ea9m',
         loadingProduct: '\u0110ang t\u1ea3i s\u1ea3n ph\u1ea9m...',
         recentlyViewed: 'S\u1ea3n ph\u1ea9m v\u1eeba xem',
+        contactZalo: 'Liên hệ Zalo để đặt hàng',
+        scanQR: 'Quét mã QR Zalo',
+        contactNow: 'Liên hệ ngay để đặt hàng',
     },
     en: {
         pageTitleSuffix: 'ForeverVN - High-End Fashion',
@@ -73,6 +77,9 @@ const copyByLanguage = {
         productDescription: 'Product Description',
         loadingProduct: 'Loading product...',
         recentlyViewed: 'Recently Viewed',
+        contactZalo: 'Contact Zalo to order',
+        scanQR: 'Scan Zalo QR Code',
+        contactNow: 'Contact now to order',
     },
 };
 
@@ -883,6 +890,35 @@ const Product = () => {
                                 {t.originalProduct}
                             </div>
                         </div>
+
+                        {/* QR Code Zalo khi hết hàng */}
+                        {availableToAdd !== null && availableToAdd <= 0 && !hasAnyAvailableVariant && (
+                            <div className="mt-6 rounded-[24px] border-2 border-[#0068FF] bg-gradient-to-br from-blue-50 to-white p-6 shadow-[0_16px_40px_rgba(0,104,255,0.15)]">
+                                <div className="flex flex-col md:flex-row items-center gap-6">
+                                    <div className="flex-shrink-0">
+                                        <div className="overflow-hidden rounded-[20px] border-2 border-[#0068FF] bg-white p-3 shadow-lg max-w-[180px]">
+                                            <img 
+                                                src={assets.qr_zalo} 
+                                                alt="Zalo QR Code" 
+                                                className="w-full h-auto"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 text-center md:text-left">
+                                        <h3 className="text-xl font-bold text-[#0068FF] mb-2">
+                                            📱 {t.contactZalo}
+                                        </h3>
+                                        <p className="text-sm text-slate-600 mb-3">
+                                            {t.contactNow}
+                                        </p>
+                                        <div className="inline-flex items-center gap-2 rounded-full bg-[#0068FF] px-5 py-2.5 text-sm font-bold text-white shadow-md">
+                                            <span>👈</span>
+                                            <span>{t.scanQR}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="grid gap-3 sm:grid-cols-3">
                             <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm font-medium text-[#8c8273] shadow-sm">
