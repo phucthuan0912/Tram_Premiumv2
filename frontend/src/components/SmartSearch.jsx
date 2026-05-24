@@ -46,7 +46,7 @@ const SmartSearch = ({ onSearchResults }) => {
 
         } catch (error) {
             console.error('Smart search error:', error);
-            alert(error.message || 'Có lỗi xảy ra khi tìm kiếm');
+            alert('⚠️ Hệ thống quá tải, vui lòng thử lại sau ít phút hoặc liên hệ Zalo để được hỗ trợ trực tiếp.');
         } finally {
             setLoading(false);
         }
@@ -65,7 +65,7 @@ const SmartSearch = ({ onSearchResults }) => {
                         Tìm kiếm bằng AI ✨
                     </h3>
                     <p className="mt-2 text-sm font-medium text-slate-500">
-                        Mô tả sản phẩm bạn muốn tìm bằng ngôn ngữ tự nhiên
+                        Mô tả tài khoản bạn cần bằng ngôn ngữ tự nhiên
                     </p>
                 </div>
 
@@ -74,7 +74,7 @@ const SmartSearch = ({ onSearchResults }) => {
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Ví dụ: Tôi muốn tìm áo thun nam màu đen size L giá dưới 300k, mặc đi biển..."
+                        placeholder="Ví dụ: Tôi cần tài khoản AI để code, giá dưới 200k, có Claude hoặc Cursor..."
                         className="w-full resize-none rounded-3xl border border-slate-200/80 bg-slate-50/50 p-6 pr-14 text-base font-medium text-slate-800 placeholder:text-slate-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.02)] outline-none transition-all duration-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-100"
                         rows={3}
                     />
