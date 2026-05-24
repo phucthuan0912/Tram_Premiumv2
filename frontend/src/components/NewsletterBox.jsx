@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 import { useLanguage } from '../context/LanguageContext';
+import { assets } from '../assets/assets';
 
 const PROMO_DURATION_DAYS = 37;
 
