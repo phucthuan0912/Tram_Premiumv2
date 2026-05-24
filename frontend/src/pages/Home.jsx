@@ -260,7 +260,7 @@ const Home = () => {
               <div className="grid gap-4 md:grid-cols-3">
                 {/* Before - White Shirt */}
                 <div className="overflow-hidden rounded-[20px] border-2 border-slate-200 bg-white shadow-[0_12px_24px_rgba(15,23,42,0.08)]">
-                  <img src="/src/assets/kling/z6355698845807_1843466dc276440e34e5e9f5704f8313.jpg" alt="Áo trắng gốc" className="w-full h-auto" />
+                  <img src={assets.ai_demo_input} alt="Áo trắng gốc" className="w-full h-auto" />
                   <div className="p-4 bg-slate-50">
                     <p className="text-sm font-bold text-slate-700">{copy.demoInputShirt}</p>
                     <p className="text-xs text-slate-500 mt-1">{copy.demoOriginalImg}</p>
@@ -269,7 +269,7 @@ const Home = () => {
 
                 {/* After 1 - Red Shirt */}
                 <div className="overflow-hidden rounded-[20px] border-2 border-rose-200 bg-white shadow-[0_12px_24px_rgba(244,63,94,0.15)]">
-                  <img src="/src/assets/kling/kling_20260521_IMAGE_Image2take_3076_0.png" alt="Áo đỏ" className="w-full h-auto" />
+                  <img src={assets.ai_demo_output_red} alt="Áo đỏ" className="w-full h-auto" />
                   <div className="p-4 bg-rose-50">
                     <p className="text-sm font-bold text-rose-700">{copy.demoOutputRed}</p>
                     <p className="text-xs text-rose-600 mt-1">{copy.demoAutoColor}</p>

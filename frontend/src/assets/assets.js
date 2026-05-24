@@ -75,6 +75,10 @@ import cross_icon from './cross_icon.png'
 import qr_zalo from './z7860084282811_04d05f71e4b28d3fbca0760e0024b05f.jpg'
 import banner_sponsor from './banner-sponsor.png'
 
+// AI Demo Images
+import ai_demo_input from './kling/z6355698845807_1843466dc276440e34e5e9f5704f8313.jpg'
+import ai_demo_output_red from './kling/kling_20260521_IMAGE_Image2take_3076_0.png'
+
 export const assets = {
     logo,
     hero_img,
@@ -95,7 +99,9 @@ export const assets = {
     stripe_logo,
     cross_icon,
     qr_zalo,
-    banner_sponsor
+    banner_sponsor,
+    ai_demo_input,
+    ai_demo_output_red
 }
 
 export const products = [
