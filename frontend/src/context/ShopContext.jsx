@@ -286,7 +286,7 @@ const ShopContextProvider = ({ children }) => {
     const currency = '';
     
     // CHANGE: them fallback backend URL khi frontend chua co .env
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://tram-premium.onrender.com';
+    const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'https://tram-premium.onrender.com').replace(/\/+$/, '');
 
     const [delivery_fee, setDeliveryFee] = useState(0);
     const [vouchers, setVouchers] = useState([]);
