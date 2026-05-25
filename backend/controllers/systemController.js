@@ -8,6 +8,11 @@ import voucherModel from '../models/voucherModel.js';
 import logAction from '../utils/logger.js';
 import nodemailer from 'nodemailer';
 import validator from 'validator';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const readEnvValue = (key) => String(process.env[key] || '').trim().replace(/^"|"$/g, '');
 
@@ -204,7 +209,7 @@ const subscribeNewsletter = async (req, res) => {
             attachments: [
                 {
                     filename: 'zalo_qr.jpg',
-                    path: './assets/zalo_qr.jpg',
+                    path: path.join(__dirname, '..', 'assets', 'zalo_qr.jpg'),
                     cid: 'zalo_qr'
                 }
             ]

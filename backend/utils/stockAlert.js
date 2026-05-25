@@ -5,13 +5,24 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER || 'admin@gmail.com',
-        pass: process.env.EMAIL_PASS || 'Thuan0912'
+const readEnvValue = (key) => String(process.env[key] || '').trim().replace(/^"|"$/g, '');
+
+const getAlertTransporter = () => {
+    const emailUser = readEnvValue('EMAIL_USER');
+    const emailPass = readEnvValue('EMAIL_PASS');
+
+    if (!emailUser || !emailPass) {
+        return null;
     }
-});
+
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: emailUser,
+            pass: emailPass
+        }
+    });
+};
 
 const startStockAlertJob = () => {
     // Chạy lúc 00:00 hàng ngày
@@ -49,18 +60,20 @@ const startStockAlertJob = () => {
                 }
                 emailHtml += `</ul>`;
 
-                const adminEmail = (process.env.ADMIN_EMAIL || '').trim().replace(/^"|"$/g, '');
+                const adminEmail = readEnvValue('ADMIN_EMAIL');
+                const emailUser = readEnvValue('EMAIL_USER');
+                const transporter = getAlertTransporter();
                 
-                if (adminEmail && process.env.EMAIL_USER) {
+                if (adminEmail && transporter) {
                     await transporter.sendMail({
-                        from: `"ForeverVN Alert Engine" <${process.env.EMAIL_USER}>`,
+                        from: `"ForeverVN Alert Engine" <${emailUser}>`,
                         to: adminEmail,
                         subject: '🚨 Cảnh Báo Tồn Kho Khẩn Cấp - ForeverVN E-commerce',
                         html: emailHtml
                     });
                     console.log(`Stock Alert Email sent successfully to ${adminEmail}!`);
                 } else {
-                    console.log('Missing ADMIN_EMAIL or EMAIL_USER in environment variables. Skipped sending email.');
+                    console.log('Missing ADMIN_EMAIL or EMAIL credentials. Skipped sending email.');
                     console.log('Alert Details:', alertItems);
                 }
             } else {
