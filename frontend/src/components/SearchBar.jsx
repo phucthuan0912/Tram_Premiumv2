@@ -90,15 +90,15 @@ const SearchBar = () => {
 
     return (
         <div className="sticky top-[104px] z-40 mb-6 sm:top-[116px]">
-            <div className="section-shell flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+            <div className="section-shell flex flex-col gap-2 md:gap-4 px-2 py-2 md:px-4 md:py-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
                 <div ref={containerRef} className="relative flex-1">
-                    <div className="flex items-center gap-3 rounded-full border border-[var(--border)] bg-white px-4 py-3 shadow-[0_10px_25px_rgba(15,23,42,0.06)]">
-                        <img className="w-4" src={assets.search_icon} alt="search" />
+                    <div className="flex items-center gap-2 md:gap-3 rounded-full border border-[var(--border)] bg-white px-3 py-2 md:px-4 md:py-3 shadow-[0_10px_25px_rgba(15,23,42,0.06)]">
+                        <img className="w-3 md:w-4" src={assets.search_icon} alt="search" />
                         <input
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
                             onFocus={() => setIsFocused(true)}
-                            className="flex-1 bg-transparent text-sm outline-none sm:text-base"
+                            className="flex-1 bg-transparent text-[10px] md:text-sm outline-none sm:text-base"
                             type="text"
                             placeholder={
                                 language === 'vi'
@@ -109,31 +109,31 @@ const SearchBar = () => {
                     </div>
 
                     {shouldShowDropdown && (
-                        <div className="absolute left-0 right-0 top-[calc(100%+12px)] overflow-hidden rounded-[28px] border border-[var(--border)] bg-white shadow-[0_22px_60px_rgba(15,23,42,0.14)]">
-                            <div className="border-b border-[var(--border)] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        <div className="absolute left-0 right-0 top-[calc(100%+8px)] md:top-[calc(100%+12px)] overflow-hidden rounded-[16px] md:rounded-[28px] border border-[var(--border)] bg-white shadow-[0_22px_60px_rgba(15,23,42,0.14)]">
+                            <div className="border-b border-[var(--border)] px-3 py-2 md:px-5 md:py-3 text-[9px] md:text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
                                 {language === 'vi' ? 'Gợi ý sản phẩm' : 'Product suggestions'}
                             </div>
 
                             {suggestions.length > 0 ? (
-                                <div className="max-h-[420px] overflow-y-auto py-2">
+                                <div className="max-h-[300px] md:max-h-[420px] overflow-y-auto py-1 md:py-2">
                                     {suggestions.map((product) => (
                                         <button
                                             key={product._id ?? product.id}
                                             type="button"
                                             onClick={() => handleSelectProduct(product._id ?? product.id)}
-                                            className="flex w-full items-center gap-4 px-4 py-3 text-left transition hover:bg-slate-50"
+                                            className="flex w-full items-center gap-2 md:gap-4 px-3 py-2 md:px-4 md:py-3 text-left transition hover:bg-slate-50"
                                         >
                                             <img
-                                                className="h-16 w-14 rounded-[18px] object-cover"
+                                                className="h-10 w-10 md:h-16 md:w-14 rounded-[10px] md:rounded-[18px] object-cover"
                                                 src={getSafeImage(product.image)}
                                                 alt={product.name}
                                             />
 
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm font-semibold text-slate-900 sm:text-[15px]">
+                                                <p className="truncate text-[10px] md:text-sm font-semibold text-slate-900 sm:text-[15px]">
                                                     {product.name}
                                                 </p>
-                                                <p className="mt-1 truncate text-xs uppercase tracking-[0.16em] text-slate-400">
+                                                <p className="mt-0.5 md:mt-1 truncate text-[8px] md:text-xs uppercase tracking-[0.16em] text-slate-400">
                                                     {product.category ||
                                                         (language === 'vi'
                                                             ? 'Bộ sưu tập Forever'
@@ -141,14 +141,14 @@ const SearchBar = () => {
                                                 </p>
                                             </div>
 
-                                            <p className="whitespace-nowrap text-sm font-semibold text-slate-900">
+                                            <p className="whitespace-nowrap text-[10px] md:text-sm font-semibold text-slate-900">
                                                 {formatMoney(product.price, language)}
                                             </p>
                                         </button>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="px-5 py-5 text-sm text-slate-500">
+                                <div className="px-3 py-3 md:px-5 md:py-5 text-[10px] md:text-sm text-slate-500">
                                     {language === 'vi'
                                         ? 'Không tìm thấy sản phẩm phù hợp.'
                                         : 'No matching products found.'}
@@ -160,7 +160,7 @@ const SearchBar = () => {
 
                 <button
                     onClick={closeSearch}
-                    className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-3 text-sm font-semibold tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white"
+                    className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-3 py-2 md:px-4 md:py-3 text-[10px] md:text-sm font-semibold tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white"
                     type="button"
                 >
                     {language === 'vi' ? 'Đóng' : 'Close'}

@@ -100,6 +100,7 @@ const Returns = ({ token }) => {
         {
             title: 'Hình ảnh',
             key: 'images',
+            responsive: ['md'],
             render: (_, record) => (
                 <Image.PreviewGroup>
                     <Space size={4}>
@@ -113,6 +114,7 @@ const Returns = ({ token }) => {
         {
             title: 'Số tiền Hoàn (Dự kiến)',
             key: 'refundAmount',
+            responsive: ['lg'],
             render: (_, record) => (
                 <Text strong style={{ color: '#0f172a' }}>
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(record.refundAmount || 0)}

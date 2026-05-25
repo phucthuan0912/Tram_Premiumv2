@@ -8,7 +8,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
 import ReviewSystem from '../components/ReviewSystem';
-import VideoReview from '../components/VideoReview';
+// REMOVED: VideoReview - Giảm tải trang
+// import VideoReview from '../components/VideoReview';
 import VirtualTryOn from '../components/VirtualTryOn';
 import { formatMoney } from '../lib/locale';
 
@@ -646,25 +647,25 @@ const Product = () => {
     }
 
     return (
-        <div className="space-y-8 py-4 sm:space-y-10 sm:py-6">
-            <section className="section-shell px-5 py-6 sm:px-8 sm:py-8">
-                <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-                    <div className="grid gap-4 lg:grid-cols-[110px_minmax(0,1fr)]">
-                        <div className="no-scrollbar flex gap-3 overflow-x-auto lg:flex-col lg:overflow-y-auto">
+        <div className="space-y-3 py-3 md:space-y-4 md:py-4 w-full">
+            <section className="section-shell px-2 py-3 md:px-5 md:py-5 mx-2 md:mx-0">
+                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-[1fr_1fr] lg:gap-8 items-start w-full">
+                    <div className="flex flex-col-reverse gap-2 lg:grid lg:grid-cols-[90px_minmax(0,1fr)] lg:gap-4">
+                        <div className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col lg:overflow-y-auto">
                             {productData.image.map((item, index) => (
                                 <button
                                     key={index}
                                     onClick={() => setImage(item)}
-                                    className={`overflow-hidden rounded-[22px] border bg-white transition-all duration-300 ${
+                                    className={`flex-shrink-0 overflow-hidden rounded-[8px] md:rounded-[12px] border bg-white transition-all duration-300 ${
                                         image === item
-                                            ? 'border-[#2d2620] shadow-[0_12px_24px_rgba(45,38,32,0.15)] ring-1 ring-[#2d2620]'
+                                            ? 'border-[#2d2620] shadow-sm ring-1 ring-[#2d2620]'
                                             : 'border-[#f2ebe1] hover:border-[#a89d8d]'
                                     }`}
                                     type="button"
                                 >
                                     <img
                                         src={item}
-                                        className="h-24 w-20 object-cover lg:h-28 lg:w-full"
+                                        className="h-10 w-8 md:h-16 md:w-12 object-cover lg:h-20 lg:w-full"
                                         alt={productData.name}
                                     />
                                 </button>
@@ -673,12 +674,12 @@ const Product = () => {
 
                         <div
                             ref={mainImageRef}
-                            className="relative overflow-hidden rounded-[28px] border border-white/80 bg-white/60 p-3 shadow-[0_24px_50px_rgba(31,27,24,0.08)] cursor-crosshair backdrop-blur-sm"
+                            className="relative overflow-hidden rounded-[12px] md:rounded-[20px] border border-white/80 bg-white/60 p-1 md:p-2 shadow-sm cursor-crosshair backdrop-blur-sm"
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
                             <img
-                                className="aspect-[4/5] w-full rounded-[22px] object-cover"
+                                className="aspect-[4/5] w-full rounded-[8px] md:rounded-[16px] object-cover"
                                 src={image}
                                 alt={productData.name}
                             />
@@ -693,25 +694,25 @@ const Product = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="space-y-3 sm:space-y-6">
                         <div>
-                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8c8273]">
+                            <p className="text-[9px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#8c8273]">
                                 {t.productDetails}
                             </p>
-                            <h1 className="display-font mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#2d2620] sm:text-4xl">
+                            <h1 className="display-font mt-1 sm:mt-2 text-base sm:text-3xl lg:text-4xl font-semibold tracking-[-0.04em] text-[#2d2620] leading-tight">
                                 {productData.name}
                             </h1>
 
-                            <div className="mt-4 flex flex-wrap items-center gap-3">
+                            <div className="mt-2 flex flex-wrap items-center gap-1.5 sm:gap-3">
                                 <span
-                                    className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${
+                                    className={`flex items-center gap-1 sm:gap-1.5 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 text-[9px] sm:text-xs font-bold ${
                                             selectedVariantStock !== null && selectedVariantStock > 0
                                             ? 'bg-emerald-100/70 text-emerald-800'
                                             : 'bg-rose-100/70 text-rose-800'
                                     }`}
                                 >
                                     <div
-                                        className={`h-2 w-2 rounded-full ${
+                                        className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full ${
                                             selectedVariantStock !== null && selectedVariantStock > 0
                                                 ? 'bg-emerald-500 animate-pulse'
                                                 : 'bg-rose-500'
@@ -721,19 +722,19 @@ const Product = () => {
                                 </span>
 
                                 {currentVariantQty > 0 ? (
-                                    <span className="rounded-full bg-[#f4ebd9]/50 px-3 py-1.5 text-xs font-semibold text-[#59534e]">
+                                    <span className="rounded-full bg-[#f4ebd9]/50 px-2 py-1 sm:px-3 sm:py-1.5 text-[9px] sm:text-xs font-semibold text-[#59534e]">
                                         {t.inCart(currentVariantQty)}
                                     </span>
                                 ) : null}
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2 text-sm text-[#59534e]">
-                            <div className="flex gap-1">
+                        <div className="flex items-center gap-2 text-[10px] sm:text-sm text-[#59534e]">
+                            <div className="flex gap-0.5 sm:gap-1">
                                 {[...Array(5)].map((_, i) => (
                                     <Star
                                         key={i}
-                                        size={18}
+                                        className="h-3 w-3 sm:h-[18px] sm:w-[18px]"
                                         fill={
                                             i <
                                             Math.round(
@@ -757,22 +758,22 @@ const Product = () => {
                                     />
                                 ))}
                             </div>
-                            <span className="pl-1 font-bold text-[#1a1f25]">
+                            <span className="pl-0.5 sm:pl-1 font-bold text-[#1a1f25]">
                                 ({reviewStats.totalReviews}){' '}
-                                <span className="text-xs font-medium text-[#8c8273]">{t.reviews}</span>
+                                <span className="hidden sm:inline text-xs font-medium text-[#8c8273]">{t.reviews}</span>
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                            <p className="text-[28px] font-bold text-[#1a1f25]">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                            <p className="text-lg sm:text-[28px] font-bold text-[#1a1f25]">
                                 {formatMoney(productData.price, language)}
                             </p>
                             {productData.oldPrice > productData.price && (
                                 <>
-                                    <p className="text-lg text-[#a89d8d] line-through decoration-black/20">
+                                    <p className="text-[11px] sm:text-lg text-[#a89d8d] line-through decoration-black/20">
                                         {formatMoney(productData.oldPrice, language)}
                                     </p>
-                                    <span className="rounded-full bg-rose-100 px-3 py-1.5 text-xs font-bold text-rose-700">
+                                    <span className="rounded-full bg-rose-100 px-1.5 py-0.5 sm:px-3 sm:py-1.5 text-[9px] sm:text-xs font-bold text-rose-700">
                                         -
                                         {Math.round(
                                             ((productData.oldPrice - productData.price) / productData.oldPrice) * 100,
@@ -783,16 +784,16 @@ const Product = () => {
                             )}
                         </div>
 
-                        <p className="max-w-xl text-[15px] leading-7 text-[#59534e]">
+                        <p className="max-w-xl text-[10px] md:text-sm leading-relaxed md:leading-6 text-[#59534e] line-clamp-2 md:line-clamp-none">
                             {productData.description}
                         </p>
 
-                        <div className="rounded-[24px] border border-[#f2ebe1] bg-white/80 p-5 shadow-[0_8px_24px_rgba(31,27,24,0.03)] backdrop-blur-md">
-                            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8c8273]">
+                        <div className="rounded-[12px] md:rounded-[20px] border border-[#f2ebe1] bg-white/80 p-2 md:p-4 shadow-sm backdrop-blur-md">
+                            <p className="text-[9px] md:text-xs font-semibold uppercase tracking-[0.18em] text-[#8c8273]">
                                 {t.selectSize}
                             </p>
 
-                            <div className="mt-4 flex flex-wrap gap-3">
+                            <div className="mt-1.5 md:mt-3 flex flex-wrap gap-1.5 md:gap-2">
                                 {productData.sizes.map((item, index) => (
                                     <button
                                         onClick={() => {
@@ -814,9 +815,9 @@ const Product = () => {
                                                 }
                                             }
                                         }}
-                                        className={`rounded-full px-6 py-3 text-sm font-bold transition-all duration-300 ${
+                                        className={`rounded-full px-3 py-1 sm:px-6 sm:py-3 text-[10px] sm:text-sm font-bold transition-all duration-300 ${
                                             item === size
-                                                ? 'bg-[#2d2620] text-white shadow-[0_12px_24px_rgba(45,38,32,0.2)] scale-[1.02]'
+                                                ? 'bg-[#2d2620] text-white shadow-sm scale-[1.02]'
                                                 : 'border border-[#e8e4dc] bg-[#faf8f5] text-[#59534e] hover:border-[#a89d8d] hover:bg-white'
                                         }`}
                                         key={index}
@@ -829,39 +830,39 @@ const Product = () => {
                         </div>
 
                         {productData.colors && productData.colors.length > 0 && (
-                            <div className="rounded-[24px] border border-[#f2ebe1] bg-white/80 p-5 shadow-[0_8px_24px_rgba(31,27,24,0.03)] backdrop-blur-md">
-                                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8c8273]">
+                            <div className="rounded-[12px] md:rounded-[20px] border border-[#f2ebe1] bg-white/80 p-2 md:p-4 shadow-sm backdrop-blur-md mt-2">
+                                <p className="text-[9px] md:text-xs font-semibold uppercase tracking-[0.18em] text-[#8c8273]">
                                     {t.selectColor}
                                 </p>
 
-                                <div className="mt-4 flex flex-wrap gap-3">
+                                <div className="mt-1.5 md:mt-3 flex flex-wrap gap-1.5 md:gap-2">
                                     {productData.colors.map((item, index) => (
                                         <button
                                             onClick={() => setColor(item)}
-                                            className={`group relative flex items-center gap-3 rounded-full border px-5 py-3 text-sm font-bold transition-all duration-300 ${
+                                            className={`group relative flex items-center gap-1.5 sm:gap-3 rounded-full border px-2 py-1 sm:px-5 sm:py-3 text-[10px] sm:text-sm font-bold transition-all duration-300 ${
                                                 item === color
-                                                    ? 'border-[#2d2620] bg-[#2d2620] text-white shadow-[0_12px_24px_rgba(45,38,32,0.2)] scale-[1.02]'
+                                                    ? 'border-[#2d2620] bg-[#2d2620] text-white shadow-sm scale-[1.02]'
                                                     : 'border-[#e8e4dc] bg-[#faf8f5] text-[#59534e] hover:border-[#a89d8d] hover:bg-white'
                                             }`}
                                             key={index}
                                             type="button"
                                         >
                                             <div
-                                                className="h-5 w-5 rounded-full border border-black/10 shadow-inner"
+                                                className="h-3 w-3 sm:h-5 sm:w-5 rounded-full border border-black/10 shadow-inner"
                                                 style={{ backgroundColor: item.toLowerCase() }}
                                             />
-                                            <span className="tracking-wide">{item}</span>
+                                            <span className="tracking-wide hidden sm:inline">{item}</span>
                                         </button>
                                     ))}
                                 </div>
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center mt-2">
+                        <div className="flex flex-col gap-1.5 md:gap-3 mt-1 md:mt-3 w-full">
                             <button
                                 onClick={handleAddToCart}
                                 disabled={availableToAdd === null || availableToAdd <= 0}
-                                className="rounded-full bg-[#1a1a1a] px-8 py-4.5 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_16px_32px_rgba(26,26,26,0.2)] hover:-translate-y-0.5 hover:bg-black transition-all duration-300 disabled:cursor-not-allowed disabled:bg-[#d1cdc5] disabled:shadow-none disabled:translate-y-0 disabled:text-white/70"
+                                className="w-full rounded-full bg-[#1a1a1a] px-3 py-2 md:px-6 md:py-3.5 text-[9px] md:text-sm font-bold uppercase tracking-[0.16em] text-white shadow-sm hover:bg-black transition-all duration-300 disabled:cursor-not-allowed disabled:bg-[#d1cdc5]"
                                 type="button"
                             >
                                 {availableToAdd !== null && availableToAdd > 0 ? t.addToCart : t.outOfStock}
@@ -870,7 +871,7 @@ const Product = () => {
                             <button
                                 onClick={handleBuyNow}
                                 disabled={availableToAdd === null || availableToAdd <= 0}
-                                className="rounded-full border border-[var(--border)] bg-white px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-[#1a1a1a] shadow-[0_8px_24px_rgba(31,27,24,0.04)] hover:-translate-y-0.5 hover:border-[#1a1a1a] transition-all duration-300 disabled:cursor-not-allowed disabled:border-[#e8e4dc] disabled:text-[#b0a698] disabled:shadow-none disabled:translate-y-0"
+                                className="w-full rounded-full border border-[var(--border)] bg-white px-3 py-2 md:px-6 md:py-3.5 text-[9px] md:text-sm font-bold uppercase tracking-[0.16em] text-[#1a1a1a] shadow-sm hover:border-[#1a1a1a] transition-all duration-300 disabled:cursor-not-allowed disabled:border-[#e8e4dc] disabled:text-[#b0a698]"
                                 type="button"
                             >
                                 {t.buyNow}
@@ -879,24 +880,20 @@ const Product = () => {
                             {canUseVirtualTryOn && (
                                 <button
                                     onClick={() => setShowVTO(true)}
-                                    className="group relative overflow-hidden rounded-full border-2 border-indigo-600/80 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-indigo-600 transition-all hover:bg-indigo-600 hover:text-white sm:px-6 shadow-sm"
+                                    className="w-full group relative overflow-hidden rounded-full border-2 border-indigo-600/80 px-3 py-1.5 md:px-6 md:py-3 text-[9px] md:text-sm font-bold uppercase tracking-[0.18em] text-indigo-600 transition-all hover:bg-indigo-600 hover:text-white shadow-sm flex items-center justify-center"
                                     type="button"
                                 >
-                                    <span className="relative z-10 flex items-center gap-2">{t.virtualTryOn}</span>
+                                    <span className="relative z-10 flex items-center gap-1 md:gap-2">{t.virtualTryOn}</span>
                                 </button>
                             )}
-
-                            <div className="rounded-full border border-[var(--border)] bg-white/80 px-5 py-4 text-sm font-medium text-[#8c8273] shadow-sm">
-                                {t.originalProduct}
-                            </div>
                         </div>
 
                         {/* QR Code Zalo khi hết hàng */}
                         {availableToAdd !== null && availableToAdd <= 0 && !hasAnyAvailableVariant && (
-                            <div className="mt-6 rounded-[24px] border-2 border-[#0068FF] bg-gradient-to-br from-blue-50 to-white p-6 shadow-[0_16px_40px_rgba(0,104,255,0.15)]">
-                                <div className="flex flex-col md:flex-row items-center gap-6">
+                            <div className="mt-3 sm:mt-6 rounded-[16px] sm:rounded-[24px] border-2 border-[#0068FF] bg-gradient-to-br from-blue-50 to-white p-3 sm:p-6 shadow-sm">
+                                <div className="flex flex-col lg:flex-row items-center gap-3 sm:gap-6">
                                     <div className="flex-shrink-0">
-                                        <div className="overflow-hidden rounded-[20px] border-2 border-[#0068FF] bg-white p-3 shadow-lg max-w-[180px]">
+                                        <div className="overflow-hidden rounded-[12px] sm:rounded-[20px] border-2 border-[#0068FF] bg-white p-1.5 sm:p-3 shadow-sm max-w-[80px] sm:max-w-[180px]">
                                             <img 
                                                 src={assets.qr_zalo} 
                                                 alt="Zalo QR Code" 
@@ -904,15 +901,14 @@ const Product = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="flex-1 text-center md:text-left">
-                                        <h3 className="text-xl font-bold text-[#0068FF] mb-2">
+                                    <div className="flex-1 text-center lg:text-left">
+                                        <h3 className="text-xs sm:text-xl font-bold text-[#0068FF] mb-1 sm:mb-2">
                                             📱 {t.contactZalo}
                                         </h3>
-                                        <p className="text-sm text-slate-600 mb-3">
+                                        <p className="text-[9px] sm:text-sm text-slate-600 mb-2 sm:mb-3 hidden sm:block">
                                             {t.contactNow}
                                         </p>
-                                        <div className="inline-flex items-center gap-2 rounded-full bg-[#0068FF] px-5 py-2.5 text-sm font-bold text-white shadow-md">
-                                            <span>👈</span>
+                                        <div className="inline-flex items-center gap-1 sm:gap-2 rounded-full bg-[#0068FF] px-3 py-1.5 sm:px-5 sm:py-2.5 text-[9px] sm:text-sm font-bold text-white shadow-sm">
                                             <span>{t.scanQR}</span>
                                         </div>
                                     </div>
@@ -920,14 +916,14 @@ const Product = () => {
                             </div>
                         )}
 
-                        <div className="grid gap-3 sm:grid-cols-3">
-                            <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm font-medium text-[#8c8273] shadow-sm">
+                        <div className="grid gap-1.5 sm:gap-3 grid-cols-1 sm:grid-cols-3">
+                            <div className="rounded-[12px] sm:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 sm:p-4 text-[9px] sm:text-sm font-medium text-[#8c8273] shadow-sm text-center">
                                 {t.codAvailable}
                             </div>
-                            <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm font-medium text-[#8c8273] shadow-sm">
+                            <div className="rounded-[12px] sm:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 sm:p-4 text-[9px] sm:text-sm font-medium text-[#8c8273] shadow-sm text-center">
                                 {t.easyReturn}
                             </div>
-                            <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm font-medium text-[#8c8273] shadow-sm">
+                            <div className="rounded-[12px] sm:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 sm:p-4 text-[9px] sm:text-sm font-medium text-[#8c8273] shadow-sm text-center">
                                 {t.curatedQuality}
                             </div>
                         </div>
@@ -943,16 +939,17 @@ const Product = () => {
                 </div>
             </section>
 
-            <VideoReview videoUrl={productData.videoUrl} />
+            {/* REMOVED: VideoReview - Giảm tải trang */}
+            {/* <VideoReview videoUrl={productData.videoUrl} /> */}
 
-            <section className="section-shell overflow-hidden border border-white/80 shadow-[0_12px_36px_rgba(31,27,24,0.04)] backdrop-blur-sm">
+            <section className="section-shell overflow-hidden border border-white/80 shadow-[0_12px_36px_rgba(31,27,24,0.04)] backdrop-blur-sm mx-2 md:mx-0">
                 <div className="flex flex-wrap border-b border-[#e8e4dc] bg-white/70">
-                    <b className="border-r border-[#e8e4dc] px-8 py-5 text-base font-bold text-[#1a1a1a]">
+                    <b className="border-r border-[#e8e4dc] px-4 py-3 md:px-6 md:py-4 text-[11px] md:text-sm font-bold text-[#1a1a1a]">
                         {t.productDescription}
                     </b>
                 </div>
 
-                <div className="bg-white/90 px-8 py-10 text-[15px] leading-loose text-[#59534e] sm:px-12">
+                <div className="bg-white/90 px-4 py-4 md:px-8 md:py-6 text-[11px] md:text-sm leading-relaxed md:leading-loose text-[#59534e]">
                     <div dangerouslySetInnerHTML={{ __html: productData.description.replace(/\n/g, '<br/>') }} />
                 </div>
             </section>
@@ -990,22 +987,22 @@ const RecentlyViewedProducts = ({ currentId }) => {
     if (recentProducts.length === 0) return null;
 
     return (
-        <div className="mt-20">
-            <div className="text-center text-3xl py-2">
-                <div className="inline-flex gap-2 items-center mb-3">
-                    <p className="text-[#2d2620] font-medium">{t.recentlyViewed}</p>
-                    <p className="w-8 sm:w-12 h-[1px] sm:h-[2px] bg-[#8c8273]"></p>
+        <div className="mt-10 md:mt-16 mx-2 md:mx-0">
+            <div className="text-center text-xl md:text-2xl py-2">
+                <div className="inline-flex gap-2 items-center mb-2 md:mb-3">
+                    <p className="text-[#2d2620] font-medium text-xs md:text-sm uppercase tracking-widest">{t.recentlyViewed}</p>
+                    <p className="w-6 md:w-12 h-[1px] md:h-[2px] bg-[#8c8273]"></p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6 mt-6">
+            <div className="grid grid-cols-3 gap-2 md:gap-4 mt-3 md:mt-4 w-full">
                 {recentProducts.map((item, index) => (
-                    <div key={index} className="text-[#59534e] cursor-pointer group flex flex-col gap-2 relative">
+                    <div key={index} className="text-[#59534e] cursor-pointer group flex flex-col gap-1.5 md:gap-2 relative">
                         <a
                             href={`/product/${item._id || item.id}`}
-                            className="block overflow-hidden relative rounded-[24px] border border-[#f2ebe1] bg-white/80 p-2 transition-all duration-300 group-hover:border-[#a89d8d] shadow-[0_4px_24px_rgba(31,27,24,0.02)] hover:shadow-[0_16px_40px_rgba(31,27,24,0.06)] group-hover:-translate-y-1"
+                            className="block overflow-hidden relative rounded-[12px] md:rounded-[20px] border border-[#f2ebe1] bg-white/80 p-1 md:p-2 transition-all duration-300 group-hover:border-[#a89d8d] shadow-sm hover:shadow-md group-hover:-translate-y-1"
                         >
-                            <div className="overflow-hidden bg-[#faf8f5] rounded-[20px]">
+                            <div className="overflow-hidden bg-[#faf8f5] rounded-[8px] md:rounded-[16px]">
                                 <img
                                     className="hover:scale-105 transition-transform duration-700 ease-in-out w-full aspect-[4/5] object-cover"
                                     src={item.image?.[0] || 'https://dummyimage.com/600x800/e5e7eb/6b7280&text=No+Image'}
@@ -1013,10 +1010,10 @@ const RecentlyViewedProducts = ({ currentId }) => {
                                 />
                             </div>
                         </a>
-                        <p className="pt-3 pb-1 text-[13px] font-bold truncate px-1 group-hover:text-black transition-colors uppercase tracking-[0.05em] text-[#2d2620]">
+                        <p className="pt-1 md:pt-2 pb-0.5 text-[9px] md:text-xs font-bold truncate px-1 group-hover:text-black transition-colors uppercase tracking-[0.05em] text-[#2d2620]">
                             {item.name}
                         </p>
-                        <p className="text-sm font-bold text-[#1a1f25] px-1">
+                        <p className="text-[10px] md:text-sm font-bold text-[#1a1f25] px-1">
                             {formatMoney(item.price, language)}
                         </p>
                     </div>

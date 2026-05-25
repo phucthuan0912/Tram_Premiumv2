@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
@@ -310,10 +310,10 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  width={56}
-                  height={56}
-                  style={{ width: 56, height: 56, objectFit: 'cover' }}
-                  className='h-14 w-14'
+                  width={40}
+                  height={40}
+                  style={{ width: 40, height: 40, objectFit: 'cover' }}
+                  className='h-10 w-10 md:h-14 md:w-14'
                 />
               ) : (
                 <PictureOutlined style={{ color: '#cbd5e1', fontSize: 14 }} />
@@ -324,7 +324,8 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 strong
                 style={{
                   color: '#0f172a',
-                  lineHeight: 1.35,
+                  lineHeight: 1.25,
+                  fontSize: 11,
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical',
@@ -334,7 +335,7 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 {product.name}
               </Text>
               <div>
-                <Text style={{ fontSize: 12, color: '#94a3b8' }}>#{String(product.id || '').slice(-8).toUpperCase()}</Text>
+                <Text style={{ fontSize: 9, color: '#94a3b8' }}>#{String(product.id || '').slice(-8).toUpperCase()}</Text>
               </div>
             </div>
           </div>
@@ -344,6 +345,7 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
         title: 'Category',
         dataIndex: 'category',
         key: 'category',
+        responsive: ['md'],
         width: 170,
         render: (value) => (
           <Tag color='blue' style={{ borderRadius: 999, fontWeight: 600 }}>
@@ -373,6 +375,7 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
       {
         title: 'State',
         key: 'state',
+        responsive: ['sm'],
         width: 140,
         render: (_, product) =>
           product.oldPrice > product.price ? (
@@ -419,15 +422,15 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+          <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
           <div>
-            <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+            <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '18px' }}>
               Product Catalog
             </Title>
-            <Text type='secondary'>Browse inventory entries, jump into edits and export stock rows for operations.</Text>
+            <Text type='secondary' style={{ fontSize: '11px' }}>Browse inventory entries, jump into edits and export stock rows for operations.</Text>
           </div>
 
-          <Space size={12} wrap>
+          <Space size={8} wrap>
             <AutoComplete
               value={searchTerm}
               options={searchSuggestions}
@@ -467,7 +470,7 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 </option>
               ))}
             </select>
-            <Button size='large' icon={<ExportOutlined />} onClick={exportToCsv} disabled={loading}>
+            <Button size='middle' icon={<ExportOutlined />} onClick={exportToCsv} disabled={loading}>
               Export CSV
             </Button>
           </Space>
@@ -496,9 +499,9 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             columns={columns}
             dataSource={visibleProducts}
             loading={loading}
-            size='middle'
+            size='small'
             pagination={{ pageSize: 7, showSizeChanger: false, size: 'small' }}
-            scroll={{ x: 900 }}
+
             locale={{
               emptyText: <Empty description='No products found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
             }}

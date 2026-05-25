@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import {
@@ -246,16 +246,12 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
         key: 'status',
         width: 180,
         render: (_, item) => (
-          <Space size={12}>
             <Switch
+              size="small"
               checked={Boolean(item.status)}
               loading={togglingId === item._id}
               onChange={() => toggleStatus(item._id, item.status)}
             />
-            <Text style={{ color: item.status ? '#16a34a' : '#94a3b8', fontWeight: 600 }}>
-              {item.status ? 'Active' : 'Disabled'}
-            </Text>
-          </Space>
         ),
       },
       {
@@ -283,16 +279,15 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
           <div>
-            <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+            <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
               Category Manager
             </Title>
-            <Text type='secondary'>Create primary catalog groups, control visibility and reset the store taxonomy when needed.</Text>
           </div>
 
           <Space size={12} wrap>
-            <Button size='large' icon={<ReloadOutlined />} loading={resetting} onClick={resetToPro}>
+            <Button size='middle' icon={<ReloadOutlined />} loading={resetting} onClick={resetToPro}>
               Reset & Setup Pro
             </Button>
           </Space>
@@ -306,7 +301,7 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -316,8 +311,7 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
                   <PlusOutlined />
                 </div>
                 <div>
-                  <div className='font-semibold text-slate-900'>Add Category</div>
-                  <div className='text-xs font-normal text-slate-400'>Create a new top-level catalog group.</div>
+                  <div className='text-xs font-bold text-slate-800'>Add Category</div>
                 </div>
               </Space>
             }
@@ -329,7 +323,7 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter the category name' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder="e.g. Men's Wear"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
@@ -358,24 +352,20 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
                       : []
                   }
                 >
-                  <Button size='large' icon={<UploadOutlined />}>
+                  <Button size='middle' icon={<UploadOutlined />}>
                     Upload Image
                   </Button>
                 </Upload>
               </Form.Item>
 
-              <Space size={12} wrap>
-                <Button type='primary' htmlType='submit' size='large' loading={adding} icon={<PlusOutlined />}>
+              <div className="flex flex-col gap-2">
+                <Button type='primary' htmlType='submit' size='middle' loading={adding} block icon={<PlusOutlined />}>
                   Save Category
                 </Button>
-                <Button
-                  size='large'
-                  onClick={resetFormState}
-                  disabled={!name && !image}
-                >
+                <Button size='middle' block onClick={resetFormState} disabled={!name && !image}>
                   Clear
                 </Button>
-              </Space>
+              </div>
             </Form>
           </Card>
 
@@ -384,8 +374,7 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Category Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Primary categories returned from the live category endpoint.</div>
+                <div className='text-xs font-bold text-slate-800'>Category Directory</div>
               </div>
             }
           >
@@ -394,11 +383,55 @@ const Categories = ({ token, backendUrl: backendUrlFromProps }) => {
               columns={columns}
               dataSource={list}
               loading={loading}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 760 }}
+
               locale={{
                 emptyText: <Empty description='No categories created yet' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
+              }}
+              expandable={{
+                expandedRowRender: (record) => {
+                  const subs = subCategories.filter((sub) => (sub.categoryId?._id || sub.categoryId) === record._id)
+                  if (subs.length === 0) {
+                    return <Text type='secondary' className='ml-12'>Không có danh mục con.</Text>
+                  }
+                  const subCols = [
+                    {
+                      title: 'Danh mục con (Sub Category)',
+                      dataIndex: 'name',
+                      key: 'name',
+                      render: (name) => <Text strong>{name}</Text>,
+                    },
+                    {
+                      title: 'Trạng thái',
+                      key: 'status',
+                      render: (_, item) => (
+                        <Badge
+                          status={item.status ? 'success' : 'default'}
+                          text={item.status ? 'Hoạt động' : 'Đã ẩn'}
+                        />
+                      ),
+                    },
+                  ]
+                  return (
+                    <Table
+                      columns={subCols}
+                      dataSource={subs}
+                      pagination={false}
+                      rowKey='_id'
+                      size='small'
+                      className='ml-12'
+                    />
+                  )
+                },
+                expandedRowKeys: expandedRows,
+                onExpand: (expanded, record) => {
+                  if (expanded) {
+                    setExpandedRows([...expandedRows, record._id])
+                  } else {
+                    setExpandedRows(expandedRows.filter((id) => id !== record._id))
+                  }
+                },
               }}
             />
           </Card>

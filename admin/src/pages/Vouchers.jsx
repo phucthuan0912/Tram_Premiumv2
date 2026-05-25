@@ -280,10 +280,11 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             style={{
               marginInlineEnd: 0,
               borderRadius: 999,
-              paddingInline: 12,
-              paddingBlock: 5,
+              paddingInline: 8,
+              paddingBlock: 2,
               fontFamily: '"JetBrains Mono", "SFMono-Regular", Consolas, monospace',
               fontWeight: 700,
+              fontSize: 10,
             }}
           >
             {value}
@@ -295,13 +296,13 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
         dataIndex: 'discountPercent',
         key: 'discountPercent',
         width: 130,
-        render: (value) => <Text strong style={{ color: '#16a34a' }}>{value}% OFF</Text>,
+        render: (value) => <Text strong style={{ color: '#16a34a', fontSize: 11 }}>{value}% OFF</Text>,
       },
       {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
-        render: (value) => <Text style={{ color: '#475569' }}>{value}</Text>,
+        render: (value) => <Text style={{ color: '#475569', fontSize: 11 }}>{value}</Text>,
       },
       {
         title: 'State',
@@ -309,9 +310,12 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
         width: 200,
         render: (_, voucher) => (
           <Space size={[8, 8]} wrap>
-            <Tag color={voucher.isActive ? 'success' : 'default'} style={{ borderRadius: 999, fontWeight: 600 }}>
-              {voucher.isActive ? 'Active' : 'Inactive'}
-            </Tag>
+            <Switch
+              size="small"
+              checked={voucher.isActive}
+              loading={togglingId === voucher._id}
+              onChange={() => handleToggleActive(voucher)}
+            />
             {voucher.showAsHot ? (
               <Tag color='orange' style={{ borderRadius: 999, fontWeight: 600 }}>
                 Hot
@@ -326,7 +330,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
         key: 'date',
         width: 150,
         render: (value) => (
-          <Text style={{ fontSize: 12, color: '#64748b' }}>
+          <Text style={{ fontSize: 10, color: '#64748b' }}>
             {value ? new Date(value).toLocaleDateString('vi-VN') : '-'}
           </Text>
         ),
@@ -344,14 +348,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               onClick={() => handleEdit(voucher)}
               style={{ color: '#2563eb' }}
             />
-            <Button
-              type='text'
-              onClick={() => handleToggleActive(voucher)}
-              loading={togglingId === voucher._id}
-              style={{ color: voucher.isActive ? '#f59e0b' : '#16a34a' }}
-            >
-              {voucher.isActive ? 'Pause' : 'Activate'}
-            </Button>
+
             <Popconfirm
               title='Delete voucher'
               description='This action permanently removes the voucher.'
@@ -372,11 +369,10 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6'>
-          <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+        <div className='mb-3 md:mb-6'>
+          <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
             Voucher Studio
           </Title>
-          <Text type='secondary'>Create promotional codes, control live status and manage spotlight campaigns.</Text>
         </div>
 
         <div className={compactStatsRowClass}>
@@ -387,7 +383,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -397,8 +393,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                   {editingId ? <EditOutlined /> : <PlusOutlined />}
                 </div>
                 <div>
-                  <div className='font-semibold text-slate-900'>{editingId ? 'Edit Voucher' : 'Create Voucher'}</div>
-                  <div className='text-xs font-normal text-slate-400'>Configure code, discount and display state.</div>
+                  <div className='text-xs font-bold text-slate-800'>{editingId ? 'Edit Voucher' : 'Create Voucher'}</div>
                 </div>
               </Space>
             }
@@ -410,7 +405,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter the voucher code' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='SUMMER20'
                   value={code}
                   onChange={(event) => setCode(event.target.value.toUpperCase())}
@@ -423,7 +418,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter the discount percentage' }]}
               >
                 <InputNumber
-                  size='large'
+                  size='middle'
                   min={1}
                   max={100}
                   style={{ width: '100%' }}
@@ -439,7 +434,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter a short description' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='Describe the promotion'
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
@@ -450,29 +445,27 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 <div className='flex items-center justify-between gap-4'>
                   <div>
                     <div className='font-medium text-slate-900'>Show as Hot</div>
-                    <div className='text-xs text-slate-400'>Highlights the voucher in marketing surfaces.</div>
                   </div>
                   <Switch checked={showAsHot} onChange={setShowAsHot} />
                 </div>
                 <div className='flex items-center justify-between gap-4'>
                   <div>
                     <div className='font-medium text-slate-900'>Active Status</div>
-                    <div className='text-xs text-slate-400'>Controls whether the code can be used at checkout.</div>
                   </div>
                   <Switch checked={isActive} onChange={setIsActive} />
                 </div>
               </div>
 
-              <Space size={12} wrap>
-                <Button type='primary' htmlType='submit' size='large' loading={isSubmitting} icon={<PlusOutlined />}>
+              <div className="flex flex-col gap-2">
+                <Button type='primary' htmlType='submit' size='middle' loading={isSubmitting} block icon={<PlusOutlined />}>
                   {editingId ? 'Update Voucher' : 'Create Voucher'}
                 </Button>
                 {editingId ? (
-                  <Button size='large' icon={<RollbackOutlined />} onClick={resetFormState}>
+                  <Button size='middle' block icon={<RollbackOutlined />} onClick={resetFormState}>
                     Cancel Edit
                   </Button>
                 ) : null}
-              </Space>
+              </div>
             </Form>
           </Card>
 
@@ -481,8 +474,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Voucher Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Manage current promotions and switch campaigns live.</div>
+                <div className='text-xs font-bold text-slate-800'>Voucher Directory</div>
               </div>
             }
           >
@@ -491,9 +483,9 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               columns={columns}
               dataSource={vouchers}
               loading={loading}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 980 }}
+
               locale={{
                 emptyText: <Empty description='No vouchers found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}

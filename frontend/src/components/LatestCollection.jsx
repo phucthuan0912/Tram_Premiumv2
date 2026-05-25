@@ -11,7 +11,7 @@ const LatestCollection = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const sectionRef = useRef(null);
     
-    const ITEMS_PER_PAGE = 8;
+    const ITEMS_PER_PAGE = 15; // Tăng từ 8 lên 15 để mobile thấy nhiều hơn (5 hàng x 3 cột)
     const [currentPage, setCurrentPage] = useState(1);
 
     const categories = useMemo(() => {
@@ -63,32 +63,34 @@ const LatestCollection = () => {
     );
 
     return (
-        <section ref={sectionRef} className='py-12 sm:py-16'>
-            <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:mb-12">
+        <section ref={sectionRef} className='pt-0 lg:pt-2 mb-4 md:mb-8'>
+            <div className="mb-2 md:mb-6 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-3 px-2 md:px-0">
                 <div className="text-center md:text-left">
                     <Title text1={copy.title1} text2={copy.title2} />
                 </div>
                 
                 {/* Categories Filter */}
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                    {categories.map((cat, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                                selectedCategory === cat 
-                                    ? 'bg-slate-900 text-white shadow-md scale-105' 
-                                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
-                            }`}
-                        >
-                            {cat === 'All' ? copy.allCategory : cat}
-                        </button>
-                    ))}
+                <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-1 md:pb-0">
+                    <div className="flex items-center md:justify-center gap-1.5 sm:gap-2 w-max px-2 md:px-0">
+                        {categories.map((cat, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`whitespace-nowrap px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold transition-all duration-300 ${
+                                    selectedCategory === cat 
+                                        ? 'bg-slate-900 text-white shadow-md scale-105' 
+                                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                                }`}
+                            >
+                                {cat === 'All' ? copy.allCategory : cat}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            <div className='mt-8 sm:mt-10'>
-                <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
+            <div className='mt-2 md:mt-3 px-2 md:px-0'>
+                <div className="grid grid-cols-3 gap-2 md:gap-4 lg:grid-cols-5 w-full">
                     {displayedProducts.map((item, index) => (
                         <ProductItem
                             key={item._id || index}

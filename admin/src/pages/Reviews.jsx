@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { backendUrl as defaultBackendUrl } from '../config'
@@ -213,12 +213,12 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
           <div>
-            <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+            <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '18px' }}>
               Review Moderation
             </Title>
-            <Text type='secondary'>Track customer feedback, respond to reviews and remove invalid content when necessary.</Text>
+            <Text type='secondary' style={{ fontSize: '11px' }}>Track customer feedback, respond to reviews and remove invalid content when necessary.</Text>
           </div>
           <Tag color='magenta' style={{ borderRadius: 999, alignSelf: 'flex-start', paddingInline: 12, paddingBlock: 6, fontWeight: 700 }}>
             {filteredList.length} results
@@ -235,12 +235,12 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
 
         <Card
           bordered={false}
-          className='mb-6 shadow-sm'
-          bodyStyle={{ padding: 20 }}
+          className='mb-4 md:mb-6 shadow-sm'
+          bodyStyle={{ padding: 12 }}
         >
-          <div className='flex flex-col gap-4 lg:flex-row'>
+          <div className='flex flex-col gap-2 md:gap-4 lg:flex-row'>
             <Input
-              size='large'
+              size='middle'
               placeholder='Search product, customer or review text'
               prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
               value={searchTerm}
@@ -269,10 +269,10 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
         ) : (
           <div className='space-y-4'>
             {filteredList.map((item) => (
-              <Card key={item._id} bordered={false} className='shadow-sm'>
-                <div className='flex flex-col gap-4 lg:flex-row'>
+              <Card key={item._id} bordered={false} className='shadow-sm' bodyStyle={{ padding: '16px 12px' }}>
+                <div className='flex flex-col gap-3 md:gap-4 lg:flex-row'>
                   <div className='xl:w-[210px] xl:shrink-0'>
-                    <div className='flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2.5'>
+                    <div className='flex items-center gap-2 md:gap-3 rounded-xl md:rounded-2xl border border-slate-100 bg-slate-50 px-2 py-2 md:px-3 md:py-2.5'>
                       <div className='h-8 w-8 overflow-hidden rounded-lg border border-white bg-white'>
                         <img
                           src={getSafeImage(item.productId?.image) || 'https://dummyimage.com/100'}
@@ -299,8 +299,8 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
                         </div>
                       </div>
 
-                      <div className='mt-3 flex items-center justify-between'>
-                        <Rate disabled value={Number(item.rating) || 0} style={{ fontSize: 14, color: '#fbbf24' }} />
+                      <div className='mt-2 md:mt-3 flex items-center justify-between'>
+                        <Rate disabled value={Number(item.rating) || 0} style={{ fontSize: 12, color: '#fbbf24' }} />
                         <Tag color='blue' style={{ borderRadius: 999, fontWeight: 600 }}>
                           {item.rating}/5
                         </Tag>
@@ -309,8 +309,8 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
                   </div>
 
                   <div className='min-w-0 flex-1'>
-                    <div className='flex items-start justify-between gap-4'>
-                      <Paragraph style={{ margin: 0, color: '#334155', fontSize: 14, lineHeight: 1.65 }}>"{item.comment}"</Paragraph>
+                    <div className='flex items-start justify-between gap-3 md:gap-4'>
+                      <Paragraph style={{ margin: 0, color: '#334155', fontSize: 12, lineHeight: 1.5 }}>"{item.comment}"</Paragraph>
                       <Popconfirm
                         title='Delete review'
                         description='This will permanently remove the selected review.'
@@ -330,15 +330,15 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
                             key={`${item._id}-${index}`}
                             src={img}
                             alt='Review attachment'
-                            width={40}
-                            height={40}
-                            style={{ objectFit: 'cover', borderRadius: 10, border: '1px solid #f1f5f9' }}
+                            width={32}
+                            height={32}
+                            style={{ objectFit: 'cover', borderRadius: 8, border: '1px solid #f1f5f9' }}
                           />
                         ))}
                       </div>
                     ) : null}
 
-                    <div className='mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-4'>
+                    <div className='mt-3 md:mt-6 rounded-xl md:rounded-2xl border border-slate-100 bg-slate-50 p-3 md:p-4'>
                       {item.adminReply ? (
                         <div>
                           <div className='mb-2 flex items-center justify-between gap-3'>

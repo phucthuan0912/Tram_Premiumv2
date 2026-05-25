@@ -198,11 +198,11 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
               {(user.name || user.email || 'U').trim().charAt(0).toUpperCase()}
             </Avatar>
             <div>
-              <Text strong style={{ color: '#0f172a' }}>
+              <Text strong style={{ color: '#0f172a', fontSize: 11 }}>
                 {user.name}
               </Text>
               <div>
-                <Text type='secondary' style={{ fontSize: 12 }}>
+                <Text type='secondary' style={{ fontSize: 9 }}>
                   ID: #{String(user._id || '').slice(-6).toUpperCase()}
                 </Text>
               </div>
@@ -269,11 +269,10 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6'>
-          <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+        <div className='mb-3 md:mb-6'>
+          <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
             Personnel & Roles
           </Title>
-          <Text type='secondary'>Manage employee access and internal team members.</Text>
         </div>
 
         <div className={compactStatsRowClass}>
@@ -284,7 +283,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -293,10 +292,9 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
                 <div className='flex h-10 w-10 items-center justify-center rounded-2xl bg-pink-50 text-pink-500'>
                   <UserAddOutlined />
                 </div>
-                <div>
-                  <div className='font-semibold text-slate-900'>Add Employee</div>
-                  <div className='text-xs font-normal text-slate-400'>Create a new staff account</div>
-                </div>
+                  <div>
+                    <div className='text-xs font-bold text-slate-800'>Add Employee</div>
+                  </div>
               </Space>
             }
           >
@@ -307,7 +305,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter the employee name' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='Nguyen Van A'
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -323,7 +321,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
                 ]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   prefix={<MailOutlined style={{ color: '#94a3b8' }} />}
                   placeholder='employee@forevervn.com'
                   value={formData.email}
@@ -337,7 +335,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter a password' }]}
               >
                 <Input.Password
-                  size='large'
+                  size='middle'
                   prefix={<LockOutlined style={{ color: '#94a3b8' }} />}
                   placeholder='Strong password'
                   autoComplete='new-password'
@@ -346,7 +344,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
                 />
               </Form.Item>
 
-              <Button type='primary' htmlType='submit' size='large' loading={adding} block icon={<UserAddOutlined />}>
+              <Button type='primary' htmlType='submit' size='middle' loading={adding} block icon={<UserAddOutlined />}>
                 {adding ? 'Creating...' : 'Create Account'}
               </Button>
             </Form>
@@ -357,8 +355,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Team Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Internal staff accounts from the current data source</div>
+                <div className='text-xs font-bold text-slate-800'>Team Directory</div>
               </div>
             }
           >
@@ -367,12 +364,12 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
               columns={columns}
               dataSource={employees}
               loading={loading}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
               locale={{
                 emptyText: <Empty description='No employees found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}
-              scroll={{ x: 720 }}
+
             />
           </Card>
         </div>
@@ -394,7 +391,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
               rules={[{ required: true, message: 'Please enter the employee name' }]}
             >
               <Input
-                size='large'
+                size='middle'
                 value={editFormData.name}
                 onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
               />
@@ -409,7 +406,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
               ]}
             >
               <Input
-                size='large'
+                size='middle'
                 prefix={<MailOutlined style={{ color: '#94a3b8' }} />}
                 value={editFormData.email}
                 onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
@@ -418,7 +415,7 @@ const Employees = ({ token, backendUrl: backendUrlFromProps }) => {
 
             <Form.Item label='New Password (Optional)' name='password'>
               <Input.Password
-                size='large'
+                size='middle'
                 prefix={<LockOutlined style={{ color: '#94a3b8' }} />}
                 placeholder='Leave blank to keep unchanged'
                 autoComplete='new-password'

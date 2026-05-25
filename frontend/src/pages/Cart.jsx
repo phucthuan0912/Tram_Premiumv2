@@ -218,17 +218,17 @@ const Cart = () => {
     };
 
     return (
-        <div className="space-y-6 py-4 sm:space-y-8 sm:py-6">
-            <div className="section-shell px-5 py-6 sm:px-8 sm:py-8">
+        <div className="space-y-3 md:space-y-6 py-2 md:py-4 sm:space-y-8 sm:py-6 mx-2 md:mx-0">
+            <div className="section-shell px-3 py-4 md:px-5 md:py-6 sm:px-8 sm:py-8">
                 <Title text1={t.title1} text2={t.title2} />
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-                <section className="space-y-4">
+            <div className="grid gap-3 md:gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+                <section className="space-y-3 md:space-y-4">
                     {cartData.length === 0 ? (
-                        <div className="section-shell px-6 py-12 text-center">
-                            <p className="text-xl font-semibold text-slate-900">{t.emptyTitle}</p>
-                            <p className="mt-3 text-sm leading-7 text-slate-500">{t.emptyDesc}</p>
+                        <div className="section-shell px-4 py-8 md:px-6 md:py-12 text-center">
+                            <p className="text-sm md:text-xl font-semibold text-slate-900">{t.emptyTitle}</p>
+                            <p className="mt-2 md:mt-3 text-[10px] md:text-sm leading-5 md:leading-7 text-slate-500">{t.emptyDesc}</p>
                         </div>
                     ) : (
                         cartData.map((item, index) => {
@@ -255,40 +255,40 @@ const Cart = () => {
                             return (
                                 <article
                                     key={`${item._id}-${item.size}-${index}`}
-                                    className="section-shell flex flex-col gap-5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between"
+                                    className="section-shell flex flex-col gap-3 md:gap-5 px-3 py-3 md:px-5 md:py-5 sm:flex-row sm:items-center sm:justify-between"
                                 >
                                     <button
                                         type="button"
                                         onClick={() => navigate(`/product/${item._id}`)}
-                                        className="flex items-start gap-4 text-left sm:gap-5"
+                                        className="flex items-start gap-3 md:gap-4 text-left sm:gap-5"
                                     >
                                         <img
-                                            className="h-24 w-20 rounded-[20px] object-cover transition hover:opacity-90"
+                                            className="h-16 w-14 md:h-24 md:w-20 rounded-[12px] md:rounded-[20px] object-cover transition hover:opacity-90"
                                             src={imageSrc}
                                             alt={productData.name}
                                         />
 
                                         <div>
-                                            <p className="text-base font-semibold text-slate-900 transition hover:text-slate-700 sm:text-lg">
+                                            <p className="text-[11px] md:text-base font-semibold text-slate-900 transition hover:text-slate-700 sm:text-lg">
                                                 {productData.name}
                                             </p>
 
-                                            <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+                                            <div className="mt-1.5 md:mt-3 flex flex-wrap items-center gap-1.5 md:gap-3 text-[9px] md:text-sm text-slate-500">
                                                 <p>{formatMoney(productData.price, language)}</p>
-                                                <p className="rounded-full border border-[var(--border)] bg-white px-3 py-1">
+                                                <p className="rounded-full border border-[var(--border)] bg-white px-2 py-0.5 md:px-3 md:py-1">
                                                     {t.size} {displaySize}
                                                 </p>
                                                 {item.color && item.color !== 'Any' && (
-                                                    <p className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1">
+                                                    <p className="flex items-center gap-1 md:gap-1.5 rounded-full border border-[var(--border)] bg-white px-2 py-0.5 md:px-3 md:py-1">
                                                         <span
-                                                            className="inline-block h-3 w-3 rounded-full border border-slate-200"
+                                                            className="inline-block h-2 w-2 md:h-3 md:w-3 rounded-full border border-slate-200"
                                                             style={{ backgroundColor: item.color.toLowerCase() }}
                                                         />
                                                         {item.color}
                                                     </p>
                                                 )}
                                                 <span
-                                                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                                    className={`rounded-full px-2 py-0.5 md:px-3 md:py-1 text-[8px] md:text-xs font-semibold ${
                                                         availableStock === null
                                                             ? 'bg-slate-100 text-slate-500'
                                                             : availableStock > 0
@@ -305,7 +305,7 @@ const Cart = () => {
                                             </div>
 
                                             {(isUnavailable || isExceeded) && (
-                                                <p className="mt-3 text-sm font-medium text-rose-600">
+                                                <p className="mt-1.5 md:mt-3 text-[9px] md:text-sm font-medium text-rose-600">
                                                     {isUnavailable
                                                         ? t.soldOutMessage
                                                         : t.limitMessage(availableStock)}
@@ -314,12 +314,12 @@ const Cart = () => {
                                         </div>
                                     </button>
 
-                                    <div className="flex items-center gap-3 sm:gap-4">
-                                        <div className="flex items-center rounded-full border border-[var(--border)] bg-white px-2 py-2 shadow-sm">
+                                    <div className="flex items-center gap-2 md:gap-3 sm:gap-4 mt-1 md:mt-0">
+                                        <div className="flex items-center rounded-full border border-[var(--border)] bg-white px-1 py-1 md:px-2 md:py-2 shadow-sm">
                                             <button
                                                 type="button"
                                                 onClick={() => handleStepQuantity(item, -1)}
-                                                className="flex h-9 w-9 items-center justify-center rounded-full text-lg font-semibold text-slate-700 hover:bg-slate-100"
+                                                className="flex h-5 w-5 md:h-9 md:w-9 items-center justify-center rounded-full text-[10px] md:text-lg font-semibold text-slate-700 hover:bg-slate-100"
                                                 title={t.decrease}
                                                 aria-label={t.decrease}
                                             >
@@ -328,7 +328,7 @@ const Cart = () => {
 
                                             <input
                                                 onChange={(e) => handleQuantityChange(item, e.target.value)}
-                                                className="w-14 bg-transparent px-2 text-center text-sm font-semibold outline-none"
+                                                className="w-8 md:w-14 bg-transparent px-1 md:px-2 text-center text-[10px] md:text-sm font-semibold outline-none"
                                                 type="text"
                                                 inputMode="numeric"
                                                 pattern="[0-9]*"
@@ -340,7 +340,7 @@ const Cart = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => handleStepQuantity(item, 1)}
-                                                className="flex h-9 w-9 items-center justify-center rounded-full text-lg font-semibold text-slate-700 hover:bg-slate-100"
+                                                className="flex h-5 w-5 md:h-9 md:w-9 items-center justify-center rounded-full text-[10px] md:text-lg font-semibold text-slate-700 hover:bg-slate-100"
                                                 title={t.increase}
                                                 aria-label={t.increase}
                                             >
@@ -350,11 +350,11 @@ const Cart = () => {
 
                                         <button
                                             onClick={() => removeFromCart(item._id, item.size, item.color)}
-                                            className="rounded-full border border-[var(--border)] p-3 hover:bg-slate-900"
+                                            className="rounded-full border border-[var(--border)] p-1.5 md:p-3 hover:bg-slate-900 group"
                                             type="button"
                                             title={t.remove}
                                         >
-                                            <img className="w-4" src={assets.bin_icon} alt={t.remove} />
+                                            <img className="w-3 md:w-4 group-hover:invert transition" src={assets.bin_icon} alt={t.remove} />
                                         </button>
                                     </div>
                                 </article>
@@ -364,26 +364,26 @@ const Cart = () => {
                 </section>
 
                 <aside className="lg:sticky lg:top-[140px] lg:h-fit">
-                    <div className="section-shell p-6 sm:p-7">
+                    <div className="section-shell p-4 md:p-6 sm:p-7">
                         <Title text1={t.totals1} text2={t.totals2} />
 
-                        <div className="mt-6 space-y-4 text-sm text-slate-600">
+                        <div className="mt-4 md:mt-6 space-y-3 md:space-y-4 text-[10px] md:text-sm text-slate-600">
                             {vouchers.filter((v) => v.showAsHot).length > 0 && (
-                                <div className="mb-4 rounded-xl bg-orange-50 p-4 border border-orange-100">
-                                    <p className="text-orange-800 font-semibold mb-2">{t.hotVouchers}</p>
-                                    <div className="flex flex-col gap-2">
+                                <div className="mb-2 md:mb-4 rounded-xl bg-orange-50 p-3 md:p-4 border border-orange-100">
+                                    <p className="text-orange-800 font-semibold mb-1.5 md:mb-2 text-[9px] md:text-sm">{t.hotVouchers}</p>
+                                    <div className="flex flex-col gap-1.5 md:gap-2">
                                         {vouchers
                                             .filter((v) => v.showAsHot)
                                             .map((v) => (
                                                 <div
                                                     key={v._id}
-                                                    className="flex justify-between items-center bg-white p-2 rounded border border-orange-100 border-dashed"
+                                                    className="flex justify-between items-center bg-white p-1.5 md:p-2 rounded border border-orange-100 border-dashed"
                                                 >
                                                     <div>
-                                                        <span className="font-mono font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded mr-2">
+                                                        <span className="font-mono font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 md:px-2 md:py-0.5 rounded mr-1 md:mr-2 text-[8px] md:text-xs">
                                                             {v.code}
                                                         </span>
-                                                        <span className="text-xs text-orange-800">
+                                                        <span className="text-[8px] md:text-xs text-orange-800">
                                                             - {v.discountPercent}% OFF
                                                         </span>
                                                     </div>
@@ -392,7 +392,7 @@ const Cart = () => {
                                                             setVoucherInput(v.code);
                                                             setVoucherError('');
                                                         }}
-                                                        className="text-xs font-semibold text-orange-600 hover:text-orange-700"
+                                                        className="text-[9px] md:text-xs font-semibold text-orange-600 hover:text-orange-700"
                                                     >
                                                         {t.use}
                                                     </button>
@@ -402,34 +402,34 @@ const Cart = () => {
                                 </div>
                             )}
 
-                            <div className="flex flex-col gap-2 pb-2">
-                                <div className="flex gap-2">
+                            <div className="flex flex-col gap-1.5 md:gap-2 pb-1.5 md:pb-2">
+                                <div className="flex gap-1.5 md:gap-2">
                                     <input
                                         type="text"
                                         value={voucherInput}
                                         onChange={(e) => setVoucherInput(e.target.value.toUpperCase())}
                                         placeholder={t.enterVoucher}
-                                        className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-800 font-mono uppercase"
+                                        className="flex-1 rounded-lg border border-slate-300 px-2 py-1 md:px-3 md:py-2 text-[9px] md:text-sm outline-none focus:border-slate-800 font-mono uppercase"
                                     />
                                     <button
                                         onClick={handleApplyVoucher}
-                                        className="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-900"
+                                        className="rounded-lg bg-slate-800 px-3 py-1 md:px-4 md:py-2 text-[9px] md:text-sm font-semibold text-white hover:bg-slate-900"
                                     >
                                         {t.apply}
                                     </button>
                                 </div>
-                                {voucherError && <p className="text-xs text-red-500">{voucherError}</p>}
+                                {voucherError && <p className="text-[8px] md:text-xs text-red-500">{voucherError}</p>}
                                 {appliedVoucher && (
-                                    <div className="flex justify-between items-center rounded bg-emerald-50 px-3 py-2 border border-emerald-100">
-                                        <p className="text-xs font-medium text-emerald-700">
+                                    <div className="flex justify-between items-center rounded bg-emerald-50 px-2 py-1.5 md:px-3 md:py-2 border border-emerald-100">
+                                        <p className="text-[9px] md:text-xs font-medium text-emerald-700">
                                             {t.voucherApplied}{' '}
-                                            <span className="font-mono font-bold bg-emerald-100 px-1 rounded">
+                                            <span className="font-mono font-bold bg-emerald-100 px-1 rounded text-[8px] md:text-xs">
                                                 {appliedVoucher.code}
                                             </span>
                                         </p>
                                         <button
                                             onClick={() => setAppliedVoucher(null)}
-                                            className="text-emerald-700 hover:text-emerald-900 font-bold text-xs"
+                                            className="text-emerald-700 hover:text-emerald-900 font-bold text-[10px] md:text-xs"
                                             title={t.removeVoucher}
                                         >
                                             x
@@ -441,44 +441,32 @@ const Cart = () => {
                             <hr className="border-slate-100" />
 
                             {hasStockIssues && (
-                                <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                                <div className="rounded-xl md:rounded-2xl border border-rose-200 bg-rose-50 px-3 py-2 md:px-4 md:py-3 text-[9px] md:text-sm text-rose-700">
                                     {t.stockIssues}
                                 </div>
                             )}
 
-                            <div className="flex justify-between">
-                                <p>{t.subtotal}</p>
-                                <p>{formatMoney(getCartAmount(), language)}</p>
-                            </div>
 
-                            {appliedVoucher && (
-                                <div className="flex justify-between text-emerald-600 font-medium">
-                                    <p>{t.discount(appliedVoucher.discountPercent)}</p>
-                                    <p>-{formatMoney(getDiscountAmount(), language)}</p>
-                                </div>
-                            )}
 
-                            <div className="flex justify-between">
-                                <p>{t.shipping}</p>
-                                <p>{formatMoney(delivery_fee, language)}</p>
-                            </div>
-
-                            <div className="rounded-[22px] bg-slate-900 px-5 py-4 text-base font-semibold text-white">
-                                <div className="flex justify-between">
-                                    <p>{t.total}</p>
-                                    <p>{formatMoney(getCartAmount() - getDiscountAmount() + delivery_fee, language)}</p>
-                                </div>
-                            </div>
                         </div>
 
-                        <button
-                            onClick={() => navigate('/place-order')}
-                            className="mt-6 w-full rounded-full bg-slate-900 px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                            type="button"
-                            disabled={cartData.length === 0 || hasStockIssues}
-                        >
-                            {t.checkout}
-                        </button>
+                        <div className="mt-4 md:mt-6 flex items-stretch justify-between gap-2 md:gap-3">
+                            <div className="flex-1 flex flex-col justify-center rounded-[12px] md:rounded-full bg-slate-100 px-3 py-2 md:px-5 md:py-3 text-[10px] md:text-sm font-semibold text-slate-900">
+                                <div className="flex justify-between items-center gap-1">
+                                    <span>{t.total}:</span>
+                                    <span className="text-rose-600 truncate">{formatMoney(getCartAmount() - getDiscountAmount() + delivery_fee, language)}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => navigate('/place-order')}
+                                className="shrink-0 flex items-center justify-center rounded-[12px] md:rounded-full bg-slate-900 px-3 py-2 md:px-6 md:py-3 text-[9px] md:text-sm font-semibold uppercase tracking-wider text-white shadow-[0_10px_20px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                                type="button"
+                                disabled={cartData.length === 0 || hasStockIssues}
+                            >
+                                {t.checkout}
+                            </button>
+                        </div>
                     </div>
                 </aside>
             </div>

@@ -193,15 +193,15 @@ const QueryError = ({ message, onRetry }) => (
 const PanelHeader = ({ eyebrow, title, description, icon: Icon, iconClass = 'bg-slate-100 text-slate-600', action }) => (
   <CardHeader className='flex-row items-start justify-between space-y-0 p-0'>
     <div className='min-w-0'>
-      <p className='text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400'>{eyebrow}</p>
-      <CardTitle className='mt-1 text-[18px] font-semibold tracking-tight text-slate-900'>{title}</CardTitle>
-      {description ? <CardDescription className='mt-1 text-sm text-slate-500'>{description}</CardDescription> : null}
+      <p className='text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.15em] md:tracking-[0.18em] text-slate-400'>{eyebrow}</p>
+      <CardTitle className='mt-0.5 md:mt-1 text-[14px] md:text-[18px] font-semibold tracking-tight text-slate-900'>{title}</CardTitle>
+      {description ? <CardDescription className='mt-0.5 md:mt-1 text-[11px] md:text-sm text-slate-500'>{description}</CardDescription> : null}
     </div>
     {action || Icon ? (
       action || (
-        <div className='rounded-[20px] bg-white/95 p-1.5 shadow-[0_14px_32px_rgba(31,26,23,0.08)] ring-1 ring-[#efe5d8] backdrop-blur'>
-          <div className={`flex h-10 w-10 items-center justify-center rounded-[16px] shadow-inner ${iconClass}`}>
-            <DashboardIcon icon={Icon} size={18} />
+        <div className='rounded-[14px] md:rounded-[20px] bg-white/95 p-1 md:p-1.5 shadow-[0_14px_32px_rgba(31,26,23,0.08)] ring-1 ring-[#efe5d8] backdrop-blur'>
+          <div className={`flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-[10px] md:rounded-[16px] shadow-inner ${iconClass}`}>
+            <DashboardIcon icon={Icon} size={14} className="md:w-[18px] md:h-[18px]" />
           </div>
         </div>
       )
@@ -221,24 +221,24 @@ const StatCard = ({ label, sublabel, value, icon, palette }) => {
     <motion.div
       variants={itemVariants}
       whileHover={{ y: -4 }}
-      className={`relative overflow-hidden border bg-gradient-to-br p-3.5 ${palette.card} ${palette.border} ${palette.glow}`}
+      className={`relative overflow-hidden border bg-gradient-to-br p-2.5 md:p-3.5 rounded-[16px] ${palette.card} ${palette.border} ${palette.glow}`}
     >
-      <div className='relative z-10 flex items-start justify-between gap-3'>
+      <div className='relative z-10 flex items-start justify-between gap-2 md:gap-3'>
         <div className={`inline-flex rounded-full p-1 ${palette.iconFrame}`}>
-          <div className={`flex h-9 w-9 items-center justify-center rounded-full ${palette.iconWrap}`}>
-            <DashboardIcon icon={icon} size={16} />
+          <div className={`flex h-7 w-7 md:h-9 md:w-9 items-center justify-center rounded-full ${palette.iconWrap}`}>
+            <DashboardIcon icon={icon} size={14} className="md:w-4 md:h-4" />
           </div>
         </div>
-        <span className='rounded-full bg-white/72 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500'>
+        <span className='rounded-full bg-white/72 px-2 py-0.5 md:px-2.5 md:py-1 text-[8px] md:text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500'>
           KPI
         </span>
       </div>
       <div className='pointer-events-none absolute -right-8 bottom-0 h-24 w-24 rounded-full bg-white/25 blur-2xl' />
-      <div className='pointer-events-none absolute right-4 top-4 h-2.5 w-2.5 rounded-full bg-white/60' />
-      <div className='relative z-10 mt-3'>
-        <p className='text-[clamp(1.35rem,1.7vw,1.85rem)] font-semibold tracking-tight text-slate-900'>{value}</p>
-        <p className='mt-1 text-[13.5px] font-semibold text-slate-900'>{label}</p>
-        <p className='mt-0.5 text-[12px] text-slate-500'>{sublabel}</p>
+      <div className='pointer-events-none absolute right-4 top-4 h-2 w-2 md:h-2.5 md:w-2.5 rounded-full bg-white/60' />
+      <div className='relative z-10 mt-2 md:mt-3'>
+        <p className='text-lg md:text-[clamp(1.35rem,1.7vw,1.85rem)] font-semibold tracking-tight text-slate-900'>{value}</p>
+        <p className='mt-0.5 md:mt-1 text-[11px] md:text-[13.5px] font-semibold text-slate-900'>{label}</p>
+        <p className='mt-0 md:mt-0.5 text-[9px] md:text-[12px] text-slate-500'>{sublabel}</p>
       </div>
     </motion.div>
   )
@@ -249,16 +249,16 @@ const MiniMetric = ({ label, value, icon, iconClass }) => {
     <motion.div
       variants={itemVariants}
       whileHover={{ y: -3 }}
-      className='border border-[#e7ddcf] bg-[#fbf7f1] px-3.5 py-3 text-left text-slate-900 transition hover:-translate-y-0.5 hover:bg-white'
+      className='border border-[#e7ddcf] bg-[#fbf7f1] px-2.5 py-2 md:px-3.5 md:py-3 rounded-[12px] text-left text-slate-900 transition hover:-translate-y-0.5 hover:bg-white'
     >
-      <div className='flex items-start justify-between gap-3'>
+      <div className='flex items-start justify-between gap-2 md:gap-3'>
         <div>
-          <p className='text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400'>{label}</p>
-          <p className='mt-1.5 text-[18px] font-semibold tracking-tight text-slate-900'>{value}</p>
+          <p className='text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400'>{label}</p>
+          <p className='mt-1 md:mt-1.5 text-[14px] md:text-[18px] font-semibold tracking-tight text-slate-900'>{value}</p>
         </div>
-        <div className='rounded-2xl bg-white p-1 shadow-sm ring-1 ring-[#eadfce]'>
-          <div className={`flex h-8 w-8 items-center justify-center rounded-2xl ${iconClass}`}>
-            <DashboardIcon icon={icon} size={18} />
+        <div className='rounded-xl md:rounded-2xl bg-white p-1 shadow-sm ring-1 ring-[#eadfce]'>
+          <div className={`flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-[8px] md:rounded-2xl ${iconClass}`}>
+            <DashboardIcon icon={icon} size={14} className="md:w-[18px] md:h-[18px]" />
           </div>
         </div>
       </div>
@@ -273,19 +273,19 @@ const CategoryMetricCard = ({ label, value, icon, cardClass, iconClass, active, 
       variants={itemVariants}
       whileHover={{ y: -3 }}
       onClick={onClick}
-      className={`px-3 py-2.5 text-left shadow-sm ring-1 transition ${cardClass} ${
+      className={`px-2 py-1.5 md:px-3 md:py-2.5 rounded-[12px] text-left shadow-sm ring-1 transition ${cardClass} ${
         active ? 'ring-slate-900/20 shadow-[0_14px_30px_rgba(15,23,42,0.12)]' : 'ring-transparent'
       }`}
     >
-      <div className='flex items-start gap-3'>
-        <div className='rounded-full bg-white/92 p-1 shadow-[0_8px_18px_rgba(15,23,42,0.06)] ring-1 ring-white/80'>
-          <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${iconClass}`}>
-            <DashboardIcon icon={icon} size={14} />
+      <div className='flex items-start gap-2 md:gap-3'>
+        <div className='rounded-full bg-white/92 p-0.5 md:p-1 shadow-[0_8px_18px_rgba(15,23,42,0.06)] ring-1 ring-white/80'>
+          <div className={`flex h-5 w-5 md:h-7 md:w-7 shrink-0 items-center justify-center rounded-full ${iconClass}`}>
+            <DashboardIcon icon={icon} size={12} className="md:w-3.5 md:h-3.5" />
           </div>
         </div>
         <div className='min-w-0'>
-          <p className='truncate text-[12.5px] font-medium text-slate-900'>{label}</p>
-          <p className='mt-1 text-[19px] font-semibold leading-none tracking-tight text-slate-900'>{value}</p>
+          <p className='truncate text-[10px] md:text-[12.5px] font-medium text-slate-900'>{label}</p>
+          <p className='mt-0.5 md:mt-1 text-[14px] md:text-[19px] font-semibold leading-none tracking-tight text-slate-900'>{value}</p>
         </div>
       </div>
     </motion.button>
@@ -609,7 +609,7 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
   }
 
   return (
-    <div className='w-full px-4 py-4 md:px-6 xl:px-8'>
+    <div className='w-full px-2 py-2 md:px-6 xl:px-8'>
       <motion.div transition={{ duration: 0.2 }} className='mb-4 flex flex-wrap items-center justify-between gap-3'>
         <div>
           <Badge variant='outline' className='mb-2 bg-white/70 text-[#8b7c6e]'>
@@ -618,13 +618,13 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
         </div>
 
         <div className='flex flex-wrap items-center gap-3'>
-          <DashboardAction icon='mdi:download' onClick={handleExport}>
+          <DashboardAction icon='mdi:download' onClick={handleExport} className="h-7 md:h-9 px-2 md:px-4 text-[11px] md:text-sm rounded-[10px] md:rounded-[12px]">
             Export CSV
           </DashboardAction>
           <DashboardAction
             icon='mdi:refresh'
             onClick={handleRefresh}
-            className='bg-[#1f1a17] text-white hover:bg-[#2a221d] hover:text-white'
+            className='h-7 md:h-9 px-2 md:px-4 text-[11px] md:text-sm rounded-[10px] md:rounded-[12px] bg-[#1f1a17] text-white hover:bg-[#2a221d] hover:text-white'
           >
             {dashboardQuery.isFetching ? 'Refreshing...' : 'Refresh Data'}
           </DashboardAction>
@@ -632,19 +632,19 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
       </motion.div>
 
       <div className='overflow-x-auto pb-1 no-scrollbar'>
-        <div className='flex min-w-[900px] flex-nowrap gap-4'>
+        <div className='flex min-w-[500px] md:min-w-[900px] flex-nowrap gap-2 md:gap-4'>
           {topMetrics.map((metric, index) => (
-            <div key={metric.key} className='min-w-[260px] flex-1 basis-0'>
+            <div key={metric.key} className='min-w-[140px] md:min-w-[260px] flex-1 basis-0'>
               <StatCard {...metric} palette={topCardPalettes[index]} />
             </div>
           ))}
         </div>
       </div>
 
-      <div className='mt-4 overflow-x-auto pb-1 no-scrollbar'>
-        <div className='flex min-w-[1180px] flex-nowrap items-stretch gap-4'>
-          <motion.div variants={itemVariants} className='min-w-[760px] flex-[1.55] basis-0'>
-          <Card className='relative overflow-hidden rounded-none border-[#dbc4a5] bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(248,239,225,0.98)_100%)] p-4 shadow-[0_28px_60px_rgba(31,26,23,0.10)]'>
+      <div className='mt-2 md:mt-4 overflow-x-auto pb-1 no-scrollbar'>
+        <div className='flex min-w-[700px] md:min-w-[1180px] flex-nowrap items-stretch gap-2 md:gap-4'>
+          <motion.div variants={itemVariants} className='min-w-[400px] md:min-w-[760px] flex-[1.55] basis-0'>
+          <Card className='relative overflow-hidden rounded-[16px] md:rounded-none border-[#dbc4a5] bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(248,239,225,0.98)_100%)] p-2.5 md:p-4 shadow-[0_28px_60px_rgba(31,26,23,0.10)]'>
             <div className='pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,rgba(207,168,92,0),rgba(207,168,92,0.95),rgba(207,168,92,0))]' />
             <div className='pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top,rgba(233,203,148,0.28),transparent_68%)]' />
             <CardContent className='p-0'>
@@ -663,7 +663,7 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
                     key={option.value}
                     type='button'
                     onClick={() => setPeriod(option.value)}
-                    className={`min-w-[52px] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition ${
+                    className={`min-w-[40px] md:min-w-[52px] px-2 py-1 md:px-3.5 md:py-1.5 text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.16em] transition rounded-[6px] md:rounded-[10px] ${
                       period === option.value
                         ? 'bg-[linear-gradient(180deg,#2a221d_0%,#15110f_100%)] text-[#f6e2b5] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_22px_rgba(31,26,23,0.22)]'
                         : 'text-[#7b6c5a] hover:bg-white/70 hover:text-[#1f1a17]'
@@ -721,10 +721,10 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
               </div>
             </div>
 
-            <div className='mt-3 overflow-x-auto pb-1 no-scrollbar'>
-              <div className='flex min-w-[760px] flex-nowrap gap-3'>
+            <div className='mt-2 md:mt-3 overflow-x-auto pb-1 no-scrollbar'>
+              <div className='flex min-w-[460px] md:min-w-[760px] flex-nowrap gap-2 md:gap-3'>
                 {chartMetrics.map((metric) => (
-                  <div key={metric.key} className='min-w-[175px] flex-1 basis-0'>
+                  <div key={metric.key} className='min-w-[110px] md:min-w-[175px] flex-1 basis-0'>
                     <MiniMetric
                       {...metric}
                     />
@@ -736,8 +736,8 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
           </motion.div>
 
-            <motion.div variants={itemVariants} className='min-w-[360px] flex-[0.78] basis-0'>
-              <Card className='relative overflow-hidden rounded-none border-[#dbc4a5] bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(248,239,225,0.98)_100%)] p-4 shadow-[0_28px_60px_rgba(31,26,23,0.10)]'>
+            <motion.div variants={itemVariants} className='min-w-[280px] md:min-w-[360px] flex-[0.78] basis-0'>
+              <Card className='relative overflow-hidden rounded-[16px] md:rounded-none border-[#dbc4a5] bg-[linear-gradient(180deg,rgba(255,255,255,0.99)_0%,rgba(248,239,225,0.98)_100%)] p-2.5 md:p-4 shadow-[0_28px_60px_rgba(31,26,23,0.10)]'>
                 <div className='pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,rgba(207,168,92,0),rgba(207,168,92,0.95),rgba(207,168,92,0))]' />
                 <div className='pointer-events-none absolute -right-8 top-6 h-28 w-28 rounded-full bg-[#f4e1b9]/45 blur-3xl' />
                 <CardContent className='p-0'>
@@ -812,8 +812,8 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
         </div>
       </div>
 
-      <motion.div variants={itemVariants} className='mt-4'>
-              <Card className='rounded-none border-[#e7ddcf] bg-white/96 p-4'>
+      <motion.div variants={itemVariants} className='mt-2 md:mt-4'>
+              <Card className='rounded-[16px] md:rounded-none border-[#e7ddcf] bg-white/96 p-2 md:p-4'>
                 <CardContent className='p-0'>
               <PanelHeader
                 eyebrow='Recent Activities'
@@ -830,7 +830,7 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
                 }
               />
               {!recentOrders.length ? (
-                <div className='mt-6 rounded-2xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-400'>
+                <div className='mt-3 md:mt-6 rounded-[12px] md:rounded-2xl bg-slate-50 px-3 py-4 md:px-4 md:py-8 text-center text-[11px] md:text-sm text-slate-400'>
                   No recent orders found in the database.
                 </div>
               ) : (
@@ -852,34 +852,34 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
                         whileHover={{ y: -2 }}
                         type='button'
                         onClick={() => setSelectedOrderId(order?._id || null)}
-                        className={`w-full px-3.5 py-3.5 text-left transition ${
+                        className={`w-full px-2.5 py-2.5 md:px-3.5 md:py-3.5 rounded-[12px] md:rounded-none text-left transition ${
                           isSelected
                             ? 'border border-[#ddccb7] bg-[#f7efe3] text-slate-900 shadow-[0_18px_42px_rgba(31,26,23,0.08)]'
                             : 'bg-slate-50 hover:bg-slate-100'
                         }`}
                       >
-                        <div className='flex items-start gap-3'>
-                        <div className={`rounded-2xl p-1 shadow-sm ring-1 ${isSelected ? 'bg-white ring-[#eadfce]' : 'bg-white/90 ring-white/80'}`}>
-                          <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl ${badgeClass}`}>
-                            <DashboardIcon icon='mdi:package-variant-closed' size={18} />
+                        <div className='flex items-start gap-2 md:gap-3'>
+                        <div className={`rounded-[12px] md:rounded-2xl p-0.5 md:p-1 shadow-sm ring-1 ${isSelected ? 'bg-white ring-[#eadfce]' : 'bg-white/90 ring-white/80'}`}>
+                          <div className={`flex h-6 w-6 md:h-8 md:w-8 shrink-0 items-center justify-center rounded-[10px] md:rounded-2xl ${badgeClass}`}>
+                            <DashboardIcon icon='mdi:package-variant-closed' size={14} className="md:w-[18px] md:h-[18px]" />
                           </div>
                         </div>
 
                           <div className='min-w-0 flex-1'>
                             <div className='flex items-start justify-between gap-3'>
                               <div className='min-w-0'>
-                                <p className='truncate text-[13.5px] font-medium text-slate-900'>{customer}</p>
-                                <p className={`mt-1 text-[10.5px] uppercase tracking-[0.16em] ${isSelected ? 'text-[#8b7761]' : 'text-slate-400'}`}>
+                                <p className='truncate text-[11.5px] md:text-[13.5px] font-medium text-slate-900'>{customer}</p>
+                                <p className={`mt-0.5 md:mt-1 text-[9px] md:text-[10.5px] uppercase tracking-[0.16em] ${isSelected ? 'text-[#8b7761]' : 'text-slate-400'}`}>
                                   #{String(order?._id || '').slice(-8).toUpperCase()}
                                 </p>
                               </div>
-                              <p className='shrink-0 text-[13px] font-semibold text-slate-900'>
+                              <p className='shrink-0 text-[11px] md:text-[13px] font-semibold text-slate-900'>
                                 {currencyFormatter.format(Number(order?.amount) || 0)}
                               </p>
                             </div>
 
-                            <div className='mt-3 flex items-center justify-between gap-3'>
-                              <p className={`text-[11px] ${isSelected ? 'text-[#8b7761]' : 'text-slate-500'}`}>
+                            <div className='mt-2 md:mt-3 flex items-center justify-between gap-3'>
+                              <p className={`text-[9px] md:text-[11px] ${isSelected ? 'text-[#8b7761]' : 'text-slate-500'}`}>
                                 {order?.date
                                   ? new Date(order.date).toLocaleDateString('vi-VN', {
                                       day: '2-digit',
@@ -888,7 +888,7 @@ const Dashboard = ({ token, backendUrl: backendUrlFromProps }) => {
                                     })
                                   : '-'}
                               </p>
-                              <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-semibold ${getStatusClass(order?.status)}`}>
+                              <span className={`rounded-full px-2 py-0.5 md:px-2.5 md:py-1 text-[8.5px] md:text-[10.5px] font-semibold ${getStatusClass(order?.status)}`}>
                                 {order?.status || 'Pending'}
                               </span>
                             </div>
@@ -910,12 +910,12 @@ const RestockAlertCard = ({ items, onOpenImports, currencyFormatter }) => {
   if (!items.length) return null
 
   return (
-    <motion.div variants={itemVariants} className='mt-4'>
-      <Card className='overflow-hidden rounded-none border-[#e7c58d] bg-[linear-gradient(180deg,#fffaf1_0%,#fff5e7_100%)] shadow-[0_22px_48px_rgba(176,120,38,0.10)]'>
+    <motion.div variants={itemVariants} className='mt-2 md:mt-4'>
+      <Card className='overflow-hidden rounded-[16px] md:rounded-none border-[#e7c58d] bg-[linear-gradient(180deg,#fffaf1_0%,#fff5e7_100%)] shadow-[0_22px_48px_rgba(176,120,38,0.10)]'>
         <CardContent className='p-0'>
-          <div className='flex flex-wrap items-start justify-between gap-4 border-b border-[#efd9b5] px-4 py-4'>
+          <div className='flex flex-wrap items-start justify-between gap-2 md:gap-4 border-b border-[#efd9b5] px-3 py-3 md:px-4 md:py-4'>
             <div className='min-w-0'>
-              <div className='mb-2 inline-flex items-center gap-2 rounded-full bg-[#fff0cf] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#a16207] ring-1 ring-[#f4d79b]'>
+              <div className='mb-1 md:mb-2 inline-flex items-center gap-1 md:gap-2 rounded-full bg-[#fff0cf] px-2 py-0.5 md:px-3 md:py-1 text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.16em] text-[#a16207] ring-1 ring-[#f4d79b]'>
                 <DashboardIcon icon='mdi:alert-circle-outline' size={14} />
                 Restock Alert
               </div>

@@ -292,28 +292,28 @@ const Login = () => {
 
     return (
         <>
-            <div className="py-4 sm:py-6">
-                <section className="section-shell overflow-hidden">
+            <div className="py-2 md:py-4 sm:py-6">
+                <section className="section-shell overflow-hidden mx-2 md:mx-0">
                     <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
-                        <div className="bg-[linear-gradient(180deg,#fdfbf6_0%,#edf4fb_100%)] px-6 py-8 sm:px-8 sm:py-10">
-                            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
+                        <div className="bg-[linear-gradient(180deg,#fdfbf6_0%,#edf4fb_100%)] px-4 py-6 md:px-6 md:py-8 sm:px-8 sm:py-10">
+                            <p className="text-[10px] md:text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
                                 {t.accountEyebrow}
                             </p>
-                            <h1 className="display-font mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-5xl">
+                            <h1 className="display-font mt-1 md:mt-4 text-xl md:text-4xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-5xl">
                                 {t.heroTitle}
                             </h1>
-                            <p className="mt-4 max-w-md text-sm leading-7 text-slate-500 sm:text-base">
+                            <p className="mt-1.5 md:mt-4 max-w-md text-[11px] md:text-sm leading-[1.4] md:leading-7 text-slate-500 sm:text-base">
                                 {t.heroDescription}
                             </p>
 
-                            <div className="mt-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                                <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm text-slate-500">
+                            <div className="mt-4 md:mt-8 grid gap-2 md:gap-4 sm:grid-cols-3 lg:grid-cols-1">
+                                <div className="rounded-[12px] md:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 md:p-4 text-[10px] md:text-sm text-slate-500">
                                     {t.heroPoint1}
                                 </div>
-                                <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm text-slate-500">
+                                <div className="rounded-[12px] md:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 md:p-4 text-[10px] md:text-sm text-slate-500">
                                     {t.heroPoint2}
                                 </div>
-                                <div className="rounded-[22px] border border-[var(--border)] bg-white/80 p-4 text-sm text-slate-500">
+                                <div className="rounded-[12px] md:rounded-[22px] border border-[var(--border)] bg-white/80 p-2 md:p-4 text-[10px] md:text-sm text-slate-500">
                                     {t.heroPoint3}
                                 </div>
                             </div>
@@ -321,27 +321,27 @@ const Login = () => {
 
                         <form
                             onSubmit={onSubmitHandler}
-                            className="flex flex-col justify-center px-6 py-8 sm:px-8 sm:py-10"
+                            className="flex flex-col justify-center px-4 py-6 md:px-6 md:py-8 sm:px-8 sm:py-10"
                         >
                             <div className="max-w-md">
-                                <div className="inline-flex items-center gap-3">
-                                    <p className="display-font text-3xl font-semibold tracking-[-0.04em] text-slate-900">
+                                <div className="inline-flex items-center gap-2 md:gap-3">
+                                    <p className="display-font text-lg md:text-3xl font-semibold tracking-[-0.04em] text-slate-900">
                                         {currentState === SIGN_UP ? t.signUpTitle : t.loginTitle}
                                     </p>
-                                    <span className="h-px w-10 bg-slate-300" />
+                                    <span className="h-px w-6 md:w-10 bg-slate-300" />
                                 </div>
 
-                                <p className="mt-3 text-sm leading-7 text-slate-500">
+                                <p className="mt-1 md:mt-3 text-[10px] md:text-sm leading-5 md:leading-7 text-slate-500">
                                     {currentState === SIGN_UP ? t.signUpDescription : t.loginDescription}
                                 </p>
 
-                                <div className="mt-8 space-y-4">
+                                <div className="mt-4 md:mt-8 space-y-2 md:space-y-4">
                                     {currentState === SIGN_UP && (
                                         <input
                                             onChange={(event) => setName(event.target.value)}
                                             value={name}
                                             type="text"
-                                            className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                            className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                             placeholder={t.name}
                                             required
                                         />
@@ -351,7 +351,7 @@ const Login = () => {
                                         onChange={(event) => setEmail(event.target.value)}
                                         value={email}
                                         type="email"
-                                        className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                        className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                         placeholder={t.email}
                                         required
                                     />
@@ -360,13 +360,13 @@ const Login = () => {
                                         onChange={(event) => setPassword(event.target.value)}
                                         value={password}
                                         type="password"
-                                        className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                        className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                         placeholder={t.password}
                                         required
                                     />
                                 </div>
 
-                                <div className="mt-4 flex items-center justify-between gap-3 text-sm text-slate-500">
+                                <div className="mt-2.5 md:mt-4 flex items-center justify-between gap-2 md:gap-3 text-[9px] md:text-sm text-slate-500">
                                     {currentState === LOGIN ? (
                                         <>
                                             <button
@@ -376,7 +376,7 @@ const Login = () => {
                                             >
                                                 {t.forgotPassword}
                                             </button>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1.5 md:gap-2">
                                                 <span>{t.noAccount}</span>
                                                 <button
                                                     type="button"
@@ -388,7 +388,7 @@ const Login = () => {
                                             </div>
                                         </>
                                     ) : (
-                                        <div className="ml-auto flex items-center gap-2">
+                                        <div className="ml-auto flex items-center gap-1.5 md:gap-2">
                                             <span>{t.haveAccount}</span>
                                             <button
                                                 type="button"
@@ -404,7 +404,7 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="mt-8 rounded-full bg-slate-900 px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
+                                    className="mt-4 md:mt-8 rounded-full bg-slate-900 px-5 py-3 md:px-8 md:py-4 text-[9px] md:text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60 w-full md:w-auto"
                                 >
                                     {loading
                                         ? t.processing
@@ -419,37 +419,37 @@ const Login = () => {
             </div>
 
             {forgotOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-6">
-                    <div className="w-full max-w-md rounded-[28px] border border-white/70 bg-white p-6 shadow-[0_30px_120px_rgba(15,23,42,0.16)] sm:p-7">
-                        <div className="flex items-start justify-between gap-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-3 py-4 md:px-4 md:py-6">
+                    <div className="w-full max-w-md rounded-[16px] md:rounded-[28px] border border-white/70 bg-white p-4 md:p-6 shadow-[0_30px_120px_rgba(15,23,42,0.16)] sm:p-7">
+                        <div className="flex items-start justify-between gap-2 md:gap-4">
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
+                                <p className="text-[9px] md:text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
                                     {t.passwordRecovery}
                                 </p>
-                                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+                                <h2 className="mt-1 md:mt-2 text-lg md:text-2xl font-semibold tracking-[-0.04em] text-slate-900">
                                     {forgotStep === 'request' ? t.sendResetOtp : t.verifyOtpReset}
                                 </h2>
                             </div>
                             <button
                                 type="button"
                                 onClick={closeForgotPassword}
-                                className="rounded-full border border-[var(--border)] px-3 py-1 text-sm text-slate-500 transition hover:text-slate-900"
+                                className="rounded-full border border-[var(--border)] px-2.5 py-1 md:px-3 md:py-1 text-[10px] md:text-sm text-slate-500 transition hover:text-slate-900"
                             >
                                 {t.close}
                             </button>
                         </div>
 
-                        <p className="mt-3 text-sm leading-7 text-slate-500">
+                        <p className="mt-1.5 md:mt-3 text-[10px] md:text-sm leading-5 md:leading-7 text-slate-500">
                             {forgotStep === 'request' ? t.recoveryDescRequest : t.recoveryDescReset}
                         </p>
 
                         {forgotStep === 'request' ? (
-                            <form onSubmit={sendResetOtpHandler} className="mt-6 space-y-4">
+                            <form onSubmit={sendResetOtpHandler} className="mt-3 md:mt-6 space-y-2 md:space-y-4">
                                 <input
                                     type="email"
                                     value={resetEmail}
                                     onChange={(event) => setResetEmail(event.target.value)}
-                                    className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                    className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                     placeholder={t.email}
                                     required
                                 />
@@ -457,18 +457,18 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     disabled={resetLoading}
-                                    className="w-full rounded-full bg-slate-900 px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
+                                    className="w-full rounded-full bg-slate-900 px-5 py-3 md:px-8 md:py-4 text-[9px] md:text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
                                 >
                                     {resetLoading ? t.sendingOtp : t.sendOtp}
                                 </button>
                             </form>
                         ) : (
-                            <form onSubmit={resetPasswordHandler} className="mt-6 space-y-4">
+                            <form onSubmit={resetPasswordHandler} className="mt-3 md:mt-6 space-y-2 md:space-y-4">
                                 <input
                                     type="email"
                                     value={resetEmail}
                                     onChange={(event) => setResetEmail(event.target.value)}
-                                    className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                    className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                     placeholder={t.email}
                                     required
                                 />
@@ -480,7 +480,7 @@ const Login = () => {
                                     onChange={(event) =>
                                         setResetOtp(event.target.value.replace(/\D/g, '').slice(0, 6))
                                     }
-                                    className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                    className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                     placeholder={t.otpPlaceholder}
                                     required
                                 />
@@ -489,7 +489,7 @@ const Login = () => {
                                     type="password"
                                     value={newPassword}
                                     onChange={(event) => setNewPassword(event.target.value)}
-                                    className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                    className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                     placeholder={t.newPassword}
                                     required
                                 />
@@ -498,16 +498,16 @@ const Login = () => {
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(event) => setConfirmPassword(event.target.value)}
-                                    className="w-full rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                    className="w-full rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                     placeholder={t.confirmPassword}
                                     required
                                 />
 
-                                <div className="flex flex-col gap-3 sm:flex-row">
+                                <div className="flex flex-col gap-2 md:gap-3 sm:flex-row">
                                     <button
                                         type="submit"
                                         disabled={resetLoading}
-                                        className="flex-1 rounded-full bg-slate-900 px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
+                                        className="flex-1 rounded-full bg-slate-900 px-5 py-3 md:px-8 md:py-4 text-[9px] md:text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
                                     >
                                         {resetLoading ? t.updating : t.resetPassword}
                                     </button>
@@ -516,7 +516,7 @@ const Login = () => {
                                         type="button"
                                         onClick={sendResetOtpHandler}
                                         disabled={resetLoading}
-                                        className="rounded-full border border-[var(--border)] px-6 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+                                        className="rounded-full border border-[var(--border)] px-4 py-3 md:px-6 md:py-4 text-[9px] md:text-sm font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
                                     >
                                         {t.resendOtp}
                                     </button>

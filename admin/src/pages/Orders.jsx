@@ -310,7 +310,7 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
               #{String(order?._id || '').slice(-8).toUpperCase()}
             </Text>
             <div>
-              <Text type='secondary' style={{ fontSize: 12 }}>
+              <Text type='secondary' style={{ fontSize: 10 }}>
                 {order?.date ? new Date(order.date).toLocaleString('vi-VN') : '-'}
               </Text>
             </div>
@@ -320,18 +320,19 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
       {
         title: t('orders.customer'),
         key: 'customer',
-        width: 280,
+        responsive: ['md'],
+        width: 200,
         render: (_, order) => (
           <div>
             <Text strong style={{ color: '#0f172a' }}>
               {formatCustomerName(order?.address)}
             </Text>
             <div>
-              <Text style={{ fontSize: 12, color: '#64748b' }}>{formatAddress(order?.address)}</Text>
+              <Text style={{ fontSize: 10, color: '#64748b' }}>{formatAddress(order?.address)}</Text>
             </div>
             {order?.address?.phone ? (
               <div>
-                <Text style={{ fontSize: 12, color: '#94a3b8' }}>{order.address.phone}</Text>
+                <Text style={{ fontSize: 10, color: '#94a3b8' }}>{order.address.phone}</Text>
               </div>
             ) : null}
           </div>
@@ -340,21 +341,22 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
       {
         title: t('orders.items'),
         key: 'items',
-        width: 320,
+        responsive: ['lg'],
         render: (_, order) => (
           <div>
-            <div style={{ marginBottom: 8 }}>
-              <Text style={{ fontSize: 12, color: '#94a3b8' }}>{getItemCount(order?.items || [])} {t('orders.itemsCount')}</Text>
+            <div style={{ marginBottom: 4 }}>
+              <Text style={{ fontSize: 10, color: '#94a3b8' }}>{getItemCount(order?.items || [])} {t('orders.itemsCount')}</Text>
             </div>
-            <Space size={[6, 6]} wrap>
+            <Space size={[4, 4]} wrap>
               {(Array.isArray(order?.items) ? order.items : []).map((item, index) => (
                 <Tag
                   key={`${order?._id || 'order'}-${item?._id || item?.name || 'item'}-${index}`}
                   style={{
                     marginInlineEnd: 0,
                     borderRadius: 999,
-                    paddingInline: 10,
-                    paddingBlock: 4,
+                    paddingInline: 6,
+                    paddingBlock: 2,
+                    fontSize: 9,
                     borderColor: '#f1f5f9',
                     color: '#475569',
                     background: '#f8fafc',
@@ -371,17 +373,18 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
       {
         title: t('orders.payment'),
         key: 'payment',
-        width: 180,
+        responsive: ['md'],
+        width: 160,
         render: (_, order) => (
           <div>
             <Text strong style={{ color: '#0f172a' }}>
               {currencyFormatter.format(Number(order?.amount) || 0)}
             </Text>
             <div>
-              <Text style={{ fontSize: 12, color: '#64748b' }}>{order?.paymentMethod || 'COD'}</Text>
+              <Text style={{ fontSize: 10, color: '#64748b' }}>{order?.paymentMethod || 'COD'}</Text>
             </div>
-            <div style={{ marginTop: 6 }}>
-              <Tag color={order?.payment ? 'success' : 'gold'} style={{ borderRadius: 999, fontWeight: 600 }}>
+            <div style={{ marginTop: 4 }}>
+              <Tag color={order?.payment ? 'success' : 'gold'} style={{ borderRadius: 999, fontWeight: 600, fontSize: 9 }}>
                 {order?.payment ? t('orders.paid') : t('orders.pending')}
               </Tag>
             </div>
@@ -465,10 +468,10 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
                 </option>
               ))}
             </select>
-            <Button size='large' icon={<ReloadOutlined />} loading={loading} onClick={() => fetchOrders()}>
+            <Button size='middle' icon={<ReloadOutlined />} loading={loading} onClick={() => fetchOrders()}>
               {t('orders.refresh')}
             </Button>
-            <Button size='large' icon={<ExportOutlined />} onClick={exportToCsv}>
+            <Button size='middle' icon={<ExportOutlined />} onClick={exportToCsv}>
               {t('orders.export')}
             </Button>
           </Space>
@@ -535,9 +538,7 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
               prefix={<WalletOutlined style={{ color: '#2563eb' }} />}
               valueStyle={{ color: '#0f172a' }}
             />
-            <div className='mt-4 rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2 text-xs text-slate-500'>
-              {t('orders.revenueHelp')}
-            </div>
+
           </Card>
         </div>
 
@@ -546,8 +547,7 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-              <div className='font-semibold text-slate-900'>{t('orders.orderDirectory')}</div>
-              <div className='text-xs font-normal text-slate-400'>{t('orders.orderDirectoryHelp')}</div>
+                <div className='text-xs font-bold text-slate-800'>{t('orders.orderDirectory')}</div>
               </div>
             }
           >
@@ -556,9 +556,9 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
             columns={columns}
             dataSource={visibleOrders}
             loading={loading}
-            size='middle'
+            size='small'
             pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 1280 }}
+
               locale={{
               emptyText: <Empty description={t('orders.noOrders')} image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}

@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import {
@@ -202,6 +202,7 @@ const Customers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
         title: 'Email',
         dataIndex: 'email',
         key: 'email',
+        responsive: ['md'],
         render: (email) => (
           <Space size={8}>
             <MailOutlined style={{ color: '#94a3b8' }} />
@@ -254,7 +255,7 @@ const Customers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           </div>
 
           <Input
-            size='large'
+            size='middle'
             placeholder='Search name, email or role'
             prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
             style={{ width: 320, maxWidth: '100%' }}
@@ -288,7 +289,7 @@ const Customers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             loading={loading}
             size='middle'
             pagination={{ pageSize: 7, showSizeChanger: false, size: 'small' }}
-            scroll={{ x: 860 }}
+
             locale={{
               emptyText: <Empty description='No users found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
             }}

@@ -65,12 +65,12 @@ const App = () => {
       <ToastContainer {...toastProps} />
       <Navbar setToken={setToken} />
 
-      <div className='flex min-h-[calc(100vh-81px)] w-full'>
-        <div className='w-[220px] shrink-0'>
+      <div className='flex min-h-[calc(100vh-81px)] w-full overflow-hidden'>
+        <div className='shrink-0 sticky top-[81px] h-[calc(100vh-81px)] overflow-y-auto hidden-scrollbar z-30 bg-[var(--admin-glass)]'>
           <Sidebar />
         </div>
 
-        <div className='min-w-0 flex-1 p-3 md:p-4 xl:p-5'>
+        <div className='min-w-0 flex-1 p-2 md:p-4 xl:p-5 h-[calc(100vh-81px)] overflow-y-auto'>
           <Routes>
             <Route path='/' element={<Navigate to='/dashboard' replace />} />
             <Route path='/dashboard' element={<Dashboard token={token} backendUrl={backendUrl} />} />

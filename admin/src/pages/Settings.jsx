@@ -102,21 +102,21 @@ const Settings = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
   }
 
   return (
-    <div className='flex w-full flex-col gap-8 px-4 py-6 md:px-6'>
+    <div className='flex w-full flex-col gap-4 px-3 py-4 md:px-4'>
       
       <div>
-        <p className='mb-4 text-xl font-semibold text-gray-800'>System Settings</p>
+        <p className='mb-2 text-lg font-semibold text-gray-800'>System Settings</p>
 
         {loading ? (
             <p className='text-sm text-gray-500'>Loading settings...</p>
         ) : (
-            <form onSubmit={handleSaveSettings} className='max-w-[400px] w-full bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-4'>
+            <form onSubmit={handleSaveSettings} className='max-w-[400px] w-full bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-3'>
                 <div className='w-full'>
                     <p className='mb-2 font-medium text-sm text-gray-700'>Global Delivery Fee (VND)</p>
                     <input
                         value={deliveryFee}
                         onChange={(e) => setDeliveryFee(e.target.value)}
-                        className='w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-pink-400 font-mono text-gray-800'
+                        className='w-full rounded border border-gray-300 px-2 py-1 text-sm outline-none focus:border-pink-400 font-mono text-gray-800'
                         type='number'
                         min="0"
                         step="1000"
@@ -130,7 +130,7 @@ const Settings = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                     <button
                         type='submit'
                         disabled={isSubmitting}
-                        className='rounded bg-gray-800 px-8 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-60'
+                        className='rounded bg-gray-800 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-60'
                     >
                         {isSubmitting ? 'SAVING...' : 'SAVE SETTINGS'}
                     </button>
@@ -138,7 +138,7 @@ const Settings = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                         type='button'
                         onClick={handleResetDeliveryFee}
                         disabled={isResetting}
-                        className='rounded bg-emerald-600 px-6 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60'
+                        className='rounded bg-emerald-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60'
                     >
                         {isResetting ? 'RESETTING...' : 'FREE SHIPPING'}
                     </button>

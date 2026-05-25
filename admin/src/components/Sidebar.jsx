@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar'
 import { Link, useLocation } from 'react-router-dom'
-import { PlusCircle, List, Package, LayoutDashboard, Users, Ticket, Layers, History, ListTree, Image, MessageSquare, Zap } from 'lucide-react'
+import { PlusCircle, List, Package, LayoutDashboard, Users, Ticket, Layers, History, ListTree, Image, MessageSquare, Zap, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAdminLocale } from '../lib/adminLocale'
 
 const ALL_NAV_ITEMS = [
@@ -29,6 +29,32 @@ const NAV_GROUPS = ['CORE', 'CATALOG', 'COMMERCE']
 const SidebarComponent = () => {
   const location = useLocation()
   const { t } = useAdminLocale()
+  const [collapsed, setCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebar-collapsed')
+    if (saved !== null) {
+      return saved === 'true'
+    }
+    return window.innerWidth < 768
+  })
+
+  useEffect(() => {
+    const handleResize = () => {
+      const saved = localStorage.getItem('sidebar-collapsed')
+      if (saved === null) {
+        setCollapsed(window.innerWidth < 768)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => {
+      const next = !prev
+      localStorage.setItem('sidebar-collapsed', String(next))
+      return next
+    })
+  }
   
   let role = 'Admin';
   try {
@@ -50,41 +76,56 @@ const SidebarComponent = () => {
 
   return (
     <Sidebar
+      collapsed={collapsed}
+      width="220px"
+      collapsedWidth="56px"
       rootStyles={{
-        width: '220px',
-        height: 'auto',
+        height: '100%',
         minHeight: '100%',
         borderRight: '1px solid var(--admin-border)',
-        background: 'var(--admin-glass)',
-        backdropFilter: 'blur(22px)',
-        boxShadow: '8px 0 22px rgba(15, 23, 42, 0.03)',
+        background: 'transparent',
       }}
     >
-      <div className='py-2 sticky top-[96px]'>
+      <div className={`flex items-center py-2 px-3 ${collapsed ? 'justify-center' : 'justify-between'} border-b border-[var(--admin-border)]/40 mb-2`}>
+        {!collapsed && (
+          <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider pl-2">Navigation</span>
+        )}
+        <button
+          onClick={toggleCollapsed}
+          className='flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer shadow-sm'
+        >
+          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
+      </div>
+
+      <div className='py-2'>
         {NAV_GROUPS.map((group) => {
           const items = navItems.filter((item) => item.group === group)
           if (!items.length) return null
 
           return (
             <div key={group} className='mb-3'>
-              <div className='px-5 pb-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--admin-tertiary)]/80'>
-                {t(`sidebar.groups.${group}`, group)}
-              </div>
+              {!collapsed && (
+                <div className='px-3 md:px-5 pb-1 text-[9px] md:text-[11px] font-semibold uppercase tracking-[0.2em] md:tracking-[0.22em] text-[var(--admin-tertiary)]/80'>
+                  {t(`sidebar.groups.${group}`, group)}
+                </div>
+              )}
               <Menu
                 menuItemStyles={{
                   button: ({ active }) => ({
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '10px',
-                    padding: '9px 14px',
-                    margin: '4px 10px',
-                    borderRadius: '14px',
-                    fontSize: '13px',
+                    gap: collapsed ? '0' : '8px md:10px',
+                    padding: collapsed ? '8px' : '6px 10px md:9px 14px',
+                    margin: collapsed ? '4px 8px' : '2px 6px md:4px 10px',
+                    borderRadius: collapsed ? '10px' : '10px md:14px',
+                    fontSize: '11px md:13px',
                     fontWeight: active ? '600' : '500',
                     color: active ? 'var(--admin-text)' : 'var(--admin-muted)',
                     background: active ? 'var(--admin-surface-soft)' : 'transparent',
                     border: active ? '1px solid var(--admin-border)' : '1px solid transparent',
                     boxShadow: active ? '0 10px 22px rgba(15, 23, 42, 0.05)' : 'none',
+                    justifyContent: collapsed ? 'center' : 'flex-start',
                     '&:hover': {
                       backgroundColor: 'var(--admin-surface-soft)',
                       color: 'var(--admin-text)',
@@ -92,6 +133,7 @@ const SidebarComponent = () => {
                   }),
                   icon: ({ active }) => ({
                     color: active ? 'var(--admin-tertiary)' : 'var(--admin-muted)',
+                    margin: 0,
                   }),
                 }}
               >

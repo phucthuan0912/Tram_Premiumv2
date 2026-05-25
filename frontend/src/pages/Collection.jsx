@@ -20,50 +20,47 @@ const parsePrice = (price) => {
 
 const copyByLanguage = {
     vi: {
-        title1: 'TO\u00c0N B\u1ed8',
-        title2: 'B\u1ed8 S\u01afU T\u1eacP',
-        refinedDiscovery: 'Kh\u00e1m ph\u00e1 tinh ch\u1ecdn',
-        intro:
-            'B\u1ed9 s\u01b0u t\u1eadp \u0111\u01b0\u1ee3c tr\u00ecnh b\u00e0y r\u00f5 r\u00e0ng h\u01a1n v\u1edbi l\u1ecdc nhanh, s\u1eafp x\u1ebfp tr\u1ef1c quan v\u00e0 tr\u1ea3i nghi\u1ec7m duy\u1ec7t s\u1ea3n ph\u1ea9m m\u01b0\u1ee3t m\u00e0 tr\u00ean m\u1ecdi k\u00edch th\u01b0\u1edbc m\u00e0n h\u00ecnh.',
-        showFilters: 'Hi\u1ec7n b\u1ed9 l\u1ecdc',
-        hideFilters: '\u1ea8n b\u1ed9 l\u1ecdc',
-        sortRelevant: 'S\u1eafp x\u1ebfp: Li\u00ean quan',
-        sortLowHigh: 'S\u1eafp x\u1ebfp: Gi\u00e1 th\u1ea5p \u0111\u1ebfn cao',
-        sortHighLow: 'S\u1eafp x\u1ebfp: Gi\u00e1 cao \u0111\u1ebfn th\u1ea5p',
-        sortNewest: 'S\u1eafp x\u1ebfp: M\u1edbi nh\u1ea5t',
-        sortNameAZ: 'S\u1eafp x\u1ebfp: T\u00ean A-Z',
-        sortNameZA: 'S\u1eafp x\u1ebfp: T\u00ean Z-A',
-        filters: 'B\u1ed9 l\u1ecdc',
-        narrowYourStyle: 'Thu g\u1ecdn phong c\u00e1ch',
-        clearAll: 'X\u00f3a t\u1ea5t c\u1ea3',
-        priceRange: 'Kho\u1ea3ng gi\u00e1',
-        minPlaceholder: 'Gi\u00e1 t\u1eeb',
-        maxPlaceholder: 'Gi\u00e1 \u0111\u1ebfn',
-        priceHint: 'B\u1ea1n c\u00f3 th\u1ec3 nh\u1eadp 100 ho\u1eb7c 100.000.',
-        onlyBestSeller: 'Ch\u1ec9 hi\u1ec7n bestseller',
-        categories: 'Danh m\u1ee5c',
-        collapse: 'Thu g\u1ecdn',
-        viewSubCategories: 'Xem danh m\u1ee5c con',
-        productsFound: 'S\u1ea3n ph\u1ea9m t\u00ecm th\u1ea5y',
-        matchedCount: (count) => `${count} s\u1ea3n ph\u1ea9m ph\u00f9 h\u1ee3p v\u1edbi l\u1ef1a ch\u1ecdn hi\u1ec7n t\u1ea1i.`,
-        resetFilters: '\u0110\u1eb7t l\u1ea1i b\u1ed9 l\u1ecdc',
-        noProductsTitle: 'Kh\u00f4ng t\u00ecm th\u1ea5y s\u1ea3n ph\u1ea9m ph\u00f9 h\u1ee3p',
-        noProductsBody:
-            'Th\u1eed n\u1edbi r\u1ed9ng kho\u1ea3ng gi\u00e1, b\u1ecf b\u1edbt b\u1ed9 l\u1ecdc ho\u1eb7c x\u00f3a t\u1eeb kh\u00f3a t\u00ecm ki\u1ebfm \u0111\u1ec3 xem th\u00eam l\u1ef1a ch\u1ecdn.',
-        loadMore: 'Xem th\u00eam',
+        title1: 'TOÀN BỘ',
+        title2: 'BỘ SƯU TẬP',
+        refinedDiscovery: 'Khám phá tinh chọn',
+        intro: 'Bộ sưu tập được trình bày rõ ràng hơn với lọc nhanh, sắp xếp trực quan và trải nghiệm duyệt sản phẩm mượt mà trên mọi kích thước màn hình.',
+        showFilters: 'Hiện bộ lọc',
+        hideFilters: 'Ẩn bộ lọc',
+        sortRelevant: 'Sắp xếp: Liên quan',
+        sortLowHigh: 'Sắp xếp: Giá thấp đến cao',
+        sortHighLow: 'Sắp xếp: Giá cao đến thấp',
+        sortNewest: 'Sắp xếp: Mới nhất',
+        sortNameAZ: 'Sắp xếp: Tên A-Z',
+        sortNameZA: 'Sắp xếp: Tên Z-A',
+        filters: 'Bộ lọc',
+        narrowYourStyle: 'Thu gọn phong cách',
+        clearAll: 'Xóa tất cả',
+        priceRange: 'Khoảng giá',
+        minPlaceholder: 'Giá từ',
+        maxPlaceholder: 'Giá đến',
+        priceHint: 'Bạn có thể nhập 100 hoặc 100.000.',
+        onlyBestSeller: 'Chỉ hiện bestseller',
+        categories: 'Danh mục',
+        collapse: 'Thu gọn',
+        viewSubCategories: 'Xem danh mục con',
+        productsFound: 'Sản phẩm tìm thấy',
+        matchedCount: (count) => `${count} sản phẩm phù hợp với lựa chọn hiện tại.`,
+        resetFilters: 'Đặt lại bộ lọc',
+        noProductsTitle: 'Không tìm thấy sản phẩm phù hợp',
+        noProductsBody: 'Thử nới rộng khoảng giá, bỏ bớt bộ lọc hoặc xóa từ khóa tìm kiếm để xem thêm lựa chọn.',
+        loadMore: 'Xem thêm',
         fallbackCategories: [
             { value: 'Nam', label: 'Nam' },
-            { value: 'N\u1eef', label: 'N\u1eef' },
-            { value: 'Tr\u1ebb em', label: 'Tr\u1ebb em' },
-            { value: 'Ph\u1ee5 ki\u1ec7n', label: 'Ph\u1ee5 ki\u1ec7n' },
+            { value: 'Nữ', label: 'Nữ' },
+            { value: 'Trẻ em', label: 'Trẻ em' },
+            { value: 'Phụ kiện', label: 'Phụ kiện' },
         ],
     },
     en: {
         title1: 'ALL',
         title2: 'COLLECTIONS',
         refinedDiscovery: 'Refined discovery',
-        intro:
-            'The collection is presented more clearly with quick filtering, intuitive sorting and a smoother browsing experience across every screen size.',
+        intro: 'The collection is presented more clearly with quick filtering, intuitive sorting and a smoother browsing experience across every screen size.',
         showFilters: 'Show Filters',
         hideFilters: 'Hide Filters',
         sortRelevant: 'Sort by: Relevant',
@@ -87,14 +84,13 @@ const copyByLanguage = {
         matchedCount: (count) => `${count} products match your current filters.`,
         resetFilters: 'Reset Filters',
         noProductsTitle: 'No matching products found',
-        noProductsBody:
-            'Try widening the price range, removing some filters or clearing the search term to see more options.',
+        noProductsBody: 'Try widening the price range, removing some filters or clearing the search term to see more options.',
         loadMore: 'Load More',
         fallbackCategories: [
             { value: 'Nam', label: 'Men' },
-            { value: 'N\u1eef', label: 'Women' },
-            { value: 'Tr\u1ebb em', label: 'Kids' },
-            { value: 'Ph\u1ee5 ki\u1ec7n', label: 'Accessories' },
+            { value: 'Nữ', label: 'Women' },
+            { value: 'Trẻ em', label: 'Kids' },
+            { value: 'Phụ kiện', label: 'Accessories' },
         ],
     },
 };
@@ -256,23 +252,46 @@ const Collection = () => {
     const displayed = filteredAndSorted.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
     return (
-        <div className="space-y-6 py-4 sm:space-y-8 sm:py-6">
-            <section className="section-shell px-5 py-6 sm:px-8 sm:py-8">
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                    <div>
-                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
-                            {t.refinedDiscovery}
-                        </p>
-                        <Title text1={t.title1} text2={t.title2} />
-                        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+        <div className="space-y-3 py-3 md:space-y-4 md:py-4 w-full">
+            {/* Khối Tìm kiếm thông minh được đưa ra giữa, luôn hiển thị */}
+            <section className="px-2 sm:px-5 md:px-8 max-w-5xl mx-auto w-full">
+                <SmartSearch onSearchResults={handleSmartSearchResults} />
+            </section>
+
+            <section className="section-shell px-3 py-3 md:px-5 md:py-4 mx-2 md:mx-0">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                    <div className="w-full lg:w-auto text-center lg:text-left">
+                        <div className="flex justify-center lg:justify-start">
+                            <Title text1={t.title1} text2={t.title2} />
+                        </div>
+                        <p className="mt-1 max-w-2xl text-[11px] leading-5 md:text-sm md:leading-6 text-slate-500 mx-auto lg:mx-0">
                             {t.intro}
                         </p>
+                        <div className="mt-2 md:mt-3 flex flex-col sm:flex-row items-center gap-2 justify-center lg:justify-start">
+                            <p className="text-xs md:text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+                                {t.matchedCount(filteredAndSorted.length)}
+                            </p>
+                            {smartSearchCriteria && (
+                                <div className="inline-flex items-center justify-center gap-1.5 md:gap-2 rounded-full bg-gradient-to-r from-slate-900 to-slate-700 px-2.5 py-1 md:px-3 text-[10px] md:text-xs font-semibold text-white shadow-sm">
+                                    <span>✨</span>
+                                    <span>Kết quả tìm kiếm thông minh</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center w-full lg:w-auto mt-2 lg:mt-0">
+                        <button
+                            onClick={clearAll}
+                            className="w-full sm:w-auto rounded-full border border-[var(--border)] px-4 py-2 md:px-5 md:py-2.5 text-[11px] md:text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white transition-colors"
+                            type="button"
+                        >
+                            {t.resetFilters}
+                        </button>
+
                         <button
                             onClick={() => setShowFilter((prev) => !prev)}
-                            className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white lg:hidden"
+                            className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2.5 md:px-5 md:py-3 text-xs md:text-sm font-semibold tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white lg:hidden transition-colors"
                             type="button"
                         >
                             {showFilter ? t.hideFilters : t.showFilters}
@@ -281,7 +300,7 @@ const Collection = () => {
                         <select
                             value={sortType}
                             onChange={(e) => setSortType(e.target.value)}
-                            className="rounded-full border border-[var(--border)] bg-white px-5 py-3 text-sm font-medium text-slate-600 outline-none"
+                            className="w-full sm:w-auto rounded-full border border-[var(--border)] bg-white px-4 py-2.5 md:px-5 md:py-3 text-xs md:text-sm font-medium text-slate-600 outline-none"
                         >
                             <option value="relavent">{t.sortRelevant}</option>
                             <option value="low-high">{t.sortLowHigh}</option>
@@ -294,78 +313,74 @@ const Collection = () => {
                 </div>
             </section>
 
-            {/* Khối Tìm kiếm thông minh được đưa ra giữa, luôn hiển thị */}
-            <section className="px-5 sm:px-8 max-w-5xl mx-auto w-full">
-                <SmartSearch onSearchResults={handleSmartSearchResults} />
-            </section>
-
-            <div className="grid gap-6 lg:grid-cols-[290px_minmax(0,1fr)]">
-                <aside className={`${showFilter ? 'block' : 'hidden'} lg:block`}>
-                    <div className="section-shell h-fit p-5 lg:sticky lg:top-[140px] lg:p-6">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-5 px-2 md:px-0">
+                <aside className={`w-full lg:w-1/4 ${showFilter ? 'block' : 'hidden'} lg:block`}>
+                    <div className="section-shell h-fit p-3 md:p-4 lg:sticky lg:top-24 lg:p-5">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+                                <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
                                     {t.filters}
                                 </p>
-                                <h2 className="display-font mt-2 text-2xl font-semibold text-slate-900">
+                                <h2 className="display-font mt-1 md:mt-2 text-lg md:text-2xl font-semibold text-slate-900">
                                     {t.narrowYourStyle}
                                 </h2>
                             </div>
 
                             <button
                                 onClick={clearAll}
-                                className="text-sm font-semibold text-slate-500 hover:text-slate-900"
+                                className="text-xs md:text-sm font-semibold text-slate-500 hover:text-slate-900"
                                 type="button"
                             >
                                 {t.clearAll}
                             </button>
                         </div>
 
-                        <div className="mt-6 space-y-4">
-                            <div className="rounded-[24px] border border-[var(--border)] bg-white p-4">
-                                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+                        <div className="mt-4 md:mt-6 space-y-3 md:space-y-4">
+                            <div className="rounded-[16px] md:rounded-[24px] border border-[var(--border)] bg-white p-3 md:p-4">
+                                <p className="mb-2 md:mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
                                     {t.priceRange}
                                 </p>
 
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="flex flex-col sm:flex-row gap-2 md:gap-3 w-full">
                                     <input
                                         value={minPrice}
                                         onChange={(e) => setMinPrice(e.target.value)}
-                                        className="rounded-2xl border border-[var(--border)] px-4 py-3 text-sm outline-none"
+                                        className="w-full rounded-[12px] md:rounded-2xl border border-[var(--border)] px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm outline-none focus:border-slate-400 transition-colors"
                                         placeholder={t.minPlaceholder}
                                     />
                                     <input
                                         value={maxPrice}
                                         onChange={(e) => setMaxPrice(e.target.value)}
-                                        className="rounded-2xl border border-[var(--border)] px-4 py-3 text-sm outline-none"
+                                        className="w-full rounded-[12px] md:rounded-2xl border border-[var(--border)] px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm outline-none focus:border-slate-400 transition-colors"
                                         placeholder={t.maxPlaceholder}
                                     />
                                 </div>
 
-                                <p className="mt-3 text-xs leading-6 text-slate-400">
+                                <p className="mt-2 md:mt-3 text-[10px] md:text-xs leading-5 md:leading-6 text-slate-400">
                                     {t.priceHint}
                                 </p>
                             </div>
 
-                            <div className="rounded-[24px] border border-[var(--border)] bg-white p-4">
-                                <label className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                            <div className="rounded-[16px] md:rounded-[24px] border border-[var(--border)] bg-white p-3 md:p-4">
+                                <label className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-medium text-slate-600 cursor-pointer w-full">
                                     <input
                                         type="checkbox"
                                         checked={onlyBestSeller}
                                         onChange={(e) =>
                                             setOnlyBestSeller(e.target.checked)
                                         }
+                                        className="accent-slate-900 w-4 h-4 md:w-auto md:h-auto"
                                     />
                                     {t.onlyBestSeller}
                                 </label>
                             </div>
 
-                            <div className="rounded-[24px] border border-[var(--border)] bg-white p-4">
-                                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+                            <div className="rounded-[16px] md:rounded-[24px] border border-[var(--border)] bg-white p-3 md:p-4">
+                                <p className="mb-2 md:mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
                                     {t.categories}
                                 </p>
 
-                                <div className="space-y-0.5 text-sm text-slate-600">
+                                <div className="space-y-0.5 text-xs md:text-sm text-slate-600">
                                     {categoryOptions.map((cat) => {
                                         const catSubs = cat._static ? [] : subCategories.filter(
                                             (s) => s.categoryId?._id === cat._id || s.categoryId === cat._id,
@@ -374,17 +389,17 @@ const Collection = () => {
                                         const isChecked = category.includes(cat.name);
 
                                         return (
-                                            <div key={cat._id}>
-                                                <div className="flex items-center gap-1 rounded-xl hover:bg-slate-50">
-                                                    <label className="flex flex-1 cursor-pointer items-center gap-3 px-2 py-2">
+                                            <div key={cat._id} className="w-full">
+                                                <div className="flex items-center gap-1 rounded-[10px] md:rounded-xl hover:bg-slate-50 transition-colors w-full">
+                                                    <label className="flex flex-1 cursor-pointer items-center gap-2 md:gap-3 px-2 py-2 w-full">
                                                         <input
                                                             type="checkbox"
                                                             value={cat.name}
                                                             onChange={() => toggleCategory(cat.name)}
                                                             checked={isChecked}
-                                                            className="accent-slate-900"
+                                                            className="accent-slate-900 w-4 h-4 md:w-auto md:h-auto flex-shrink-0"
                                                         />
-                                                        <span className={`flex-1 font-medium ${isChecked ? 'text-slate-900' : ''}`}>
+                                                        <span className={`flex-1 font-medium truncate ${isChecked ? 'text-slate-900' : ''}`}>
                                                             {cat.label}
                                                         </span>
                                                     </label>
@@ -392,7 +407,7 @@ const Collection = () => {
                                                         <button
                                                             type="button"
                                                             onClick={() => toggleExpandCategory(cat.name)}
-                                                            className="mr-1 flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                                                            className="mr-1 flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-700 flex-shrink-0"
                                                             title={isExpanded ? t.collapse : t.viewSubCategories}
                                                         >
                                                             {isExpanded ? '\u2212' : '+'}
@@ -401,20 +416,20 @@ const Collection = () => {
                                                 </div>
 
                                                 {isExpanded && catSubs.length > 0 && (
-                                                    <div className="mb-1 ml-6 mt-0.5 space-y-0.5 border-l-2 border-slate-100 pl-3">
+                                                    <div className="mb-1 ml-4 md:ml-6 mt-0.5 space-y-0.5 border-l-2 border-slate-100 pl-2 md:pl-3 w-full">
                                                         {catSubs.map((sub) => (
                                                             <label
                                                                 key={sub._id}
-                                                                className="flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-slate-50"
+                                                                className="flex cursor-pointer items-center gap-2 md:gap-3 rounded-[10px] md:rounded-xl px-2 py-1.5 hover:bg-slate-50 w-full transition-colors"
                                                             >
                                                                 <input
                                                                     type="checkbox"
                                                                     value={sub.name}
                                                                     onChange={() => toggleSubCategory(sub.name)}
                                                                     checked={subCategory.includes(sub.name)}
-                                                                    className="accent-slate-700"
+                                                                    className="accent-slate-700 w-3.5 h-3.5 md:w-auto md:h-auto flex-shrink-0"
                                                                 />
-                                                                <span className="text-slate-500">{sub.name}</span>
+                                                                <span className="text-slate-500 truncate text-[11px] md:text-sm">{sub.name}</span>
                                                             </label>
                                                         ))}
                                                     </div>
@@ -428,46 +443,19 @@ const Collection = () => {
                     </div>
                 </aside>
 
-                <section className="space-y-5">
-                    <div className="section-shell px-5 py-5 sm:px-6">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                                    {t.productsFound}
-                                </p>
-                                <p className="mt-2 text-sm text-slate-500 sm:text-base">
-                                    {t.matchedCount(filteredAndSorted.length)}
-                                </p>
-                                {smartSearchCriteria && (
-                                    <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-slate-900 to-slate-700 px-3 py-1 text-xs font-semibold text-white">
-                                        <span>✨</span>
-                                        <span>Kết quả tìm kiếm thông minh</span>
-                                    </div>
-                                )}
-                            </div>
-
-                            <button
-                                onClick={clearAll}
-                                className="hidden rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white lg:inline-flex"
-                                type="button"
-                            >
-                                {t.resetFilters}
-                            </button>
-                        </div>
-                    </div>
-
+                <section className="space-y-4 w-full lg:w-3/4">
                     {displayed.length === 0 ? (
-                        <div className="section-shell px-6 py-12 text-center">
-                            <p className="text-lg font-semibold text-slate-900">
+                        <div className="section-shell px-3 py-6 md:px-5 md:py-8 text-center w-full">
+                            <p className="text-sm md:text-base lg:text-lg font-semibold text-slate-900">
                                 {t.noProductsTitle}
                             </p>
-                            <p className="mt-3 text-sm leading-7 text-slate-500">
+                            <p className="mt-2 md:mt-3 text-xs md:text-sm leading-5 md:leading-7 text-slate-500 max-w-md mx-auto">
                                 {t.noProductsBody}
                             </p>
                         </div>
                     ) : (
                         <>
-                            <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
+                            <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full">
                                 {displayed.map((item, index) => (
                                     <ProductItem
                                         key={item._id ?? index}

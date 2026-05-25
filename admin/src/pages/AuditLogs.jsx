@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { backendUrl as defaultBackendUrl } from '../config'
@@ -274,14 +274,14 @@ const AuditLogs = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
           <div>
-            <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+            <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '18px' }}>
               Audit Trail
             </Title>
-            <Text type='secondary'>Review system activity, staff actions and customer behavior logs from the current backend stream.</Text>
+            <Text type='secondary' style={{ fontSize: '11px' }}>Review system activity, staff actions and customer behavior logs from the current backend stream.</Text>
           </div>
-          <Button danger size='large' icon={<ClearOutlined />} loading={clearing} onClick={clearLogs}>
+          <Button danger size='middle' icon={<ClearOutlined />} loading={clearing} onClick={clearLogs}>
             Clear System Logs
           </Button>
         </div>
@@ -294,7 +294,7 @@ const AuditLogs = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <Card bordered={false} className='mb-6 shadow-sm' bodyStyle={{ padding: 20 }}>
+        <Card bordered={false} className='mb-4 md:mb-6 shadow-sm' bodyStyle={{ padding: 12 }}>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <Segmented
               value={activeTab}
@@ -305,7 +305,7 @@ const AuditLogs = ({ token, backendUrl: backendUrlFromProps }) => {
               ]}
             />
             <Input
-              size='large'
+              size='middle'
               placeholder={`Search ${activeTab === 'system' ? 'actions' : 'behaviors'}...`}
               prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
               style={{ width: 340, maxWidth: '100%' }}
@@ -336,9 +336,9 @@ const AuditLogs = ({ token, backendUrl: backendUrlFromProps }) => {
             columns={activeTab === 'system' ? systemColumns : userColumns}
             dataSource={activeTab === 'system' ? filteredSystemLogs : filteredUserLogs}
             loading={loading}
-            size='middle'
+            size='small'
             pagination={{ pageSize: 8, showSizeChanger: false, size: 'small' }}
-            scroll={{ x: 980 }}
+
             locale={{
               emptyText: (
                 <Empty

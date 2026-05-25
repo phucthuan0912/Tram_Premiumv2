@@ -463,36 +463,36 @@ const MyAccount = () => {
         userData.role === 'Admin' ? t.superAdmin : userData.role === 'Employee' ? t.staff : t.customer;
 
     return (
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 animate-fade-in">
-            <div className="mb-8 text-center">
-                <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl pr-title">
+        <div className="mx-auto max-w-6xl px-2 py-4 md:px-4 md:py-8 sm:px-6 lg:px-8 animate-fade-in">
+            <div className="mb-4 md:mb-8 text-center">
+                <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-3xl sm:text-4xl pr-title">
                     {t.title}
                 </h1>
-                <p className="mt-2 text-sm text-slate-500">{t.subtitle}</p>
+                <p className="mt-1 md:mt-2 text-[10px] md:text-sm text-slate-500">{t.subtitle}</p>
             </div>
 
-            <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
-                <div className="space-y-6">
-                    <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-                        <div className="border-b border-slate-50 bg-slate-50/50 p-6 sm:px-8">
-                            <div className="flex items-center gap-4">
-                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-2xl font-bold text-white uppercase shadow-inner">
+            <div className="grid gap-4 md:gap-6 xl:grid-cols-[0.92fr_1.08fr]">
+                <div className="space-y-4 md:space-y-6">
+                    <div className="overflow-hidden rounded-[16px] md:rounded-2xl border border-slate-100 bg-white shadow-sm">
+                        <div className="border-b border-slate-50 bg-slate-50/50 p-3 md:p-6 sm:px-8">
+                            <div className="flex items-center gap-3 md:gap-4">
+                                <div className="flex h-10 w-10 md:h-16 md:w-16 items-center justify-center rounded-full bg-slate-900 text-lg md:text-2xl font-bold text-white uppercase shadow-inner">
                                     {userData.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-slate-900">{userData.name}</h2>
-                                    <p className="text-sm font-medium text-slate-500">{userData.email}</p>
-                                    <span className="mt-1 inline-block rounded-md bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+                                    <h2 className="text-sm md:text-xl font-bold text-slate-900">{userData.name}</h2>
+                                    <p className="text-[10px] md:text-sm font-medium text-slate-500">{userData.email}</p>
+                                    <span className="mt-0.5 md:mt-1 inline-block rounded-md bg-emerald-100 px-2 py-0.5 text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-emerald-700">
                                         {roleLabel}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-6 sm:p-8">
-                            <form onSubmit={handleProfileUpdate} className="flex flex-col gap-6">
+                        <div className="p-3 md:p-6 sm:p-8">
+                            <form onSubmit={handleProfileUpdate} className="flex flex-col gap-4 md:gap-6">
                                 <div>
-                                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                                    <label className="mb-1 md:mb-2 block text-[9px] md:text-xs font-bold uppercase tracking-wider text-slate-500">
                                         {t.displayName}
                                     </label>
                                     <input
@@ -500,38 +500,38 @@ const MyAccount = () => {
                                         name="name"
                                         value={profileForm.name}
                                         onChange={handleProfileChange}
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-1 focus:ring-slate-900"
+                                        className="w-full rounded-[10px] md:rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 md:px-4 md:py-3 text-[10px] md:text-sm font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-1 focus:ring-slate-900"
                                         type="text"
                                         placeholder={t.yourName}
                                     />
                                 </div>
 
-                                <div className="rounded-xl border border-rose-100 bg-rose-50/30 p-5 mt-2">
-                                    <h3 className="mb-4 text-sm font-bold text-rose-900">{t.changePassword}</h3>
+                                <div className="rounded-[10px] md:rounded-xl border border-rose-100 bg-rose-50/30 p-3 md:p-5 mt-1 md:mt-2">
+                                    <h3 className="mb-2 md:mb-4 text-[11px] md:text-sm font-bold text-rose-900">{t.changePassword}</h3>
 
-                                    <div className="flex flex-col gap-4">
+                                    <div className="flex flex-col gap-3 md:gap-4">
                                         <div>
-                                            <label className="mb-1 block text-xs font-bold text-rose-700">
+                                            <label className="mb-1 block text-[9px] md:text-xs font-bold text-rose-700">
                                                 {t.newPassword}
                                             </label>
                                             <input
                                                 name="newPassword"
                                                 value={profileForm.newPassword}
                                                 onChange={handleProfileChange}
-                                                className="w-full rounded-xl border border-rose-200 px-4 py-3 text-sm font-medium outline-none transition-all focus:border-rose-400 focus:ring-1 focus:ring-rose-400"
+                                                className="w-full rounded-[10px] md:rounded-xl border border-rose-200 px-3 py-2 md:px-4 md:py-3 text-[10px] md:text-sm font-medium outline-none transition-all focus:border-rose-400 focus:ring-1 focus:ring-rose-400"
                                                 type="password"
                                                 placeholder="........"
                                             />
                                         </div>
                                         <div>
-                                            <label className="mb-1 block text-xs font-bold text-rose-700">
+                                            <label className="mb-1 block text-[9px] md:text-xs font-bold text-rose-700">
                                                 {t.confirmPassword}
                                             </label>
                                             <input
                                                 name="confirmPassword"
                                                 value={profileForm.confirmPassword}
                                                 onChange={handleProfileChange}
-                                                className="w-full rounded-xl border border-rose-200 px-4 py-3 text-sm font-medium outline-none transition-all focus:border-rose-400 focus:ring-1 focus:ring-rose-400"
+                                                className="w-full rounded-[10px] md:rounded-xl border border-rose-200 px-3 py-2 md:px-4 md:py-3 text-[10px] md:text-sm font-medium outline-none transition-all focus:border-rose-400 focus:ring-1 focus:ring-rose-400"
                                                 type="password"
                                                 placeholder="........"
                                             />
@@ -539,11 +539,11 @@ const MyAccount = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-4 flex justify-end">
+                                <div className="mt-2 md:mt-4 flex justify-end">
                                     <button
                                         disabled={updating}
                                         type="submit"
-                                        className="rounded-xl bg-slate-900 px-8 py-3.5 text-sm font-bold text-white shadow-[0_10px_20px_rgba(15,23,42,0.15)] transition-all hover:-translate-y-0.5 hover:bg-black hover:shadow-[0_14px_30px_rgba(15,23,42,0.25)] active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0"
+                                        className="rounded-[10px] md:rounded-xl bg-slate-900 px-6 py-2.5 md:px-8 md:py-3.5 text-[10px] md:text-sm font-bold text-white shadow-[0_10px_20px_rgba(15,23,42,0.15)] transition-all hover:-translate-y-0.5 hover:bg-black hover:shadow-[0_14px_30px_rgba(15,23,42,0.25)] active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0"
                                     >
                                         {updating ? t.saving : t.saveProfile}
                                     </button>
@@ -552,60 +552,60 @@ const MyAccount = () => {
                         </div>
                     </div>
 
-                    <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-                        <div className="border-b border-slate-100 px-6 py-5 sm:px-8">
-                            <div className="flex items-center justify-between gap-3">
+                    <div className="overflow-hidden rounded-[16px] md:rounded-2xl border border-slate-100 bg-white shadow-sm">
+                        <div className="border-b border-slate-100 px-3 py-2.5 md:px-6 md:py-5 sm:px-8">
+                            <div className="flex items-center justify-between gap-2 md:gap-3">
                                 <div>
-                                    <h2 className="text-xl font-semibold text-slate-900">{t.savedAddresses}</h2>
-                                    <p className="mt-1 text-sm text-slate-500">{t.addressNote}</p>
+                                    <h2 className="text-sm md:text-xl font-semibold text-slate-900">{t.savedAddresses}</h2>
+                                    <p className="mt-0.5 md:mt-1 text-[10px] md:text-sm text-slate-500">{t.addressNote}</p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={resetAddressForm}
-                                    className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
+                                    className="rounded-full border border-slate-200 px-2.5 py-1.5 md:px-4 md:py-2 text-[9px] md:text-xs font-semibold uppercase tracking-[0.16em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
                                 >
                                     {t.addNew}
                                 </button>
                             </div>
                         </div>
-                        <div className="space-y-4 p-6 sm:p-8">
+                        <div className="space-y-3 md:space-y-4 p-3 md:p-6 sm:p-8">
                             {addresses.length === 0 ? (
-                                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-6 text-sm text-slate-500">
+                                <div className="rounded-[12px] md:rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-3 py-4 md:px-5 md:py-6 text-[10px] md:text-sm text-slate-500">
                                     {t.noAddress}
                                 </div>
                             ) : (
                                 addresses.map((address) => (
                                     <div
                                         key={address._id}
-                                        className="rounded-2xl border border-slate-200 bg-slate-50/60 px-5 py-5"
+                                        className="rounded-[12px] md:rounded-2xl border border-slate-200 bg-slate-50/60 px-3 py-3 md:px-5 md:py-5"
                                     >
-                                        <div className="flex flex-wrap items-start justify-between gap-4">
+                                        <div className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
                                             <div>
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <h3 className="text-base font-semibold text-slate-900">
+                                                <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
+                                                    <h3 className="text-[11px] md:text-base font-semibold text-slate-900">
                                                         {address.label || t.savedAddress}
                                                     </h3>
                                                     {address.isDefault ? (
-                                                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
+                                                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 md:px-3 md:py-1 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-700">
                                                             {t.default}
                                                         </span>
                                                     ) : null}
                                                 </div>
-                                                <p className="mt-2 text-sm font-medium text-slate-700">
+                                                <p className="mt-1 md:mt-2 text-[10px] md:text-sm font-medium text-slate-700">
                                                     {address.fullName} | {address.phone}
                                                 </p>
-                                                <p className="mt-1 text-sm text-slate-500">{address.email}</p>
-                                                <p className="mt-2 text-sm leading-6 text-slate-600">
+                                                <p className="mt-0.5 md:mt-1 text-[10px] md:text-sm text-slate-500">{address.email}</p>
+                                                <p className="mt-1 md:mt-2 text-[10px] md:text-sm leading-[1.4] md:leading-6 text-slate-600">
                                                     {buildAddressSummary(address)}
                                                 </p>
                                             </div>
 
-                                            <div className="flex flex-wrap gap-2">
+                                            <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-0">
                                                 {!address.isDefault ? (
                                                     <button
                                                         type="button"
                                                         onClick={() => handleSetDefaultAddress(address._id)}
-                                                        className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
+                                                        className="rounded-full border border-slate-200 px-2.5 py-1.5 md:px-4 md:py-2 text-[9px] md:text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
                                                     >
                                                         {t.setDefault}
                                                     </button>
@@ -613,14 +613,14 @@ const MyAccount = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => startEditAddress(address)}
-                                                    className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
+                                                    className="rounded-full border border-slate-200 px-2.5 py-1.5 md:px-4 md:py-2 text-[9px] md:text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 hover:border-slate-900 hover:text-slate-900"
                                                 >
                                                     {t.edit}
                                                 </button>
                                                 <button
                                                     type="button"
                                                     onClick={() => handleDeleteAddress(address._id)}
-                                                    className="rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-rose-600 hover:bg-rose-100"
+                                                    className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1.5 md:px-4 md:py-2 text-[9px] md:text-xs font-semibold uppercase tracking-[0.12em] text-rose-600 hover:bg-rose-100"
                                                 >
                                                     {t.delete}
                                                 </button>
@@ -633,30 +633,30 @@ const MyAccount = () => {
                     </div>
                 </div>
 
-                <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm h-fit">
-                    <div className="border-b border-slate-100 px-6 py-5 sm:px-8">
-                        <h2 className="text-xl font-semibold text-slate-900">
+                <div className="overflow-hidden rounded-[16px] md:rounded-2xl border border-slate-100 bg-white shadow-sm h-fit">
+                    <div className="border-b border-slate-100 px-3 py-2.5 md:px-6 md:py-5 sm:px-8">
+                        <h2 className="text-sm md:text-xl font-semibold text-slate-900">
                             {editingAddressId ? t.editAddress : t.addAddress}
                         </h2>
-                        <p className="mt-1 text-sm text-slate-500">{t.addressBookNote}</p>
+                        <p className="mt-0.5 md:mt-1 text-[10px] md:text-sm text-slate-500">{t.addressBookNote}</p>
                     </div>
 
-                    <form onSubmit={handleAddressSave} className="grid gap-4 p-6 sm:p-8">
+                    <form onSubmit={handleAddressSave} className="grid gap-3 md:gap-4 p-3 md:p-6 sm:p-8">
                         <input
                             name="label"
                             value={addressForm.label}
                             onChange={handleAddressFieldChange}
-                            className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                            className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                             type="text"
                             placeholder={t.addressLabel}
                         />
 
-                        <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                             <input
                                 name="fullName"
                                 value={addressForm.fullName}
                                 onChange={handleAddressFieldChange}
-                                className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                                 type="text"
                                 placeholder={t.fullName}
                                 required
@@ -668,8 +668,8 @@ const MyAccount = () => {
                                 onPhoneNumberChange={handlePhoneNumberChange}
                                 placeholder={t.phone}
                                 required
-                                selectClassName="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none bg-white"
-                                inputClassName="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                                selectClassName="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none bg-white"
+                                inputClassName="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                             />
                         </div>
 
@@ -677,17 +677,17 @@ const MyAccount = () => {
                             name="email"
                             value={addressForm.email}
                             onChange={handleAddressFieldChange}
-                            className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                            className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                             type="email"
                             placeholder={t.email}
                             required
                         />
 
-                        <div className="grid gap-4 sm:grid-cols-3">
+                        <div className="grid gap-3 md:gap-4 sm:grid-cols-3">
                             <SearchableSelect
                                 value={selectedProv}
                                 onChange={onProvinceChange}
-                                className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none bg-white font-normal"
+                                className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none bg-white font-normal"
                                 placeholder={t.province}
                                 required
                                 options={provinces.map((province) => ({ value: province.code, label: province.name }))}
@@ -697,7 +697,7 @@ const MyAccount = () => {
                                 value={selectedDist}
                                 onChange={onDistrictChange}
                                 disabled={!selectedProv}
-                                className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none bg-white font-normal"
+                                className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none bg-white font-normal"
                                 placeholder={t.district}
                                 required
                                 options={districts.map((district) => ({ value: district.code, label: district.name }))}
@@ -707,7 +707,7 @@ const MyAccount = () => {
                                 value={selectedWard}
                                 onChange={onWardChange}
                                 disabled={!selectedDist}
-                                className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none bg-white font-normal"
+                                className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none bg-white font-normal"
                                 placeholder={t.ward}
                                 required
                                 options={wards.map((ward) => ({ value: ward.code, label: ward.name }))}
@@ -718,29 +718,29 @@ const MyAccount = () => {
                             name="addressDetail"
                             value={addressForm.addressDetail}
                             onChange={handleAddressFieldChange}
-                            className="rounded-[20px] border border-[var(--border)] px-4 py-4 text-sm outline-none"
+                            className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm outline-none"
                             type="text"
                             placeholder={t.detail}
                             required
                         />
 
-                        <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                        <label className="flex items-center gap-2 md:gap-3 rounded-[12px] md:rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 md:px-4 md:py-4 text-[10px] md:text-sm text-slate-600">
                             <input
                                 name="isDefault"
                                 checked={addressForm.isDefault}
                                 onChange={handleAddressFieldChange}
                                 type="checkbox"
-                                className="h-4 w-4 rounded border-slate-300"
+                                className="h-3.5 w-3.5 md:h-4 md:w-4 rounded border-slate-300"
                             />
                             {t.setDefaultDelivery}
                         </label>
 
-                        <div className="flex flex-wrap justify-end gap-3 pt-2">
+                        <div className="flex flex-wrap justify-end gap-2 md:gap-3 pt-1 md:pt-2">
                             {editingAddressId ? (
                                 <button
                                     type="button"
                                     onClick={resetAddressForm}
-                                    className="rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 hover:border-slate-900 hover:text-slate-900"
+                                    className="rounded-full border border-slate-200 px-4 py-2 md:px-5 md:py-3 text-[10px] md:text-sm font-semibold text-slate-600 hover:border-slate-900 hover:text-slate-900"
                                 >
                                     {t.cancelEdit}
                                 </button>
@@ -748,7 +748,7 @@ const MyAccount = () => {
                             <button
                                 disabled={addressSaving}
                                 type="submit"
-                                className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
+                                className="rounded-full bg-slate-900 px-5 py-2 md:px-6 md:py-3 text-[9px] md:text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] hover:-translate-y-0.5 hover:bg-slate-800 disabled:opacity-60"
                             >
                                 {addressSaving
                                     ? t.saveAddressing

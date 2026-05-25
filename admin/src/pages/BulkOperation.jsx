@@ -194,11 +194,11 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6'>
-          <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+        <div className='mb-3 md:mb-6'>
+          <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '18px' }}>
             Smart Operations
           </Title>
-          <Text type='secondary'>Run high-impact admin actions for promotions and catalog imports without touching product records one by one.</Text>
+          <Text type='secondary' style={{ fontSize: '11px' }}>Run high-impact admin actions for promotions and catalog imports without touching product records one by one.</Text>
         </div>
 
         <div className={compactStatsRowClass}>
@@ -267,7 +267,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true }]}
               >
                 <InputNumber
-                  size='large'
+                  size='middle'
                   min={1}
                   max={99}
                   style={{ width: '100%' }}
@@ -277,7 +277,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
                 />
               </Form.Item>
 
-              <Button type='primary' htmlType='submit' size='large' loading={isApplying} icon={<ThunderboltOutlined />}>
+              <Button type='primary' htmlType='submit' size='middle' loading={isApplying} icon={<ThunderboltOutlined />}>
                 Apply Discount
               </Button>
             </Form>
@@ -338,7 +338,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
 
               <Button
                 type='primary'
-                size='large'
+                size='middle'
                 loading={isUploading}
                 icon={<UploadOutlined />}
                 onClick={handleFileUpload}

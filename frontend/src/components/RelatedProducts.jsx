@@ -19,12 +19,12 @@ const RelatedProducts = ({ category, subCategory }) => {
     }, [category, products, subCategory]);
 
     return (
-        <section className='py-10 sm:py-14'>
-            <div className='mb-8 text-center sm:mb-10'>
+        <section className='py-6 md:py-10 mx-2 md:mx-0'>
+            <div className='mb-4 md:mb-8 text-center'>
                 <Title text1={'RELATED'} text2={'PRODUCTS'} />
             </div>
 
-            <div className='grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-5'>
+            <div className='grid grid-cols-3 gap-2 md:gap-4 lg:grid-cols-5'>
                 {related.map((item, index) => (
                     <ProductItem
                         key={index}

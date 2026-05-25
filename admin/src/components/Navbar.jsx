@@ -25,25 +25,25 @@ const Navbar = ({ setToken }) => {
   }
 
   return (
-    <nav className='sticky top-0 z-40 px-3 py-3 md:px-4 xl:px-5'>
+    <nav className='sticky top-0 z-40 px-2 py-2 md:px-4 xl:px-5'>
       <div
-        className='flex items-center justify-between gap-3 rounded-[24px] border px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.05)] backdrop-blur-2xl transition-colors duration-300 md:px-5'
+        className='flex items-center justify-between gap-2 md:gap-3 rounded-[16px] md:rounded-[24px] border px-3 py-2 md:px-5 md:py-3 shadow-[0_12px_30px_rgba(15,23,42,0.05)] backdrop-blur-2xl transition-colors duration-300'
         style={{
           borderColor: 'var(--admin-border)',
           background: 'var(--admin-glass)',
         }}
       >
-        <div className='flex items-center gap-4'>
-          <img src={logo} alt='logo' className='w-[min(190px,18vw)] min-w-[132px]' />
+        <div className='flex items-center gap-2 md:gap-4'>
+          <img src={logo} alt='logo' className='w-[100px] md:w-[min(190px,18vw)] md:min-w-[132px]' />
           <div className='hidden xl:block'>
             <p className='text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--admin-tertiary)]'>{t('navbar.panel')}</p>
             <p className='mt-1 text-xs text-[var(--admin-muted)]'>{t('navbar.workspace')}</p>
           </div>
         </div>
 
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-1.5 md:gap-2'>
           <div
-            className='flex items-center rounded-[18px] border p-1 shadow-[0_8px_20px_rgba(15,23,42,0.05)]'
+            className='flex items-center rounded-[12px] md:rounded-[18px] border p-0.5 md:p-1 shadow-[0_8px_20px_rgba(15,23,42,0.05)]'
             style={{
               borderColor: 'var(--admin-border)',
               background: 'var(--admin-surface-solid)',
@@ -60,7 +60,7 @@ const Navbar = ({ setToken }) => {
                   key={code}
                   type='button'
                   onClick={() => setLocale(code)}
-                  className='rounded-[14px] px-3 py-2 text-xs font-semibold tracking-[0.12em] transition'
+                  className='rounded-[10px] md:rounded-[14px] px-2 py-1.5 md:px-3 md:py-2 text-[9px] md:text-xs font-semibold tracking-[0.1em] md:tracking-[0.12em] transition'
                   style={{
                     background: active ? 'var(--admin-accent)' : 'transparent',
                     color: active ? 'var(--admin-primary-text)' : 'var(--admin-muted)',
@@ -75,7 +75,7 @@ const Navbar = ({ setToken }) => {
           <button
             onClick={toggleDark}
             title={dark ? t('navbar.light') : t('navbar.dark')}
-            className='group flex items-center gap-2 rounded-[18px] border px-3 py-2 text-sm font-medium shadow-[0_10px_24px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5'
+            className='group flex items-center gap-1.5 md:gap-2 rounded-[12px] md:rounded-[18px] border px-2 py-1.5 md:px-3 md:py-2 text-[10px] md:text-sm font-medium shadow-[0_10px_24px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5'
             style={{
               borderColor: 'var(--admin-border)',
               background: 'var(--admin-surface-solid)',
@@ -83,7 +83,7 @@ const Navbar = ({ setToken }) => {
             }}
           >
             <span
-              className='flex h-8 w-8 items-center justify-center rounded-[14px]'
+              className='flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-[8px] md:rounded-[14px]'
               style={{
                 background: dark ? 'rgba(241, 215, 165, 0.16)' : 'rgba(42, 35, 29, 0.08)',
                 color: dark ? 'var(--admin-accent)' : 'var(--admin-accent)',
@@ -96,7 +96,7 @@ const Navbar = ({ setToken }) => {
 
           <button
             onClick={handleLogout}
-            className='flex items-center gap-2 rounded-[18px] px-4 py-2 text-sm font-semibold shadow-[0_16px_34px_rgba(31,26,23,0.16)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.99]'
+            className='flex items-center gap-1.5 md:gap-2 rounded-[12px] md:rounded-[18px] px-2.5 py-1.5 md:px-4 md:py-2 text-[9px] md:text-sm font-semibold shadow-[0_16px_34px_rgba(31,26,23,0.16)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.99]'
             style={
               dark
                 ? {
@@ -110,14 +110,14 @@ const Navbar = ({ setToken }) => {
             }
             >
               <span
-              className='flex h-7 w-7 items-center justify-center rounded-[12px]'
+              className='flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-[8px] md:rounded-[12px]'
               style={{
                 background: dark ? 'rgba(24, 20, 16, 0.08)' : 'rgba(255, 255, 255, 0.12)',
               }}
             >
-              <LogOut size={15} />
+              <LogOut size={13} className="md:w-[15px] md:h-[15px] w-3.5 h-3.5" />
             </span>
-            <span>{t('navbar.logout')}</span>
+            <span className="hidden sm:block">{t('navbar.logout')}</span>
           </button>
         </div>
       </div>

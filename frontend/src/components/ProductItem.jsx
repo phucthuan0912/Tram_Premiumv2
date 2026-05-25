@@ -47,38 +47,38 @@ const ProductItem = ({ id, image, name, price, oldPrice }) => {
                 {/* Image Section - Editorial Style */}
                 <div className="relative overflow-hidden bg-white border border-slate-100" style={{ paddingBottom: '133%' /* 3:4 aspect ratio */ }}>
                     {discountPercent > 0 && (
-                        <div className="absolute left-3 top-3 z-10 bg-rose-600 px-3 py-1 text-[10px] sm:text-[11px] font-bold text-white tracking-widest shadow-md">
+                        <div className="absolute left-2 top-2 z-10 bg-rose-600 px-2 py-0.5 text-[9px] sm:text-[10px] font-bold text-white tracking-widest shadow-md">
                             SALE {discountPercent}%
                         </div>
                     )}
                     <img
-                        className="absolute inset-0 h-full w-full object-contain p-4 transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
+                        className="absolute inset-0 h-full w-full object-contain p-2 sm:p-3 transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
                         src={imageSrc}
                         alt={name}
                     />
                     
                     {/* Ultra-premium slide-up bar overlay */}
-                    <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-white/95 py-3.5 text-center text-[11px] font-bold uppercase tracking-[0.25em] text-[#1a1a1a] shadow-[0_-4px_24px_rgba(0,0,0,0.05)] backdrop-blur transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0">
+                    <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-white/95 py-2 sm:py-3 text-center text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] shadow-[0_-4px_24px_rgba(0,0,0,0.05)] backdrop-blur transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0">
                         {t.view}
                     </div>
                 </div>
 
                 {/* Text Details Section - Minimalist & Sleek */}
-                <div className="flex flex-col pt-4 sm:pt-5 pb-2">
-                    <p className="mb-1.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] text-[#9b8d7a]">
+                <div className="flex flex-col pt-2 sm:pt-4 pb-1 sm:pb-2">
+                    <p className="mb-0.5 sm:mb-1 text-[8px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#9b8d7a]">
                         {t.collection}
                     </p>
 
-                    <h3 className="mb-2 line-clamp-2 text-xs sm:text-[14px] font-medium leading-[1.6] text-[#2d2620] transition-colors group-hover:text-black">
+                    <h3 className="mb-1 sm:mb-2 line-clamp-2 text-[10px] sm:text-[13px] font-medium leading-[1.4] text-[#2d2620] transition-colors group-hover:text-black">
                         {name}
                     </h3>
 
-                    <div className="mt-auto flex flex-wrap items-baseline gap-2.5">
-                        <p className="text-[14px] sm:text-[15px] font-bold text-[#1a1f25]">
+                    <div className="mt-auto flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+                        <p className="text-[11px] sm:text-[14px] font-bold text-[#1a1f25]">
                             {formatMoney(price, language)}
                         </p>
                         {oldPrice > price && (
-                            <p className="text-[11px] font-medium text-[#b0a698] line-through">
+                            <p className="text-[9px] sm:text-[11px] font-medium text-[#b0a698] line-through">
                                 {formatMoney(oldPrice, language)}
                             </p>
                         )}

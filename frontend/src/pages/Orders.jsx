@@ -222,6 +222,10 @@ const Orders = () => {
     const [buyingAgainId, setBuyingAgainId] = useState('');
     const [retryingId, setRetryingId] = useState('');
     
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 5;
+    
     // Return Request State
     const [returnModalOrder, setReturnModalOrder] = useState(null);
     const [returnReason, setReturnReason] = useState('');
@@ -439,6 +443,16 @@ const Orders = () => {
             return haystack.includes(keyword);
         });
     }, [matchesStatusFilter, normalizedOrders, search, statusLabel]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search, statusFilter]);
+
+    const totalPages = Math.ceil(visibleOrders.length / ITEMS_PER_PAGE);
+    const paginatedOrders = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return visibleOrders.slice(start, start + ITEMS_PER_PAGE);
+    }, [visibleOrders, currentPage]);
 
     const isLoggedIn = Boolean(token);
     const isInitialLoading = isLoggedIn && (loading || accountLoading);
@@ -671,19 +685,19 @@ const Orders = () => {
     };
 
     const renderStatusChip = (status) => (
-        <div className='flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm font-semibold text-slate-700'>
-            <span className={`h-2.5 w-2.5 rounded-full ${getStatusDotClass(status)}`} />
+        <div className='flex items-center gap-1.5 md:gap-2 rounded-full border border-[var(--border)] bg-white px-2.5 py-1.5 md:px-4 md:py-2 text-[10px] md:text-sm font-semibold text-slate-700'>
+            <span className={`h-1.5 w-1.5 md:h-2.5 md:w-2.5 rounded-full ${getStatusDotClass(status)}`} />
             {statusLabel(status)}
         </div>
     );
 
     return (
-        <div className='space-y-6 py-4 sm:space-y-8 sm:py-6'>
-            <section className='section-shell px-5 py-6 sm:px-8 sm:py-8'>
-                <div className='flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='space-y-3 md:space-y-6 py-2 md:py-4 sm:space-y-8 sm:py-6'>
+            <section className='section-shell px-3 py-4 md:px-5 md:py-6 sm:px-8 sm:py-8 mx-2 md:mx-0'>
+                <div className='flex flex-col gap-3 md:gap-5 lg:flex-row lg:items-end lg:justify-between'>
                     <div>
                         <Title text1={t.title1} text2={t.title2} />
-                        <p className='mt-4 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base'>
+                        <p className='mt-2 md:mt-4 max-w-3xl text-[11px] md:text-sm leading-5 md:leading-7 text-slate-500 sm:text-base'>
                             {account?.email ? t.subtitleWithEmail(account.email) : t.subtitle}
                         </p>
                     </div>
@@ -692,7 +706,7 @@ const Orders = () => {
                         <button
                             onClick={loadOrderData}
                             disabled={loading}
-                            className='inline-flex items-center justify-center rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white disabled:opacity-60'
+                            className='inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2 md:px-5 md:py-3 text-[10px] md:text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white disabled:opacity-60'
                             type='button'
                         >
                             {loading ? t.refreshing : t.refresh}
@@ -701,19 +715,19 @@ const Orders = () => {
                 </div>
 
                 {isLoggedIn ? (
-                    <div className='mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]'>
+                    <div className='mt-3 md:mt-6 grid gap-2 md:gap-4 lg:grid-cols-[minmax(0,1fr)_220px]'>
                         <input
                             type='text'
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
                             placeholder={t.searchPlaceholder}
-                            className='rounded-full border border-[var(--border)] bg-white px-5 py-4 text-sm outline-none shadow-[0_10px_24px_rgba(15,23,42,0.05)]'
+                            className='rounded-[12px] md:rounded-full border border-[var(--border)] bg-white px-3 py-2.5 md:px-5 md:py-4 text-[10px] md:text-sm outline-none shadow-[0_10px_24px_rgba(15,23,42,0.05)]'
                         />
 
                         <select
                             value={statusFilter}
                             onChange={(event) => setStatusFilter(event.target.value)}
-                            className='rounded-full border border-[var(--border)] bg-white px-5 py-4 text-sm outline-none shadow-[0_10px_24px_rgba(15,23,42,0.05)]'
+                            className='rounded-[12px] md:rounded-full border border-[var(--border)] bg-white px-3 py-2.5 md:px-5 md:py-4 text-[10px] md:text-sm outline-none shadow-[0_10px_24px_rgba(15,23,42,0.05)]'
                         >
                             <option value='All'>{t.allStatuses}</option>
                             {FILTER_STATUSES.filter((status) => status !== 'All').map((status) => (
@@ -726,29 +740,29 @@ const Orders = () => {
                 ) : null}
             </section>
 
-            <section className='space-y-4'>
+            <section className='space-y-3 md:space-y-4 px-2 md:px-0'>
                 {!isLoggedIn ? (
-                    <div className='section-shell px-6 py-12 text-center'>
-                        <p className='text-base font-semibold text-slate-900'>{t.signInRequired}</p>
+                    <div className='section-shell px-4 py-8 md:px-6 md:py-12 text-center'>
+                        <p className='text-sm md:text-base font-semibold text-slate-900'>{t.signInRequired}</p>
                         <button
                             onClick={() => navigate('/login')}
-                            className='mt-5 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-white'
+                            className='mt-4 md:mt-5 rounded-full bg-slate-900 px-5 py-2.5 md:px-6 md:py-3 text-[10px] md:text-sm font-semibold uppercase tracking-[0.16em] text-white'
                             type='button'
                         >
                             {t.goToLogin}
                         </button>
                     </div>
                 ) : isInitialLoading ? (
-                    <div className='section-shell px-6 py-12 text-center text-sm text-slate-500'>{t.loading}</div>
+                    <div className='section-shell px-4 py-8 md:px-6 md:py-12 text-center text-[10px] md:text-sm text-slate-500'>{t.loading}</div>
                 ) : visibleOrders.length === 0 ? (
-                    <div className='section-shell px-6 py-12 text-center'>
-                        <p className='text-base font-semibold text-slate-900'>
+                    <div className='section-shell px-4 py-8 md:px-6 md:py-12 text-center'>
+                        <p className='text-sm md:text-base font-semibold text-slate-900'>
                             {search || statusFilter !== 'All' ? t.noOrdersFiltered : t.noOrders}
                         </p>
-                        {account?.email ? <p className='mt-2 text-sm text-slate-400'>{t.signedInAs(account.email)}</p> : null}
+                        {account?.email ? <p className='mt-1 md:mt-2 text-[10px] md:text-sm text-slate-400'>{t.signedInAs(account.email)}</p> : null}
                         <button
                             onClick={() => navigate('/login')}
-                            className='mt-5 rounded-full border border-[var(--border)] px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white'
+                            className='mt-4 md:mt-5 rounded-full border border-[var(--border)] px-5 py-2.5 md:px-6 md:py-3 text-[10px] md:text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white'
                             type='button'
                         >
                             {t.switchAccount}
@@ -756,9 +770,10 @@ const Orders = () => {
                     </div>
                 ) : (
                     <>
-                        <div className='px-2 text-sm font-medium text-slate-500'>{t.filterSummary(visibleOrders.length)}</div>
+                        <div className='px-1 text-[9px] md:text-sm font-medium text-slate-500'>{t.filterSummary(visibleOrders.length)}</div>
 
-                        {visibleOrders.map((order) => {
+                        {paginatedOrders.map((order, index) => {
+                            const globalIndex = (currentPage - 1) * ITEMS_PER_PAGE + index + 1;
                             const status = order.status || 'Order Placed';
                             const isPendingPayment = status === 'Pending Payment' && order?.paymentMethod === 'Banking' && !order?.payment;
                             const paymentExpiryText = formatPaymentExpiry(order?.paymentExpiresAt);
@@ -769,21 +784,24 @@ const Orders = () => {
                             const canReturn = ['Delivered', 'Received'].includes(status);
 
                             return (
-                                <article key={order._id} className='section-shell overflow-hidden px-5 py-5 sm:px-6 sm:py-6'>
-                                    <div className='flex flex-col gap-5 border-b border-slate-100 pb-5 lg:flex-row lg:items-start lg:justify-between'>
-                                        <div className='space-y-3'>
-                                            <div className='flex flex-wrap items-center gap-3'>
+                                <article key={order._id} className='section-shell overflow-hidden px-2 py-3 md:px-5 md:py-5 sm:px-6 sm:py-6'>
+                                    <div className='flex flex-col gap-2 md:gap-5 border-b border-slate-100 pb-2 md:pb-5 lg:flex-row lg:items-start lg:justify-between'>
+                                        <div className='space-y-1.5 md:space-y-3'>
+                                            <div className='flex flex-wrap items-center gap-1.5 md:gap-3'>
+                                                <span className='rounded-full bg-slate-900 px-2 py-0.5 md:px-3 md:py-1 text-[8px] md:text-xs font-bold text-white'>
+                                                    STT: {globalIndex}
+                                                </span>
                                                 {renderStatusChip(status)}
-                                                <span className='rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500'>
+                                                <span className='rounded-full bg-slate-100 px-1.5 py-0.5 md:px-3 md:py-1 text-[8px] md:text-xs font-semibold uppercase tracking-[0.16em] text-slate-500'>
                                                     {t.itemsCount((order.items || []).length)}
                                                 </span>
                                             </div>
 
-                                            <div className='space-y-1.5 text-sm text-slate-500'>
+                                            <div className='space-y-0.5 md:space-y-1.5 text-[9px] md:text-sm text-slate-500'>
                                                 <p><span className='font-semibold text-slate-900'>{t.orderCode}:</span> #{String(order._id || '').slice(-8).toUpperCase()}</p>
                                                 <p><span className='font-semibold text-slate-900'>{t.placedAt}:</span> {order.date ? new Date(order.date).toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US') : '-'}</p>
                                                 <p><span className='font-semibold text-slate-900'>{t.shippingTo}:</span> {order?.address?.fullName}</p>
-                                                <p className='max-w-3xl leading-6'>
+                                                <p className='max-w-3xl leading-3 md:leading-6'>
                                                     {[
                                                         order?.address?.addressDetail,
                                                         order?.address?.ward,
@@ -794,7 +812,7 @@ const Orders = () => {
                                             </div>
                                         </div>
 
-                                        <div className='space-y-2 text-sm lg:text-right'>
+                                        <div className='space-y-0.5 md:space-y-2 text-[9px] md:text-sm lg:text-right'>
                                             <p className='font-semibold text-slate-900'>{t.total}: {formatMoney(Number(order?.amount || 0), language)}</p>
                                             <p className='text-slate-500'>
                                                 {t.payment}:{' '}
@@ -803,7 +821,7 @@ const Orders = () => {
                                                 </span>
                                             </p>
                                             {isPendingPayment ? (
-                                                <p className='text-xs text-amber-600'>
+                                                <p className='text-[8px] md:text-xs text-amber-600'>
                                                     {paymentExpiryText
                                                         ? `${paymentExpiresAtLabel}: ${paymentExpiryText}`
                                                         : paymentWindowExpiredLabel}
@@ -812,19 +830,20 @@ const Orders = () => {
                                         </div>
                                     </div>
 
-                                    <div className='space-y-4 py-5'>
-                                        {(order.items || []).map((item, index) => {
+                                    <div className='space-y-1.5 md:space-y-4 py-2 md:py-5'>
+                                        {(order.items || []).map((item, itemIndex) => {
                                             const itemColor = normalizeColor(item?.color);
 
                                             return (
                                                 <div
-                                                    key={`${order._id}-${String(item?._id || item?.id || item?.name || index)}-${index}`}
-                                                    className='flex flex-col gap-4 rounded-[24px] border border-slate-100 bg-slate-50/60 px-4 py-4 sm:flex-row sm:items-center sm:justify-between'
+                                                    key={`${order._id}-${String(item?._id || item?.id || item?.name || itemIndex)}-${itemIndex}`}
+                                                    className='flex flex-col gap-2 md:gap-4 rounded-[12px] md:rounded-[24px] border border-slate-100 bg-slate-50/60 px-2 py-2 md:px-4 md:py-4 sm:flex-row sm:items-center sm:justify-between'
                                                 >
-                                                    <div className='flex items-start gap-4'>
+                                                    <div className='flex items-start gap-2 md:gap-4'>
+                                                        <span className='mt-1 text-[8px] md:text-xs font-bold text-slate-400'>{itemIndex + 1}.</span>
                                                         <button type='button' onClick={() => openProductDetail(item)} className='shrink-0'>
                                                             <img
-                                                                className='h-24 w-20 rounded-[18px] object-cover'
+                                                                className='h-12 w-10 md:h-24 md:w-20 rounded-[8px] md:rounded-[18px] object-cover'
                                                                 src={getItemImage(item.image)}
                                                                 alt={item.name || 'Product'}
                                                             />
@@ -834,12 +853,12 @@ const Orders = () => {
                                                             <button
                                                                 type='button'
                                                                 onClick={() => openProductDetail(item)}
-                                                                className='text-left text-base font-semibold text-slate-900 transition hover:text-slate-600'
+                                                                className='text-left text-[10px] md:text-base font-semibold text-slate-900 transition hover:text-slate-600 leading-tight'
                                                             >
                                                                 {item.name}
                                                             </button>
 
-                                                            <div className='mt-2 flex flex-wrap items-center gap-3 text-sm text-slate-500'>
+                                                            <div className='mt-0.5 md:mt-2 flex flex-wrap items-center gap-1.5 md:gap-3 text-[8px] md:text-sm text-slate-500'>
                                                                 <p>{formatMoney(Number(item.price || 0), language)}</p>
                                                                 <p>{t.quantity}: {Number(item.quantity || 0)}</p>
                                                                 <p>{t.size}: {item.size || 'Free'}</p>
@@ -848,11 +867,11 @@ const Orders = () => {
                                                         </div>
                                                     </div>
 
-                                                    <div className='flex flex-wrap gap-2 sm:justify-end'>
+                                                    <div className='flex flex-wrap gap-1 md:gap-2 sm:justify-end'>
                                                         <button
                                                             type='button'
                                                             onClick={() => openProductDetail(item)}
-                                                            className='rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white'
+                                                            className='rounded-full border border-[var(--border)] px-2 py-1 md:px-4 md:py-2 text-[8px] md:text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 hover:bg-slate-900 hover:text-white'
                                                         >
                                                             {t.viewProduct}
                                                         </button>
@@ -862,10 +881,10 @@ const Orders = () => {
                                         })}
                                     </div>
 
-                                    <div className='flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-5'>
+                                    <div className='flex flex-wrap items-center justify-end gap-1.5 md:gap-3 border-t border-slate-100 pt-2 md:pt-5'>
                                         <button
                                             onClick={loadOrderData}
-                                            className='rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white'
+                                            className='rounded-full border border-[var(--border)] px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-slate-600 hover:bg-slate-900 hover:text-white'
                                             type='button'
                                         >
                                             {t.trackOrder}
@@ -875,7 +894,7 @@ const Orders = () => {
                                             <button
                                                 onClick={() => handleRetryPayment(order._id)}
                                                 disabled={retryingId === order._id}
-                                                className='rounded-full border border-amber-200 bg-amber-50 px-5 py-3 text-sm font-semibold text-amber-700 hover:bg-amber-500 hover:text-white disabled:opacity-60'
+                                                className='rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-amber-700 hover:bg-amber-500 hover:text-white disabled:opacity-60'
                                                 type='button'
                                             >
                                                 {retryPaymentLabel}
@@ -886,7 +905,7 @@ const Orders = () => {
                                             <button
                                                 onClick={() => handleConfirmReceived(order._id)}
                                                 disabled={confirmingId === order._id}
-                                                className='rounded-full border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-500 hover:text-white disabled:opacity-60'
+                                                className='rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-emerald-700 hover:bg-emerald-500 hover:text-white disabled:opacity-60'
                                                 type='button'
                                             >
                                                 {t.confirmReceived}
@@ -897,7 +916,7 @@ const Orders = () => {
                                             <button
                                                 onClick={() => handleBuyAgain(order)}
                                                 disabled={buyingAgainId === order._id}
-                                                className='rounded-full border border-indigo-200 bg-indigo-50 px-5 py-3 text-sm font-semibold text-indigo-700 hover:bg-indigo-600 hover:text-white disabled:opacity-60'
+                                                className='rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-indigo-700 hover:bg-indigo-600 hover:text-white disabled:opacity-60'
                                                 type='button'
                                             >
                                                 {t.buyAgain}
@@ -907,7 +926,7 @@ const Orders = () => {
                                         {canReturn ? (
                                             <button
                                                 onClick={() => openReturnModal(order)}
-                                                className='rounded-full border border-orange-200 bg-orange-50 px-5 py-3 text-sm font-semibold text-orange-600 hover:bg-orange-500 hover:text-white'
+                                                className='rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-orange-600 hover:bg-orange-500 hover:text-white'
                                                 type='button'
                                             >
                                                 {t.returnOrder}
@@ -917,7 +936,7 @@ const Orders = () => {
                                         {canCancel ? (
                                             <button
                                                 onClick={() => handleCancelOrder(order._id)}
-                                                className='rounded-full border border-rose-200 bg-rose-50 px-5 py-3 text-sm font-semibold text-rose-600 hover:bg-rose-500 hover:text-white'
+                                                className='rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1.5 md:px-5 md:py-3 text-[8px] md:text-sm font-semibold text-rose-600 hover:bg-rose-500 hover:text-white'
                                                 type='button'
                                             >
                                                 {t.cancelOrder}
@@ -927,56 +946,78 @@ const Orders = () => {
                                 </article>
                             );
                         })}
+                        
+                        {totalPages > 1 && (
+                            <div className='mt-4 flex items-center justify-center gap-2 md:gap-3'>
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                    className='rounded-full border border-slate-200 bg-white px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-sm font-semibold text-slate-600 disabled:opacity-50'
+                                >
+                                    &larr;
+                                </button>
+                                <span className='text-[10px] md:text-sm font-medium text-slate-600'>
+                                    {currentPage} / {totalPages}
+                                </span>
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                    disabled={currentPage === totalPages}
+                                    className='rounded-full border border-slate-200 bg-white px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-sm font-semibold text-slate-600 disabled:opacity-50'
+                                >
+                                    &rarr;
+                                </button>
+                            </div>
+                        )}
                     </>
                 )}
             </section>
 
             {returnModalOrder && (
-                <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm'>
-                    <div className='flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl'>
-                        <div className='flex items-center justify-between border-b border-slate-100 px-6 py-5 sm:px-7'>
-                            <h3 className='text-lg font-bold text-slate-900'>
+                <div className='fixed inset-0 z-50 flex items-center justify-center p-3 md:p-4 bg-slate-900/50 backdrop-blur-sm'>
+                    <div className='flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[16px] md:rounded-[32px] bg-white shadow-2xl'>
+                        <div className='flex items-center justify-between border-b border-slate-100 px-4 py-3 md:px-6 md:py-5 sm:px-7'>
+                            <h3 className='text-sm md:text-lg font-bold text-slate-900'>
                                 {t.returnOrder} - #{String(returnModalOrder._id).slice(-8).toUpperCase()}
                             </h3>
                             <button
                                 onClick={closeReturnModal}
-                                className='rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+                                className='rounded-full p-1.5 md:p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600'
                             >
-                                <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4 md:h-5 md:w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                                 </svg>
                             </button>
                         </div>
-                        <div className='flex-1 overflow-y-auto px-6 py-5 sm:px-7'>
-                            <div className='space-y-5'>
-                                <div className='rounded-3xl border border-slate-200 bg-slate-50/80 p-4'>
-                                    <div className='flex flex-wrap items-start justify-between gap-3'>
+                        <div className='flex-1 overflow-y-auto px-4 py-3 md:px-6 md:py-5 sm:px-7'>
+                            <div className='space-y-3 md:space-y-5'>
+                                <div className='rounded-[12px] md:rounded-3xl border border-slate-200 bg-slate-50/80 p-3 md:p-4'>
+                                    <div className='flex flex-wrap items-start justify-between gap-2 md:gap-3'>
                                         <div>
-                                            <p className='text-xs font-semibold uppercase tracking-[0.16em] text-slate-500'>{t.returnOrderSummary}</p>
-                                            <p className='mt-2 text-lg font-bold text-slate-900'>#{String(returnModalOrder._id).slice(-8).toUpperCase()}</p>
+                                            <p className='text-[9px] md:text-xs font-semibold uppercase tracking-[0.16em] text-slate-500'>{t.returnOrderSummary}</p>
+                                            <p className='mt-1 md:mt-2 text-sm md:text-lg font-bold text-slate-900'>#{String(returnModalOrder._id).slice(-8).toUpperCase()}</p>
                                         </div>
-                                        <div className='rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm'>
+                                        <div className='rounded-full bg-white px-2 py-1 md:px-3 md:py-1 text-[9px] md:text-xs font-semibold text-slate-600 shadow-sm'>
                                             {t.itemsCount((returnModalOrder.items || []).length)} • {formatMoney(Number(returnModalOrder.amount || 0), language)}
                                         </div>
                                     </div>
 
-                                    <div className='mt-4 grid gap-3 sm:grid-cols-2'>
+                                    <div className='mt-3 md:mt-4 grid gap-2 md:gap-3 sm:grid-cols-2'>
                                         {(returnModalOrder.items || []).slice(0, 2).map((item, index) => (
                                             <div
                                                 key={`${String(item?._id || item?.id || item?.name || index)}-${index}`}
-                                                className='flex items-center gap-3 rounded-2xl bg-white p-3'
+                                                className='flex items-center gap-2 md:gap-3 rounded-[10px] md:rounded-2xl bg-white p-2 md:p-3'
                                             >
                                                 <img
                                                     src={getItemImage(item.image)}
                                                     alt={item.name || 'Product'}
-                                                    className='h-16 w-14 rounded-2xl object-cover'
+                                                    className='h-12 w-10 md:h-16 md:w-14 rounded-lg md:rounded-2xl object-cover'
                                                 />
                                                 <div className='min-w-0'>
-                                                    <p className='truncate text-sm font-semibold text-slate-900'>{item.name}</p>
-                                                    <p className='mt-1 text-xs text-slate-500'>
+                                                    <p className='truncate text-[10px] md:text-sm font-semibold text-slate-900'>{item.name}</p>
+                                                    <p className='mt-0.5 md:mt-1 text-[9px] md:text-xs text-slate-500'>
                                                         {formatMoney(Number(item.price || 0), language)} • {t.quantity}: {Number(item.quantity || 0)}
                                                     </p>
-                                                    <p className='mt-1 text-xs text-slate-400'>
+                                                    <p className='mt-0.5 md:mt-1 text-[9px] md:text-xs text-slate-400'>
                                                         {t.size}: {item.size || 'Free'}
                                                     </p>
                                                 </div>
@@ -986,23 +1027,23 @@ const Orders = () => {
                                 </div>
 
                                 <div>
-                                    <p className='mb-2 text-sm font-semibold text-slate-700'>{t.returnReasonLabel}</p>
-                                    <p className='mb-3 text-xs text-slate-500'>{t.returnReasonHint}</p>
+                                    <p className='mb-1 md:mb-2 text-[10px] md:text-sm font-semibold text-slate-700'>{t.returnReasonLabel}</p>
+                                    <p className='mb-2 md:mb-3 text-[9px] md:text-xs text-slate-500'>{t.returnReasonHint}</p>
                                     <textarea
-                                        className='min-h-[136px] w-full rounded-3xl border border-slate-200 px-4 py-4 text-sm outline-none transition focus:border-slate-400'
+                                        className='min-h-[100px] md:min-h-[136px] w-full rounded-[12px] md:rounded-3xl border border-slate-200 px-3 py-3 md:px-4 md:py-4 text-[10px] md:text-sm outline-none transition focus:border-slate-400'
                                         placeholder={t.returnReasonPlaceholder}
                                         value={returnReason}
                                         onChange={(e) => setReturnReason(e.target.value)}
                                     ></textarea>
                                 </div>
 
-                                <div className='rounded-3xl border border-slate-200 p-4'>
-                                    <div className='flex flex-wrap items-center justify-between gap-3'>
+                                <div className='rounded-[12px] md:rounded-3xl border border-slate-200 p-3 md:p-4'>
+                                    <div className='flex flex-wrap items-center justify-between gap-2 md:gap-3'>
                                         <div>
-                                            <p className='text-sm font-semibold text-slate-700'>{t.returnImages}</p>
-                                            <p className='mt-1 text-xs text-slate-500'>{t.returnImagesHint}</p>
+                                            <p className='text-[10px] md:text-sm font-semibold text-slate-700'>{t.returnImages}</p>
+                                            <p className='mt-0.5 md:mt-1 text-[9px] md:text-xs text-slate-500'>{t.returnImagesHint}</p>
                                         </div>
-                                        <span className='rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600'>
+                                        <span className='rounded-full bg-slate-100 px-2 py-1 md:px-3 md:py-1 text-[9px] md:text-xs font-semibold text-slate-600'>
                                             {returnImages.length}/4
                                         </span>
                                     </div>
@@ -1012,18 +1053,18 @@ const Orders = () => {
                                         multiple
                                         accept='image/*'
                                         onChange={handleReturnImagesChange}
-                                        className='mt-4 block w-full text-sm text-slate-500 file:mr-4 file:rounded-full file:border-0 file:bg-slate-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-100'
+                                        className='mt-3 md:mt-4 block w-full text-[9px] md:text-sm text-slate-500 file:mr-2 md:file:mr-4 file:rounded-full file:border-0 file:bg-slate-50 file:px-3 file:py-1.5 md:file:px-4 md:file:py-2 file:text-[9px] md:file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-100'
                                     />
 
                                     {returnImagePreviews.length > 0 && (
-                                        <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4'>
+                                        <div className='mt-3 md:mt-4 grid grid-cols-2 gap-2 md:gap-3 sm:grid-cols-4'>
                                             {returnImagePreviews.map((image, index) => (
-                                                <div key={image.id} className='group relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50'>
-                                                    <img src={image.url} className='h-24 w-full object-cover' alt={image.name} />
+                                                <div key={image.id} className='group relative overflow-hidden rounded-[10px] md:rounded-2xl border border-slate-100 bg-slate-50'>
+                                                    <img src={image.url} className='h-16 md:h-24 w-full object-cover' alt={image.name} />
                                                     <button
                                                         type='button'
                                                         onClick={() => handleRemoveReturnImage(index)}
-                                                        className='absolute right-2 top-2 rounded-full bg-slate-900/80 px-2 py-1 text-[11px] font-semibold text-white opacity-0 transition group-hover:opacity-100'
+                                                        className='absolute right-1 top-1 md:right-2 md:top-2 rounded-full bg-slate-900/80 px-1.5 py-0.5 md:px-2 md:py-1 text-[9px] md:text-[11px] font-semibold text-white opacity-0 transition group-hover:opacity-100'
                                                     >
                                                         {t.removeImage}
                                                     </button>
@@ -1033,11 +1074,11 @@ const Orders = () => {
                                     )}
                                 </div>
 
-                                <div className='rounded-3xl border border-slate-200 p-4'>
-                                    <p className='text-sm font-semibold text-slate-700'>{t.refundMethodTitle}</p>
-                                    <div className='mt-4 space-y-3'>
+                                <div className='rounded-[12px] md:rounded-3xl border border-slate-200 p-3 md:p-4'>
+                                    <p className='text-[10px] md:text-sm font-semibold text-slate-700'>{t.refundMethodTitle}</p>
+                                    <div className='mt-2 md:mt-4 space-y-2 md:space-y-3'>
                                         <label
-                                            className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-4 transition ${
+                                            className={`flex cursor-pointer items-start gap-2 md:gap-3 rounded-[10px] md:rounded-2xl border px-3 py-3 md:px-4 md:py-4 transition ${
                                                 refundMethod === 'Wallet'
                                                     ? 'border-emerald-300 bg-emerald-50'
                                                     : 'border-slate-200 hover:border-slate-300'
@@ -1048,16 +1089,16 @@ const Orders = () => {
                                                 type='radio'
                                                 checked={refundMethod === 'Wallet'}
                                                 onChange={() => setRefundMethod('Wallet')}
-                                                className='mt-1 h-4 w-4 text-emerald-500'
+                                                className='mt-1 h-3 w-3 md:h-4 md:w-4 text-emerald-500'
                                             />
                                             <div>
-                                                <p className='text-sm font-semibold text-slate-900'>{t.refundWallet}</p>
-                                                <p className='mt-1 text-xs text-slate-500'>{t.refundWalletHint}</p>
+                                                <p className='text-[10px] md:text-sm font-semibold text-slate-900'>{t.refundWallet}</p>
+                                                <p className='mt-0.5 md:mt-1 text-[9px] md:text-xs text-slate-500'>{t.refundWalletHint}</p>
                                             </div>
                                         </label>
 
                                         <label
-                                            className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-4 transition ${
+                                            className={`flex cursor-pointer items-start gap-2 md:gap-3 rounded-[10px] md:rounded-2xl border px-3 py-3 md:px-4 md:py-4 transition ${
                                                 refundMethod === 'Bank'
                                                     ? 'border-amber-300 bg-amber-50'
                                                     : 'border-slate-200 hover:border-slate-300'
@@ -1068,25 +1109,25 @@ const Orders = () => {
                                                 type='radio'
                                                 checked={refundMethod === 'Bank'}
                                                 onChange={() => setRefundMethod('Bank')}
-                                                className='mt-1 h-4 w-4 text-amber-500'
+                                                className='mt-1 h-3 w-3 md:h-4 md:w-4 text-amber-500'
                                             />
                                             <div>
-                                                <p className='text-sm font-semibold text-slate-900'>{t.refundBank}</p>
-                                                <p className='mt-1 text-xs text-slate-500'>{t.refundBankHint}</p>
+                                                <p className='text-[10px] md:text-sm font-semibold text-slate-900'>{t.refundBank}</p>
+                                                <p className='mt-0.5 md:mt-1 text-[9px] md:text-xs text-slate-500'>{t.refundBankHint}</p>
                                             </div>
                                         </label>
                                     </div>
 
                                     {refundMethod === 'Bank' && (
-                                        <div className='mt-4 rounded-2xl bg-slate-50 p-4'>
-                                            <p className='mb-3 text-sm font-semibold text-slate-700'>{t.bankDetailsTitle}</p>
-                                            <div className='grid gap-3 sm:grid-cols-2'>
+                                        <div className='mt-2 md:mt-4 rounded-[10px] md:rounded-2xl bg-slate-50 p-3 md:p-4'>
+                                            <p className='mb-2 md:mb-3 text-[10px] md:text-sm font-semibold text-slate-700'>{t.bankDetailsTitle}</p>
+                                            <div className='grid gap-2 md:gap-3 sm:grid-cols-2'>
                                                 <input
                                                     type='text'
                                                     placeholder={t.bankName}
                                                     value={bankDetails.bankName}
                                                     onChange={(e) => setBankDetails({ ...bankDetails, bankName: e.target.value })}
-                                                    className='w-full rounded-xl border border-slate-200 p-3 text-sm outline-none'
+                                                    className='w-full rounded-[8px] md:rounded-xl border border-slate-200 p-2 md:p-3 text-[10px] md:text-sm outline-none'
                                                     required
                                                 />
                                                 <input
@@ -1094,7 +1135,7 @@ const Orders = () => {
                                                     placeholder={t.accountNumber}
                                                     value={bankDetails.accountNumber}
                                                     onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
-                                                    className='w-full rounded-xl border border-slate-200 p-3 text-sm outline-none'
+                                                    className='w-full rounded-[8px] md:rounded-xl border border-slate-200 p-2 md:p-3 text-[10px] md:text-sm outline-none'
                                                     required
                                                 />
                                                 <input
@@ -1102,7 +1143,7 @@ const Orders = () => {
                                                     placeholder={t.accountName}
                                                     value={bankDetails.accountName}
                                                     onChange={(e) => setBankDetails({ ...bankDetails, accountName: e.target.value })}
-                                                    className='w-full rounded-xl border border-slate-200 p-3 text-sm outline-none sm:col-span-2'
+                                                    className='w-full rounded-[8px] md:rounded-xl border border-slate-200 p-2 md:p-3 text-[10px] md:text-sm outline-none sm:col-span-2'
                                                     required
                                                 />
                                             </div>
@@ -1111,10 +1152,10 @@ const Orders = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-wrap justify-end gap-3 border-t border-slate-100 px-6 py-5 sm:px-7'>
+                        <div className='flex flex-wrap justify-end gap-2 md:gap-3 border-t border-slate-100 px-4 py-3 md:px-6 md:py-5 sm:px-7'>
                             <button
                                 onClick={closeReturnModal}
-                                className='rounded-full px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100'
+                                className='rounded-full px-4 py-2 md:px-5 md:py-2.5 text-[10px] md:text-sm font-semibold text-slate-600 hover:bg-slate-100'
                                 type='button'
                             >
                                 {t.cancel}
@@ -1122,7 +1163,7 @@ const Orders = () => {
                             <button
                                 onClick={handleReturnSubmit}
                                 disabled={submittingReturn || !returnReason.trim() || isBankRefundInvalid}
-                                className='rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50'
+                                className='rounded-full bg-slate-900 px-4 py-2 md:px-6 md:py-2.5 text-[10px] md:text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50'
                                 type='button'
                             >
                                 {submittingReturn ? '...' : t.submitReturn}

@@ -342,12 +342,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
         key: 'state',
         width: 180,
         render: (_, item) => (
-          <Space size={12}>
-            <Switch checked={Boolean(item.status)} loading={togglingId === item._id} onChange={() => toggleStatus(item._id, item.status)} />
-            <Text style={{ color: item.status ? '#16a34a' : '#94a3b8', fontWeight: 600 }}>
-              {item.status ? 'Visible' : 'Hidden'}
-            </Text>
-          </Space>
+          <Switch size="small" checked={Boolean(item.status)} loading={togglingId === item._id} onChange={() => toggleStatus(item._id, item.status)} />
         ),
       },
       {
@@ -383,11 +378,10 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6'>
-          <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+        <div className='mb-3 md:mb-6'>
+          <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
             Banner Manager
           </Title>
-          <Text type='secondary'>Upload storefront banners, crop them to 16:9 and control visibility order from one place.</Text>
         </div>
 
         <div className={compactStatsRowClass}>
@@ -398,7 +392,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -408,8 +402,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
                   <PlusOutlined />
                 </div>
                 <div>
-                  <div className='font-semibold text-slate-900'>Create Banner</div>
-                  <div className='text-xs font-normal text-slate-400'>Choose image, crop to 16:9 and publish to the storefront slider.</div>
+                  <div className='text-xs font-bold text-slate-800'>Create Banner</div>
                 </div>
               </Space>
             }
@@ -463,7 +456,6 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
                       </div>
                       <div>
                         <div className='font-medium text-slate-900'>{previewUrl ? 'Banner image ready' : 'Upload banner image'}</div>
-                        <div className='text-xs text-slate-400'>Selecting an image opens the 16:9 crop stage.</div>
                       </div>
                       <input hidden type='file' accept='image/*' onChange={handleFileSelect} />
                     </label>
@@ -473,7 +465,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
 
               <Form.Item label='Title' name='title'>
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='Summer promotion banner'
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
@@ -482,7 +474,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
 
               <Form.Item label='Destination Link' name='link'>
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='/collection'
                   value={link}
                   onChange={(event) => setLink(event.target.value)}
@@ -491,7 +483,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
 
               <Form.Item label='Display Order' name='order'>
                 <InputNumber
-                  size='large'
+                  size='middle'
                   min={0}
                   style={{ width: '100%' }}
                   value={Number(order)}
@@ -499,14 +491,11 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
                 />
               </Form.Item>
 
-              <Space size={12} wrap>
-                <Button type='primary' htmlType='submit' size='large' loading={adding} icon={<PlusOutlined />}>
-                  Save Banner
+              <div className="flex flex-col gap-2">
+                <Button type='primary' htmlType='submit' size='middle' loading={adding} block icon={<UploadOutlined />}>
+                  Publish Banner
                 </Button>
-                <Button size='large' onClick={resetFormState}>
-                  Clear
-                </Button>
-              </Space>
+              </div>
             </Form>
           </Card>
 
@@ -515,8 +504,7 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Banner Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Storefront banners sorted by display order from the live banner endpoint.</div>
+                <div className='text-xs font-bold text-slate-800'>Banner Directory</div>
               </div>
             }
           >
@@ -525,9 +513,9 @@ const Banners = ({ token, backendUrl: backendUrlFromProps }) => {
               columns={columns}
               dataSource={[...list].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))}
               loading={loading}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 840 }}
+
               locale={{
                 emptyText: <Empty description='No banners created yet' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}

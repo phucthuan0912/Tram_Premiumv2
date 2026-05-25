@@ -118,7 +118,27 @@ const singleProduct = async (req, res) => {
 };
 const listProducts = async (req, res) => {
     try {
+        // OPTIMIZATION: Use $lookup to avoid N+1 queries
         const products = await productModel.aggregate([
+            // Lookup category details
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'category',
+                    foreignField: 'name',
+                    as: 'categoryDetails'
+                }
+            },
+            // Lookup subcategory details
+            {
+                $lookup: {
+                    from: 'subcategories',
+                    localField: 'subCategory',
+                    foreignField: 'name',
+                    as: 'subCategoryDetails'
+                }
+            },
+            // Add computed fields
             {
                 $addFields: {
                     smartScore: {
@@ -128,11 +148,23 @@ const listProducts = async (req, res) => {
                             { $multiply: [{ $ifNull: ["$views", 0] }, 0.2] },
                             { $multiply: ["$price", -0.1] }
                         ]
-                    }
+                    },
+                    // Flatten category/subcategory (take first match)
+                    categoryInfo: { $arrayElemAt: ["$categoryDetails", 0] },
+                    subCategoryInfo: { $arrayElemAt: ["$subCategoryDetails", 0] }
                 }
             },
-            { $sort: { smartScore: -1, date: -1 } }
+            // Sort by smart score
+            { $sort: { smartScore: -1, date: -1 } },
+            // Clean up - remove temporary fields
+            {
+                $project: {
+                    categoryDetails: 0,
+                    subCategoryDetails: 0
+                }
+            }
         ]);
+        
         res.json({ success: true, products });
     } catch (error) {
         console.log(error);

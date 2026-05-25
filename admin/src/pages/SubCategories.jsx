@@ -221,16 +221,7 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
         key: 'status',
         width: 180,
         render: (_, item) => (
-          <Space size={12}>
-            <Switch
-              checked={Boolean(item.status)}
-              loading={togglingId === item._id}
-              onChange={() => toggleStatus(item._id, item.status)}
-            />
-            <Text style={{ color: item.status ? '#16a34a' : '#94a3b8', fontWeight: 600 }}>
-              {item.status ? 'Active' : 'Disabled'}
-            </Text>
-          </Space>
+          <Switch size="small" checked={Boolean(item.status)} loading={togglingId === item._id} onChange={() => toggleStatus(item._id, item.status)} />
         ),
       },
       {
@@ -258,17 +249,16 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
           <div>
-            <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+            <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
               Sub-Category Manager
             </Title>
-            <Text type='secondary'>Refine catalog structure with nested groupings linked to existing categories.</Text>
           </div>
 
           <Space size={12} wrap>
             <Select
-              size='large'
+              size='middle'
               style={{ minWidth: 200 }}
               value={filterCategoryId}
               onChange={setFilterCategoryId}
@@ -288,7 +278,7 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -298,8 +288,7 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
                   <PlusOutlined />
                 </div>
                 <div>
-                  <div className='font-semibold text-slate-900'>Add Sub-Category</div>
-                  <div className='text-xs font-normal text-slate-400'>Create a nested catalog group under a parent category.</div>
+                  <div className='text-xs font-bold text-slate-800'>Add Sub-Category</div>
                 </div>
               </Space>
             }
@@ -311,7 +300,7 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter the sub-category name' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='e.g. T-Shirts'
                   value={name}
                   onChange={(event) => setName(event.target.value)}
@@ -337,14 +326,14 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
                 </select>
               </Form.Item>
 
-              <Space size={12} wrap>
-                <Button type='primary' htmlType='submit' size='large' loading={adding} icon={<PlusOutlined />}>
+              <div className="flex flex-col gap-2">
+                <Button type='primary' htmlType='submit' size='middle' loading={adding} block icon={<PlusOutlined />}>
                   Save Sub-Category
                 </Button>
-                <Button size='large' onClick={resetFormState} disabled={!name && !categoryId}>
+                <Button size='middle' block onClick={resetFormState} disabled={!name && !categoryId}>
                   Clear
                 </Button>
-              </Space>
+              </div>
             </Form>
           </Card>
 
@@ -353,8 +342,7 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Sub-Category Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Nested catalog items returned from the live sub-category endpoint.</div>
+                <div className='text-xs font-bold text-slate-800'>Sub-Category Directory</div>
               </div>
             }
           >
@@ -363,9 +351,9 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
               columns={columns}
               dataSource={filteredList}
               loading={loading}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 760 }}
+
               locale={{
                 emptyText: <Empty description='No sub-categories created yet' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}

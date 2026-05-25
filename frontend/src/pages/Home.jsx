@@ -67,9 +67,9 @@ const Home = () => {
         brandText2: '',
         exploreCollection: 'Xem tài khoản',
         meetBrand: 'Về chúng tôi',
-        editorialTag: 'Demo thực tế',
-        editorialTitle: 'Xem Kling AI hoạt động như thế nào.',
-        editorialText: 'Kling AI giúp bạn tạo ảnh thay đồ ảo chuyên nghiệp và video sáng tạo chỉ trong vài giây. Công cụ AI mạnh mẽ này đang được hàng triệu người sử dụng để tạo nội dung, thiết kế sản phẩm và marketing.',
+        editorialTag: 'Demo',
+        editorialTitle: 'Trải nghiệm sức mạnh của AI.',
+        editorialText: 'Kling AI giúp tạo ảnh thay đồ và video sáng tạo nhanh chóng. Hàng triệu người đang dùng AI để làm content và marketing.',
         lookFeel: 'Giá trị cốt lõi',
         lookFeelTitle: 'Uy tín & Chất lượng.',
         lookFeelText: 'Mỗi tài khoản được kiểm tra kỹ lưỡng, đảm bảo hoạt động ổn định và được bảo hành 1 đổi 1.',
@@ -169,9 +169,9 @@ const Home = () => {
   }, [language]);
 
   return (
-    <div className="space-y-10 sm:space-y-14">
+    <div className="space-y-1 lg:space-y-6">
       <Hero />
-      <BannerSlider />
+      {/* <BannerSlider /> */}
 
       <div className="relative mx-auto max-w-7xl">
         <BestSeller />
@@ -183,116 +183,67 @@ const Home = () => {
         <LatestCollection />
       </div>
 
-      <section className="section-shell relative overflow-hidden px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(221,232,243,0.4),transparent_70%)]" />
 
-        <div className="relative flex flex-col md:flex-row items-center justify-between gap-10 max-w-6xl mx-auto">
-          
-          {/* Text Content (Left on Desktop) */}
-          <div className="flex-1 text-center md:text-left max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-              {copy.brandStory}
-            </p>
-
-            <h2 className="display-font mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl md:text-5xl">
-              {copy.brandTitle}
-            </h2>
-
-            <p className="mt-6 text-sm leading-8 text-slate-500 sm:text-base md:text-lg">
-              {copy.brandText1}
-            </p>
-
-            {copy.brandText2 && (
-              <p className="mt-4 text-sm leading-8 text-slate-500 sm:text-base md:text-lg">
-                {copy.brandText2}
-              </p>
-            )}
-
-            <div className="mt-10 flex flex-wrap justify-center md:justify-start gap-4">
-              <Link
-                to="/collection"
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_36px_rgba(15,23,42,0.16)] hover:-translate-y-0.5 hover:bg-slate-800 transition-transform duration-300"
-              >
-                {copy.exploreCollection}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-slate-700 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
-              >
-                {copy.meetBrand}
-              </Link>
-            </div>
-          </div>
-
-          {/* Badge (Right on Desktop) */}
-          <div className="hidden md:flex shrink-0 items-center justify-center lg:pr-10">
-            <RotatingBadge text={copy.tramPremiumBadge} icon="✦" className="scale-110 lg:scale-125" />
-          </div>
-
-        </div>
-      </section>
 
       <div className="relative mx-auto max-w-7xl">
         {/* Absolute Badge for AI Demo */}
         <RotatingBadge text={copy.aiDemoBadge} icon="🚀" className="absolute top-12 left-0 lg:-left-8 z-20 scale-100 lg:scale-110 hidden xl:flex pointer-events-none" />
 
-        <section className="section-shell relative overflow-hidden px-5 py-9 sm:px-8 sm:py-12">
+        <section className="section-shell relative overflow-hidden px-2 py-3 md:px-6 lg:py-8 mx-2 md:mx-0">
         <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(255,241,214,0.85),transparent_70%)]" />
 
         <div className="relative">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+          <p className="text-[9px] md:text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
             {copy.editorialTag}
           </p>
-          <h2 className="display-font mt-3 max-w-xl text-3xl font-semibold tracking-[-0.05em] text-slate-900 sm:text-4xl">
+          <h2 className="display-font mt-1.5 md:mt-3 max-w-xl text-lg md:text-3xl font-semibold tracking-[-0.05em] text-slate-900">
             {copy.editorialTitle}
           </h2>
 
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+          <p className="mt-1.5 md:mt-4 max-w-2xl text-[10px] md:text-sm leading-5 md:leading-7 text-slate-500">
             {copy.editorialText}
           </p>
 
-          <div className="mt-8">
+          <div className="mt-4 md:mt-6">
             {/* Before & After Image Demo */}
-            <div className="mb-8">
-              <h3 className="mb-4 text-xl font-bold text-slate-900">{copy.demoColorTitle}</h3>
-              <div className="grid gap-4 md:grid-cols-3">
+            <div className="mb-4 md:mb-6">
+              <h3 className="mb-2 md:mb-3 text-[11px] md:text-lg font-bold text-slate-900">{copy.demoColorTitle}</h3>
+              <div className="grid gap-1 md:gap-2 grid-cols-3 px-2 md:px-0">
                 {/* Before - White Shirt */}
-                <div className="overflow-hidden rounded-[20px] border-2 border-slate-200 bg-white shadow-[0_12px_24px_rgba(15,23,42,0.08)]">
+                <div className="overflow-hidden rounded-[8px] md:rounded-[16px] border border-slate-200 bg-white shadow-sm md:shadow-[0_12px_24px_rgba(15,23,42,0.08)]">
                   <img src={assets.ai_demo_input} alt="Áo trắng gốc" className="w-full h-auto" />
-                  <div className="p-4 bg-slate-50">
-                    <p className="text-sm font-bold text-slate-700">{copy.demoInputShirt}</p>
-                    <p className="text-xs text-slate-500 mt-1">{copy.demoOriginalImg}</p>
+                  <div className="p-1 md:p-3 bg-slate-50">
+                    <p className="text-[7px] md:text-xs font-bold text-slate-700 leading-tight">{copy.demoInputShirt}</p>
+                    <p className="text-[6px] md:text-[10px] text-slate-500 mt-0.5 leading-tight">{copy.demoOriginalImg}</p>
                   </div>
                 </div>
 
                 {/* After 1 - Red Shirt */}
-                <div className="overflow-hidden rounded-[20px] border-2 border-rose-200 bg-white shadow-[0_12px_24px_rgba(244,63,94,0.15)]">
+                <div className="overflow-hidden rounded-[8px] md:rounded-[16px] border border-rose-200 bg-white shadow-sm md:shadow-[0_12px_24px_rgba(244,63,94,0.15)]">
                   <img src={assets.ai_demo_output_red} alt="Áo đỏ" className="w-full h-auto" />
-                  <div className="p-4 bg-rose-50">
-                    <p className="text-sm font-bold text-rose-700">{copy.demoOutputRed}</p>
-                    <p className="text-xs text-rose-600 mt-1">{copy.demoAutoColor}</p>
+                  <div className="p-1 md:p-3 bg-rose-50">
+                    <p className="text-[7px] md:text-xs font-bold text-rose-700 leading-tight">{copy.demoOutputRed}</p>
+                    <p className="text-[6px] md:text-[10px] text-rose-600 mt-0.5 leading-tight">{copy.demoAutoColor}</p>
                   </div>
                 </div>
 
                 {/* After 2 - Blue Shirt */}
-                <div className="overflow-hidden rounded-[20px] border-2 border-blue-200 bg-white shadow-[0_12px_24px_rgba(59,130,246,0.15)]">
+                <div className="overflow-hidden rounded-[8px] md:rounded-[16px] border border-blue-200 bg-white shadow-sm md:shadow-[0_12px_24px_rgba(59,130,246,0.15)]">
                   <img src="/kling_after2.png" alt="Áo xanh" className="w-full h-auto" />
-                  <div className="p-4 bg-blue-50">
-                    <p className="text-sm font-bold text-blue-700">{copy.demoOutputBlue}</p>
-                    <p className="text-xs text-blue-600 mt-1">{copy.demoInSeconds}</p>
+                  <div className="p-1 md:p-3 bg-blue-50">
+                    <p className="text-[7px] md:text-xs font-bold text-blue-700 leading-tight">{copy.demoOutputBlue}</p>
+                    <p className="text-[6px] md:text-[10px] text-blue-600 mt-0.5 leading-tight">{copy.demoInSeconds}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Video Demos */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-2 md:gap-3 grid-cols-2 px-4 md:px-0">
               {/* Kling AI Demo */}
               <div>
-                <h3 className="mb-3 text-lg font-bold text-slate-900">{copy.klingDemoTitle}</h3>
-                <div className="overflow-hidden rounded-[20px] border border-white/70 bg-white/70 shadow-[0_16px_32px_rgba(15,23,42,0.1)]">
+                <h3 className="mb-1 md:mb-2 text-[10px] md:text-base font-bold text-slate-900">{copy.klingDemoTitle}</h3>
+                <div className="overflow-hidden rounded-[8px] md:rounded-[16px] border border-white/70 bg-white/70 shadow-sm md:shadow-[0_16px_32px_rgba(15,23,42,0.1)]">
                   <video 
                     className="w-full h-auto"
                     controls
@@ -303,13 +254,13 @@ const Home = () => {
                     {copy.videoNotSupported}
                   </video>
                 </div>
-                <p className="mt-3 text-sm text-slate-600">{copy.klingDemoDesc}</p>
+                <p className="mt-1 md:mt-2 text-[7px] md:text-xs text-slate-600">{copy.klingDemoDesc}</p>
               </div>
 
               {/* Gemini Pro Demo */}
               <div>
-                <h3 className="mb-3 text-lg font-bold text-slate-900">{copy.geminiDemoTitle}</h3>
-                <div className="overflow-hidden rounded-[20px] border border-white/70 bg-white/70 shadow-[0_16px_32px_rgba(15,23,42,0.1)]">
+                <h3 className="mb-1 md:mb-2 text-[10px] md:text-base font-bold text-slate-900">{copy.geminiDemoTitle}</h3>
+                <div className="overflow-hidden rounded-[8px] md:rounded-[16px] border border-white/70 bg-white/70 shadow-sm md:shadow-[0_16px_32px_rgba(15,23,42,0.1)]">
                   <video 
                     className="w-full h-auto"
                     controls
@@ -319,24 +270,24 @@ const Home = () => {
                     {copy.videoNotSupported}
                   </video>
                 </div>
-                <p className="mt-3 text-sm text-slate-600">{copy.geminiDemoDesc}</p>
+                <p className="mt-1 md:mt-2 text-[7px] md:text-xs text-slate-600">{copy.geminiDemoDesc}</p>
               </div>
             </div>
             
-            <div className="mt-6 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-[20px] border border-[#f5d9b4] bg-[#fffaf2] p-5">
-                <h3 className="text-base font-bold text-slate-900">{copy.feature1Title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{copy.feature1Desc}</p>
+            <div className="mt-3 md:mt-5 grid gap-2 grid-cols-3">
+              <div className="rounded-[8px] md:rounded-[16px] border border-[#f5d9b4] bg-[#fffaf2] p-1.5 md:p-4">
+                <h3 className="text-[9px] md:text-sm font-bold text-slate-900 leading-tight">{copy.feature1Title}</h3>
+                <p className="mt-0.5 md:mt-1 text-[7px] md:text-xs text-slate-600 leading-tight">{copy.feature1Desc}</p>
               </div>
               
-              <div className="rounded-[20px] border border-[#dbeafe] bg-[#eff6ff] p-5">
-                <h3 className="text-base font-bold text-slate-900">{copy.feature2Title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{copy.feature2Desc}</p>
+              <div className="rounded-[8px] md:rounded-[16px] border border-[#dbeafe] bg-[#eff6ff] p-1.5 md:p-4">
+                <h3 className="text-[9px] md:text-sm font-bold text-slate-900 leading-tight">{copy.feature2Title}</h3>
+                <p className="mt-0.5 md:mt-1 text-[7px] md:text-xs text-slate-600 leading-tight">{copy.feature2Desc}</p>
               </div>
 
-              <div className="rounded-[20px] border border-[#f0fdf4] bg-[#f0fdf4] p-5">
-                <h3 className="text-base font-bold text-slate-900">{copy.feature3Title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{copy.feature3Desc}</p>
+              <div className="rounded-[8px] md:rounded-[16px] border border-[#f0fdf4] bg-[#f0fdf4] p-1.5 md:p-4">
+                <h3 className="text-[9px] md:text-sm font-bold text-slate-900 leading-tight">{copy.feature3Title}</h3>
+                <p className="mt-0.5 md:mt-1 text-[7px] md:text-xs text-slate-600 leading-tight">{copy.feature3Desc}</p>
               </div>
             </div>
           </div>

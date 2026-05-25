@@ -317,23 +317,23 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <form onSubmit={onSubmitHandler}>
         <div className={pageShellClass}>
-          <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+          <div className='mb-3 md:mb-6 flex flex-col gap-2 md:gap-4 lg:flex-row lg:items-end lg:justify-between'>
             <div>
-              <Title level={3} style={{ margin: 0, color: 'var(--admin-text)' }}>
+              <Title level={4} style={{ margin: 0, color: 'var(--admin-text)', fontSize: '18px' }}>
                 Add Product
               </Title>
-              <Text type='secondary'>
+              <Text type='secondary' style={{ fontSize: '11px' }}>
                 Publish a new catalog item with media, pricing, sizes and merchandising details.
               </Text>
             </div>
 
             <Space size={12} wrap>
-              <Button size='large' icon={<ReloadOutlined />} onClick={resetForm} disabled={!isDirty}>
+              <Button size='middle' icon={<ReloadOutlined />} onClick={resetForm} disabled={!isDirty}>
                 Clear Draft
               </Button>
               <Button
                 type='primary'
-                size='large'
+                size='middle'
                 htmlType='submit'
                 loading={isSubmitting}
                 icon={<PlusOutlined />}
@@ -355,7 +355,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                     Product Name
                   </Text>
                   <Input
-                    size='large'
+                    size='middle'
                     className='mt-2 !bg-[var(--admin-surface)] !text-[var(--admin-text)] !border-[var(--admin-border)] placeholder:!text-[var(--admin-muted)]'
                     value={name}
                     onChange={(event) => setName(event.target.value)}
@@ -421,10 +421,10 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                       Sell Price
                     </Text>
                     <Input
-                      size='large'
+                      size='middle'
                       className='mt-2 !bg-[var(--admin-surface)] !text-[var(--admin-text)] !border-[var(--admin-border)] placeholder:!text-[var(--admin-muted)]'
                       type='text'
-                      style={{ fontSize: '1.25rem', fontWeight: 600, padding: '8px 14px' }}
+                      style={{ fontSize: '14px', fontWeight: 600, padding: '4px 8px' }}
                       value={formatCurrency(price)}
                       onChange={(event) => setPrice(parseCurrency(event.target.value))}
                       placeholder='250.000'
@@ -437,10 +437,10 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                       Original Price
                     </Text>
                     <Input
-                      size='large'
+                      size='middle'
                       className='mt-2 !bg-[var(--admin-surface)] !text-[var(--admin-text)] !border-[var(--admin-border)] placeholder:!text-[var(--admin-muted)]'
                       type='text'
-                      style={{ fontSize: '1.25rem', fontWeight: 600, padding: '8px 14px' }}
+                      style={{ fontSize: '14px', fontWeight: 600, padding: '4px 8px' }}
                       value={formatCurrency(oldPrice)}
                       onChange={(event) => setOldPrice(parseCurrency(event.target.value))}
                       placeholder='300.000'
@@ -471,7 +471,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                   {images.map((file, index) => (
                     <div key={`image-${index}`} className='admin-panel p-2 shadow-[0_8px_20px_rgba(31,26,23,0.03)]'>
                       <label htmlFor={`image${index + 1}`} className='block cursor-pointer'>
-                        <div className='relative h-28 overflow-hidden rounded-[18px] border border-dashed border-[var(--admin-border)] bg-[var(--admin-surface)] backdrop-blur transition hover:bg-[var(--admin-surface-solid)]'>
+                        <div className='relative h-20 overflow-hidden rounded-[14px] border border-dashed border-[var(--admin-border)] bg-[var(--admin-surface)] backdrop-blur transition hover:bg-[var(--admin-surface-solid)]'>
                           {renderUploadSlot(index, file)}
                           <div className='absolute inset-x-1.5 bottom-1.5 rounded-lg bg-[var(--admin-surface-solid)] px-2 py-1 text-center text-[10px] font-semibold text-[var(--admin-muted)] shadow-sm'>
                             {file ? `Image ${index + 1}` : `Slot ${index + 1}`}
@@ -507,7 +507,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                     TikTok Video URL
                   </Text>
                   <Input
-                    size='large'
+                    size='middle'
                     className='mt-2 !bg-[var(--admin-surface)] !text-[var(--admin-text)] !border-[var(--admin-border)] placeholder:!text-[var(--admin-muted)]'
                     prefix={<PlayCircleOutlined style={{ color: '#94a3b8' }} />}
                     value={videoUrl}
@@ -541,7 +541,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             }
           >
             <div className='grid gap-4 lg:grid-cols-2'>
-              <div className='admin-panel p-4.5 shadow-[0_8px_20px_rgba(31,26,23,0.03)]'>
+              <div className='admin-panel p-3 md:p-4.5 shadow-[0_8px_20px_rgba(31,26,23,0.03)]'>
                 <div className='mb-2 flex items-center gap-2'>
                   <TagsOutlined style={{ color: 'var(--admin-tertiary)' }} />
                   <Text strong style={{ color: 'var(--admin-text)' }}>
@@ -564,7 +564,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
 
                 <div className='mt-3 flex gap-2'>
                   <Input
-                    size='large'
+                    size='middle'
                     value={customSize}
                     onChange={(event) => setCustomSize(event.target.value)}
                     onKeyDown={(event) => {
@@ -575,7 +575,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                     }}
                     placeholder='Add custom package: 1 Tuần, 2 Năm...'
                   />
-                  <Button size='large' onClick={addCustomSize} icon={<PlusOutlined />}>
+                  <Button size='middle' onClick={addCustomSize} icon={<PlusOutlined />}>
                     Add
                   </Button>
                 </div>
@@ -608,7 +608,7 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
                 </div>
               </div>
 
-              <div className='admin-panel p-4.5 shadow-[0_8px_20px_rgba(31,26,23,0.03)]'>
+              <div className='admin-panel p-3 md:p-4.5 shadow-[0_8px_20px_rgba(31,26,23,0.03)]'>
                 <div className='mb-2 flex items-center gap-2'>
                   <FireOutlined style={{ color: 'var(--admin-tertiary)' }} />
                   <Text strong style={{ color: 'var(--admin-text)' }}>
@@ -641,12 +641,12 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               </div>
 
               <Space size={12} wrap>
-                <Button size='large' onClick={resetForm} disabled={!isDirty}>
+                <Button size='middle' onClick={resetForm} disabled={!isDirty}>
                   Reset Form
                 </Button>
                 <Button
                   type='primary'
-                  size='large'
+                  size='middle'
                   htmlType='submit'
                   loading={isSubmitting}
                   icon={<PlusOutlined />}

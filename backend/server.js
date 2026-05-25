@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -36,6 +37,17 @@ connectDB();
 connectCloudinary();
 startStockAlertJob();
 startSePayExpiryJob();
+
+// OPTIMIZATION: Enable gzip compression
+app.use(compression({
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    },
+    level: 6 // Compression level (0-9, 6 is default)
+}));
 
 app.use(cors());
 app.use(express.json());

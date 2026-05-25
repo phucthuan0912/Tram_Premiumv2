@@ -29,6 +29,7 @@ import {
   Table,
   Tag,
   Typography,
+  Switch,
 } from 'antd'
 import {
   adminAntdTheme,
@@ -51,6 +52,14 @@ const formatCurrency = (val) => {
 const parseCurrency = (val) => {
   if (!val) return '';
   return String(val).replace(/\D/g, '');
+};
+
+const formatPackageName = (name) => {
+  if (!name) return '';
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
 };
 
 const normalizeImage = (imageValue) => {
@@ -375,6 +384,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
       {
         title: 'Variant',
         key: 'variant',
+        responsive: ['md'],
         width: 140,
         render: (_, batch) => (
           <Tag color='default' style={{ borderRadius: 999, fontWeight: 600 }}>
@@ -393,6 +403,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
         title: 'Cost Price',
         dataIndex: 'costPrice',
         key: 'costPrice',
+        responsive: ['sm'],
         width: 150,
         render: (value) => <Text strong style={{ color: '#dc2626' }}>{formatVnd(value)}</Text>,
       },
@@ -413,20 +424,10 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        responsive: ['lg'],
         width: 130,
         render: (value) => (
-          <Tag
-            color={value === 'Active' ? 'default' : 'default'}
-            style={{
-              borderRadius: 999,
-              fontWeight: 600,
-              background: value === 'Active' ? '#fff1df' : '#f8fafc',
-              borderColor: value === 'Active' ? '#f2c99b' : '#e2e8f0',
-              color: value === 'Active' ? '#b45309' : '#64748b',
-            }}
-          >
-            {value}
-          </Tag>
+          <Switch size="small" checked={value === 'Active'} disabled />
         ),
       },
       {
@@ -482,11 +483,10 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-6'>
-          <Title level={3} style={{ margin: 0, color: '#0f172a' }}>
+        <div className='mb-3 md:mb-6'>
+          <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
             Import Hub
           </Title>
-          <Text type='secondary'>Track inbound inventory batches, supplier costs and current FIFO stock availability.</Text>
         </div>
 
         <div className={compactStatsRowClass}>
@@ -497,7 +497,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]'>
+        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             bordered={false}
             className='shadow-sm'
@@ -507,8 +507,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                   <PlusOutlined />
                 </div>
                 <div>
-                  <div className='font-semibold text-slate-900'>New Goods Receipt</div>
-                  <div className='text-xs font-normal text-slate-400'>Create a fresh import batch for FIFO inventory tracking.</div>
+                  <div className='text-xs font-bold text-slate-800'>New Goods Receipt</div>
                 </div>
               </Space>
             }
@@ -516,7 +515,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
             <Form form={createForm} layout='vertical' onFinish={handleAddBatch} requiredMark={false}>
               <Form.Item label='Category Filter'>
                 <Select
-                  size='large'
+                  size='middle'
                   value={selectedCategory}
                   onChange={(value) => {
                     setSelectedCategory(value)
@@ -537,7 +536,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please choose a product' }]}
               >
                 <Select
-                  size='large'
+                  size='middle'
                   showSearch
                   value={formData.productId || undefined}
                   placeholder='Search and select product'
@@ -587,11 +586,11 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
               <div className='grid gap-4 md:grid-cols-2'>
                 <Form.Item label='Size' name='size'>
                   <Input
-                    size='large'
-                    placeholder='S, M, L, S,M or Any'
+                    size='middle'
+                    placeholder='1 Tháng, 3 Tháng, Vĩnh viễn...'
                     value={formData.size}
                     onChange={(event) => {
-                      const newSize = event.target.value.toUpperCase()
+                      const newSize = formatPackageName(event.target.value)
                       setFormData((prev) => ({ ...prev, size: newSize }))
                       createForm.setFieldValue('size', newSize)
                     }}
@@ -599,7 +598,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 </Form.Item>
                 <Form.Item label='Supplier' name='supplier'>
                   <Input
-                    size='large'
+                    size='middle'
                     placeholder='Factory / vendor'
                     value={formData.supplier}
                     onChange={(event) => setFormData((prev) => ({ ...prev, supplier: event.target.value }))}
@@ -646,7 +645,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                   {selectedProductSizes.length > 0 ? (
                     <div className='mt-3'>
                       <div className='mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500'>
-                        Sizes đang bán
+                        Thời hạn gói đang bán
                       </div>
                       <div className='flex flex-wrap gap-2'>
                         {selectedProductSizes.map((sizeOption) => (
@@ -688,8 +687,8 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                   rules={[{ required: true, message: 'Please enter cost price' }]}
                 >
                   <Input
-                    size='large'
-                    style={{ width: '100%', fontSize: '1.25rem', fontWeight: 600 }}
+                    size='middle'
+                    style={{ width: '100%', fontSize: '14px', fontWeight: 600 }}
                     placeholder='150.000'
                     value={formatCurrency(formData.costPrice)}
                     onChange={(event) => setFormData((prev) => ({ ...prev, costPrice: parseCurrency(event.target.value) }))}
@@ -701,7 +700,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                   rules={[{ required: true, message: 'Please enter quantity' }]}
                 >
                   <InputNumber
-                    size='large'
+                    size='middle'
                     style={{ width: '100%' }}
                     min={0}
                     placeholder='50'
@@ -720,21 +719,21 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
 
               <Form.Item label='Note' name='note'>
                 <Input
-                  size='large'
+                  size='middle'
                   placeholder='Fabric notes, source quality, batch remark...'
                   value={formData.note}
                   onChange={(event) => setFormData((prev) => ({ ...prev, note: event.target.value }))}
                 />
               </Form.Item>
 
-              <Space size={12} wrap>
-                <Button type='primary' htmlType='submit' size='large' loading={adding} icon={<PlusOutlined />}>
+              <div className="flex flex-col gap-2">
+                <Button type='primary' htmlType='submit' size='middle' loading={adding} block icon={<PlusOutlined />}>
                   Save Batch
                 </Button>
-                <Button size='large' onClick={resetCreateForm}>
+                <Button size='middle' block onClick={resetCreateForm}>
                   Clear
                 </Button>
-              </Space>
+              </div>
             </Form>
           </Card>
 
@@ -743,8 +742,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
             className='shadow-sm'
             title={
               <div>
-                <div className='font-semibold text-slate-900'>Batch Directory</div>
-                <div className='text-xs font-normal text-slate-400'>Imported inventory batches with remaining quantity and supplier cost.</div>
+                <div className='text-xs font-bold text-slate-800'>Batch Directory</div>
               </div>
             }
           >
@@ -793,9 +791,9 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
               dataSource={filteredBatches}
               loading={loading}
               rowClassName={(record) => (record.status === 'Active' ? '!bg-[#fff7ed]' : '')}
-              size='middle'
+              size='small'
               pagination={{ pageSize: 7, showSizeChanger: false, size: 'small' }}
-              scroll={{ x: 980 }}
+
               locale={{
                 emptyText: <Empty description='No batches found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}
@@ -821,7 +819,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter size' }]}
               >
                 <Input
-                  size='large'
+                  size='middle'
                   value={editFormData.size}
                   onChange={(event) =>
                     setEditFormData((prev) => ({ ...prev, size: event.target.value.toUpperCase() }))
@@ -852,8 +850,8 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 rules={[{ required: true, message: 'Please enter cost price' }]}
               >
                 <Input
-                  size='large'
-                  style={{ width: '100%', fontSize: '1.25rem', fontWeight: 600 }}
+                  size='middle'
+                  style={{ width: '100%', fontSize: '14px', fontWeight: 600 }}
                   value={formatCurrency(editFormData.costPrice)}
                   onChange={(event) =>
                     setEditFormData((prev) => ({ ...prev, costPrice: parseCurrency(event.target.value) }))
@@ -868,7 +866,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 help={<div className="mt-2 text-rose-600 font-medium">Lưu ý: Không cộng dồn sản phẩm MỚI vào lô cũ. Hãy tạo "New Batch" (Tạo lô mới) để không bị hỏng báo cáo tính Lãi/Lỗ!</div>}
               >
                 <InputNumber
-                  size='large'
+                  size='middle'
                   style={{ width: '100%' }}
                   min={0}
                   value={editFormData.remainingQty === '' ? null : Number(editFormData.remainingQty)}
@@ -879,7 +877,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
 
             <Form.Item label='Supplier' name='supplier'>
               <Input
-                size='large'
+                size='middle'
                 value={editFormData.supplier}
                 onChange={(event) => setEditFormData((prev) => ({ ...prev, supplier: event.target.value }))}
               />
@@ -887,7 +885,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
 
             <Form.Item label='Note' name='note'>
               <Input
-                size='large'
+                size='middle'
                 value={editFormData.note}
                 onChange={(event) => setEditFormData((prev) => ({ ...prev, note: event.target.value }))}
               />
