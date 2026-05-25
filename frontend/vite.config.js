@@ -32,10 +32,16 @@ export default defineConfig({
     // OPTIMIZATION: Code splitting
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'swiper-vendor': ['swiper'],
-          'ui-vendor': ['lucide-react', 'antd'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/swiper')) {
+            return 'swiper-vendor';
+          }
+          if (id.includes('node_modules/lucide-react') || id.includes('node_modules/antd')) {
+            return 'ui-vendor';
+          }
         },
       },
     },
