@@ -913,6 +913,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
         )}
         </div>
+        </div>
       </div>
     </ConfigProvider>
   )

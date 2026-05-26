@@ -249,6 +249,7 @@ const Returns = ({ token }) => {
                 )}
             </Modal>
         </div>
+        </div>
     );
 };
 
