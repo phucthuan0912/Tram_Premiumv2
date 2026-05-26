@@ -7,11 +7,15 @@ import {
   CheckCircleOutlined,
   CheckOutlined,
   CloseOutlined,
+  CopyOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
   FileTextOutlined,
+  InfoCircleOutlined,
   PlusCircleOutlined,
   ReloadOutlined,
+  RobotOutlined,
+  SaveOutlined,
   ThunderboltOutlined,
   WarningOutlined,
 } from '@ant-design/icons'
@@ -20,9 +24,14 @@ import {
   Button,
   Card,
   Checkbox,
+  Collapse,
   ConfigProvider,
+  Input,
+  InputNumber,
+  Select,
   Space,
   Statistic,
+  Switch,
   Table,
   Tag,
   Typography,
@@ -35,7 +44,8 @@ import {
   pageShellClass,
 } from '../lib/adminAntd'
 
-const { Title, Text } = Typography
+const { Title, Text, Paragraph } = Typography
+const { Panel } = Collapse
 
 const formatVND = (price) => {
   if (price == null || isNaN(price)) return '—'
@@ -51,6 +61,53 @@ ChatGPT Plus Mail iCloud\tTài khoản ChatGPT Plus...\tChatGPT\tPlus\t80000\t10
 Hoặc dạng danh sách:
 ChatGPT Plus Mail iCloud - 80k
 Claude Pro Team - 540k`
+
+const CHATGPT_PROMPT_QUICK = `Bạn là trợ lý format dữ liệu sản phẩm. Chuyển đổi dữ liệu thô thành định dạng chuẩn.
+
+**ĐỊNH DẠNG ĐẦU RA:**
+• Tên sản phẩm — Giá
+
+**QUY TẮC:**
+1. Mỗi dòng bắt đầu bằng •
+2. Tên và giá cách nhau bằng —
+3. Giá có đơn vị "k" (80k, 450k)
+4. Loại bỏ emoji, ký tự đặc biệt
+5. Giữ thông tin thời hạn và loại tài khoản
+
+**VÍ DỤ:**
+Đầu vào: ChatGPT Plus Mail iCloud 80.000đ
+Đầu ra: • ChatGPT Plus Mail iCloud — 80k
+
+**DỮ LIỆU CẦN FORMAT:**
+[PASTE DỮ LIỆU THÔ VÀO ĐÂY]`
+
+const CHATGPT_PROMPT_ADVANCED = `Bạn là trợ lý format dữ liệu sản phẩm chuyên nghiệp.
+
+**ĐỊNH DẠNG ĐẦU RA:**
+• Tên sản phẩm — Giá
+
+**QUY TẮC XỬ LÝ:**
+1. Loại bỏ emoji, ký tự đặc biệt
+2. Chuẩn hóa giá: 80.000đ → 80k, 450000 → 450k
+3. Giữ thời hạn trong tên (1 tháng, 1 năm, 20-30 ngày)
+4. Giữ loại tài khoản (Plus, Pro, Premium, Team, API, Max, Family)
+5. Loại bỏ ghi chú bảo hành, ưu đãi trong ngoặc
+6. Mỗi dòng một sản phẩm, bắt đầu bằng •
+7. Phân cách tên và giá bằng —
+
+**VÍ DỤ:**
+Đầu vào:
+✅ ChatGPT Plus Mail iCloud (BH 1 tháng) - 80.000đ
+🔥 Claude Pro 1 tháng [HOT] - 450k (Giảm 10%)
+⭐ Canva Pro 1 năm | 85.000 | Ưu đãi
+
+Đầu ra:
+• ChatGPT Plus Mail iCloud — 80k
+• Claude Pro 1 tháng — 450k
+• Canva Pro 1 năm — 85k
+
+**DỮ LIỆU CẦN FORMAT:**
+[PASTE DỮ LIỆU THÔ VÀO ĐÂY]`
 
 const CATEGORY_COLORS = {
   ChatGPT: 'green',
@@ -81,6 +138,8 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
   const [parsedProducts, setParsedProducts] = useState(null)
   const [parseResponse, setParseResponse] = useState(null)
   const [selectedKeys, setSelectedKeys] = useState([])
+  const [editingKey, setEditingKey] = useState('')
+  const [editingRecord, setEditingRecord] = useState(null)
 
   // ── Import state ──
   const [isImporting, setIsImporting] = useState(false)
@@ -173,6 +232,41 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
     setSelectedKeys([])
   }, [])
 
+  // ── Copy prompt to clipboard ──
+  const handleCopyPrompt = useCallback((promptText) => {
+    navigator.clipboard.writeText(promptText).then(() => {
+      toast.success('Đã copy prompt vào clipboard!')
+    }).catch(() => {
+      toast.error('Không thể copy. Vui lòng copy thủ công.')
+    })
+  }, [])
+
+  // ── Edit product ──
+  const handleEdit = useCallback((record) => {
+    setEditingKey(record._rowKey)
+    setEditingRecord({ ...record })
+  }, [])
+
+  const handleSave = useCallback(() => {
+    if (!editingRecord) return
+    
+    setParsedProducts(prev => 
+      prev.map(p => p._rowKey === editingKey ? editingRecord : p)
+    )
+    setEditingKey('')
+    setEditingRecord(null)
+    toast.success('Đã lưu thay đổi')
+  }, [editingKey, editingRecord])
+
+  const handleCancel = useCallback(() => {
+    setEditingKey('')
+    setEditingRecord(null)
+  }, [])
+
+  const handleFieldChange = useCallback((field, value) => {
+    setEditingRecord(prev => ({ ...prev, [field]: value }))
+  }, [])
+
   // ── Table columns ──
   const columns = useMemo(
     () => [
@@ -189,63 +283,167 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
         dataIndex: 'name',
         ellipsis: true,
         width: 220,
-        render: (text) => (
-          <Text strong style={{ fontSize: 12, color: '#0f172a' }}>
-            {text}
-          </Text>
-        ),
+        render: (text, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Input
+              value={editingRecord?.name || ''}
+              onChange={(e) => handleFieldChange('name', e.target.value)}
+              size="small"
+              style={{ fontSize: 12 }}
+            />
+          ) : (
+            <Text strong style={{ fontSize: 12, color: '#0f172a' }}>
+              {text}
+            </Text>
+          )
+        },
       },
       {
         title: 'Danh mục',
         dataIndex: 'category',
         width: 120,
-        render: (cat) => <Tag color={getCategoryColor(cat)}>{cat || '—'}</Tag>,
+        render: (cat, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Select
+              value={editingRecord?.category || ''}
+              onChange={(value) => handleFieldChange('category', value)}
+              size="small"
+              style={{ width: '100%' }}
+              options={[
+                { label: 'ChatGPT', value: 'ChatGPT' },
+                { label: 'Claude', value: 'Claude' },
+                { label: 'Cursor', value: 'Cursor' },
+                { label: 'Canva', value: 'Canva' },
+                { label: 'CapCut', value: 'CapCut' },
+                { label: 'Gemini', value: 'Gemini' },
+                { label: 'YouTube', value: 'YouTube' },
+                { label: 'TradingView', value: 'TradingView' },
+                { label: 'Adobe', value: 'Adobe' },
+                { label: 'Microsoft', value: 'Microsoft' },
+                { label: 'Khác', value: 'Khác' },
+              ]}
+            />
+          ) : (
+            <Tag color={getCategoryColor(cat)}>{cat || '—'}</Tag>
+          )
+        },
       },
       {
         title: 'Danh mục con',
         dataIndex: 'subCategory',
         width: 120,
-        render: (sub) => (sub ? <Tag>{sub}</Tag> : <Text type="secondary">—</Text>),
+        render: (sub, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Select
+              value={editingRecord?.subCategory || ''}
+              onChange={(value) => handleFieldChange('subCategory', value)}
+              size="small"
+              style={{ width: '100%' }}
+              allowClear
+              options={[
+                { label: 'Plus', value: 'Plus' },
+                { label: 'Pro', value: 'Pro' },
+                { label: 'Premium', value: 'Premium' },
+                { label: 'Team', value: 'Team' },
+                { label: 'API', value: 'API' },
+                { label: 'Max', value: 'Max' },
+                { label: 'Family', value: 'Family' },
+                { label: 'VPN', value: 'VPN' },
+              ]}
+            />
+          ) : (
+            sub ? <Tag>{sub}</Tag> : <Text type="secondary">—</Text>
+          )
+        },
       },
       {
         title: 'Giá sell',
         dataIndex: 'price',
         width: 100,
         align: 'right',
-        render: (val) => (
-          <Text strong style={{ fontSize: 12, color: '#059669' }}>
-            {formatVND(val)}
-          </Text>
-        ),
+        render: (val, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <InputNumber
+              value={editingRecord?.price || 0}
+              onChange={(value) => handleFieldChange('price', value)}
+              size="small"
+              style={{ width: '100%' }}
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          ) : (
+            <Text strong style={{ fontSize: 12, color: '#059669' }}>
+              {formatVND(val)}
+            </Text>
+          )
+        },
       },
       {
         title: 'Giá gốc',
         dataIndex: 'oldPrice',
         width: 100,
         align: 'right',
-        render: (val) => (
-          <Text style={{ fontSize: 11, color: '#94a3b8', textDecoration: 'line-through' }}>
-            {formatVND(val)}
-          </Text>
-        ),
+        render: (val, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <InputNumber
+              value={editingRecord?.oldPrice || 0}
+              onChange={(value) => handleFieldChange('oldPrice', value)}
+              size="small"
+              style={{ width: '100%' }}
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          ) : (
+            <Text style={{ fontSize: 11, color: '#94a3b8', textDecoration: 'line-through' }}>
+              {formatVND(val)}
+            </Text>
+          )
+        },
       },
       {
         title: 'Thời hạn',
         dataIndex: 'duration',
         width: 90,
-        render: (val) => <Text style={{ fontSize: 11 }}>{val || '—'}</Text>,
+        render: (val, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Input
+              value={editingRecord?.duration || ''}
+              onChange={(e) => handleFieldChange('duration', e.target.value)}
+              size="small"
+              placeholder="1 tháng"
+            />
+          ) : (
+            <Text style={{ fontSize: 11 }}>{val || '—'}</Text>
+          )
+        },
       },
       {
         title: 'Bestseller',
         dataIndex: 'bestseller',
         width: 80,
         align: 'center',
-        render: (val) =>
-          val ? (
-            <CheckOutlined style={{ color: '#059669', fontSize: 14 }} />
+        render: (val, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Switch
+              checked={editingRecord?.bestseller || false}
+              onChange={(checked) => handleFieldChange('bestseller', checked)}
+              size="small"
+            />
           ) : (
-            <CloseOutlined style={{ color: '#cbd5e1', fontSize: 12 }} />
-          ),
+            val ? (
+              <CheckOutlined style={{ color: '#059669', fontSize: 14 }} />
+            ) : (
+              <CloseOutlined style={{ color: '#cbd5e1', fontSize: 12 }} />
+            )
+          )
+        },
       },
       {
         title: 'Trạng thái',
@@ -263,8 +461,42 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
             </Tag>
           ),
       },
+      {
+        title: 'Thao tác',
+        width: 100,
+        align: 'center',
+        render: (_, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Space size="small">
+              <Button
+                size="small"
+                type="primary"
+                icon={<SaveOutlined />}
+                onClick={handleSave}
+              />
+              <Button
+                size="small"
+                onClick={handleCancel}
+              >
+                Huỷ
+              </Button>
+            </Space>
+          ) : (
+            <Button
+              size="small"
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              disabled={!!importResult}
+            >
+              Sửa
+            </Button>
+          )
+        },
+      },
     ],
-    [],
+    [editingKey, editingRecord, handleEdit, handleSave, handleCancel, handleFieldChange, importResult],
   )
 
   // ── Selection ──
@@ -462,6 +694,69 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
         )}
 
+        {/* ── ChatGPT Helper section ── */}
+        {!parsedProducts && !importResult && (
+          <Card
+            className="mb-4 shadow-sm"
+            size="small"
+          >
+            <Collapse size="small" ghost>
+              <Panel 
+                header={
+                  <Space>
+                    <RobotOutlined style={{ color: '#6366f1' }} />
+                    <Text strong style={{ fontSize: '13px' }}>🤖 ChatGPT Helper - Click để copy prompt</Text>
+                  </Space>
+                } 
+                key="1"
+              >
+                <div className="space-y-3">
+                  {/* Quick Prompt */}
+                  <div className="rounded border border-slate-200 bg-slate-50 p-3">
+                    <div className="mb-2 flex items-center justify-between">
+                      <Text strong style={{ color: '#059669', fontSize: '12px' }}>📋 Prompt Nhanh</Text>
+                      <Button 
+                        size="small" 
+                        type="primary"
+                        icon={<CopyOutlined />}
+                        onClick={() => handleCopyPrompt(CHATGPT_PROMPT_QUICK)}
+                      >
+                        Copy
+                      </Button>
+                    </div>
+                    <div className="bg-white p-2 rounded border text-xs text-slate-600 font-mono max-h-32 overflow-y-auto">
+                      {CHATGPT_PROMPT_QUICK.substring(0, 200)}...
+                    </div>
+                  </div>
+
+                  {/* Advanced Prompt */}
+                  <div className="rounded border border-slate-200 bg-slate-50 p-3">
+                    <div className="mb-2 flex items-center justify-between">
+                      <Text strong style={{ color: '#dc2626', fontSize: '12px' }}>🚀 Prompt Nâng Cao</Text>
+                      <Button 
+                        size="small" 
+                        type="primary"
+                        icon={<CopyOutlined />}
+                        onClick={() => handleCopyPrompt(CHATGPT_PROMPT_ADVANCED)}
+                      >
+                        Copy
+                      </Button>
+                    </div>
+                    <div className="bg-white p-2 rounded border text-xs text-slate-600 font-mono max-h-32 overflow-y-auto">
+                      {CHATGPT_PROMPT_ADVANCED.substring(0, 200)}...
+                    </div>
+                  </div>
+
+                  {/* Quick Guide */}
+                  <div className="text-xs text-slate-500 bg-blue-50 p-2 rounded">
+                    <strong>Cách dùng:</strong> Copy prompt → Paste vào ChatGPT → Thay dữ liệu thô → Copy kết quả → Paste vào textarea trên
+                  </div>
+                </div>
+              </Panel>
+            </Collapse>
+          </Card>
+        )}
+
         {/* ── Textarea section ── */}
         {!importResult && (
           <Card
@@ -609,7 +904,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
                   </Text>
                 ),
               }}
-              scroll={{ x: 900 }}
+              scroll={{ x: 1100 }}
               style={{ marginBottom: 16 }}
             />
 

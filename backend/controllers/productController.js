@@ -381,6 +381,7 @@ const parseRawProductText = (text) => {
             bestseller,
             sizes: ['Default'],
             colors: [],
+            image: ['/banner-sponsor.png'], // Default image for bulk import
         });
     }
     
@@ -562,7 +563,7 @@ const bulkImport = async (req, res) => {
                     bestseller: product.bestseller || false,
                     sizes: product.sizes || ['Default'],
                     colors: product.colors || [],
-                    image: product.image || ['https://via.placeholder.com/600x600?text=No+Image'],
+                    image: product.image || ['/banner-sponsor.png'], // Default image
                 };
 
                 if (existingProduct) {
