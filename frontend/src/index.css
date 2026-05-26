@@ -50,6 +50,30 @@ body::before {
   box-sizing: border-box;
 }
 
+/* ── Mobile: chống zoom khi bấm input (iOS + Android) ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html, body {
+  touch-action: manipulation;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}
+
+@media (min-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: inherit !important;
+  }
+}
+
 img {
   display: block;
   max-width: 100%;

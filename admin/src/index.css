@@ -88,6 +88,27 @@
 /* ================= GLOBAL ================= */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html, body {
+  touch-action: manipulation;
+}
+
+/* ── Mobile: chống zoom khi bấm input (iOS + Android) ── */
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}
+
+@media (min-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: inherit !important;
+  }
 }
 
 body {
