@@ -346,7 +346,6 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
 
           <div className='flex flex-col gap-4 lg:flex-row lg:items-start'>
             <Card
-              bordered={false}
               className='admin-card overflow-hidden xl:min-w-0 xl:flex-1'
             >
               <div className='space-y-4'>
@@ -451,7 +450,6 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             </Card>
             <div className='flex w-full flex-col gap-4 xl:w-[400px] 2xl:w-[440px]'>
               <Card
-                bordered={false}
                 className='admin-card overflow-hidden'
                 title={
                   <Space size={10}>
@@ -524,7 +522,6 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           </div>
 
           <Card
-            bordered={false}
             className='admin-card overflow-hidden mt-6'
             title={
               <Space size={10}>
@@ -629,7 +626,6 @@ const Add = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           </Card>
 
           <Card 
-            bordered={false} 
             className='admin-card mt-6 overflow-hidden'
           >
             <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>

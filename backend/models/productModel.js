@@ -5,18 +5,19 @@ const productSchema = new mongoose.Schema({
     description: { type: String,  required: true },
     price:       { type: Number,  required: true },
     oldPrice:    { type: Number,  default: 0 },
-    image:       { type: Array,   required: true },
+    image:       { type: Array,   default: ['https://via.placeholder.com/600x600?text=No+Image'] },
     category:    { type: String,  required: true },
     subCategory: { type: String,  default: "" },
-    sizes:       { type: Array,   required: true },
-    colors:      { type: Array,   default: []    }, // New: Array of color names/hex
-    videoUrl:    { type: String,  default: ""    }, // New: TikTok/Review video link
+    sizes:       { type: Array,   default: []    },
+    colors:      { type: Array,   default: []    },
+    duration:    { type: String,  default: ""    },
+    videoUrl:    { type: String,  default: ""    },
     bestseller:  { type: Boolean  },
-    stockThreshold: { type: Number, default: 0   }, // New: Alert when total remaining quantity is below this flag
-    ratingAvg:   { type: Number,  default: 0     }, // For Smart Ranking
-    ratingCount: { type: Number,  default: 0     }, // For Smart Ranking
-    views:       { type: Number,  default: 0     }, // For Smart Ranking
-    sold:        { type: Number,  default: 0     }, // For Smart Ranking
+    stockThreshold: { type: Number, default: 0   },
+    ratingAvg:   { type: Number,  default: 0     },
+    ratingCount: { type: Number,  default: 0     },
+    views:       { type: Number,  default: 0     },
+    sold:        { type: Number,  default: 0     },
     date:        { type: Number,  required: true },
 })
 

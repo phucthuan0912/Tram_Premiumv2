@@ -354,7 +354,7 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
     return (
       <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
         <div className={pageShellClass}>
-          <Card bordered={false} className='shadow-sm' loading />
+          <Card className='shadow-sm' loading />
         </div>
       </ConfigProvider>
     )
@@ -392,12 +392,12 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
 
           <div className={compactStatsRowClass}>
             {stats.map((item) => (
-              <Card key={item.key} bordered={false} className={compactStatCardClass}>
+              <Card key={item.key} className={compactStatCardClass}>
                 <Statistic
                   title={item.title}
                   value={item.value}
                   prefix={item.icon}
-                  valueStyle={{ color: '#0f172a' }}
+                  
                 />
               </Card>
             ))}
@@ -405,7 +405,6 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
 
           <div className='grid gap-4 xl:grid-cols-2 2xl:grid-cols-3'>
             <Card
-              bordered={false}
               className='shadow-sm'
               title={
                 <Space size={10}>
@@ -522,7 +521,6 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             </Card>
 
             <Card
-              bordered={false}
               className='shadow-sm'
               title={
                 <Space size={10}>
@@ -607,7 +605,6 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
             </Card>
 
             <Card
-              bordered={false}
               className='shadow-sm'
               title={
                 <Space size={10}>
@@ -711,7 +708,7 @@ const Update = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               </Card>
           </div>
 
-          <Card bordered={false} className='mt-6 shadow-sm'>
+          <Card className='mt-6 shadow-sm'>
             <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
               <div>
                 <div className='font-semibold text-slate-900'>Apply product changes</div>

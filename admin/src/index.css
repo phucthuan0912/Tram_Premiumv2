@@ -90,10 +90,12 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 html, body {
   touch-action: manipulation;
+  overscroll-behavior: none;
 }
 
 /* ── Mobile: chống zoom khi bấm input (iOS + Android) ── */

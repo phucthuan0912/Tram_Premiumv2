@@ -1,11 +1,10 @@
 import importBatchModel from '../models/importBatchModel.js';
 import productModel from '../models/productModel.js';
+import categoryModel from '../models/categoryModel.js';
+import subCategoryModel from '../models/subCategoryModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import logAction from '../utils/logger.js';
 import { getTikTokHDLink } from '../utils/tiktok.js';
-import fs from 'fs';
-import Papa from 'papaparse';
-import iconv from 'iconv-lite';
 import { getAvailableStock, normalizeVariantColor } from '../utils/inventory.js';
 
 const addProduct = async (req, res) => {
@@ -89,7 +88,6 @@ const addProduct = async (req, res) => {
     }
 };
 
-
 const removeProduct = async (req, res) => {
     try {
         const { id } = req.body;
@@ -106,6 +104,7 @@ const removeProduct = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
 const singleProduct = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -116,11 +115,10 @@ const singleProduct = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
 const listProducts = async (req, res) => {
     try {
-        // OPTIMIZATION: Use $lookup to avoid N+1 queries
         const products = await productModel.aggregate([
-            // Lookup category details
             {
                 $lookup: {
                     from: 'categories',
@@ -129,7 +127,6 @@ const listProducts = async (req, res) => {
                     as: 'categoryDetails'
                 }
             },
-            // Lookup subcategory details
             {
                 $lookup: {
                     from: 'subcategories',
@@ -138,7 +135,6 @@ const listProducts = async (req, res) => {
                     as: 'subCategoryDetails'
                 }
             },
-            // Add computed fields
             {
                 $addFields: {
                     smartScore: {
@@ -149,14 +145,11 @@ const listProducts = async (req, res) => {
                             { $multiply: ["$price", -0.1] }
                         ]
                     },
-                    // Flatten category/subcategory (take first match)
                     categoryInfo: { $arrayElemAt: ["$categoryDetails", 0] },
                     subCategoryInfo: { $arrayElemAt: ["$subCategoryDetails", 0] }
                 }
             },
-            // Sort by smart score
             { $sort: { smartScore: -1, date: -1 } },
-            // Clean up - remove temporary fields
             {
                 $project: {
                     categoryDetails: 0,
@@ -248,7 +241,6 @@ const bulkDiscount = async (req, res) => {
         if (category) filter.category = category;
         if (subCategory) filter.subCategory = subCategory;
 
-        // Thay thế bằng BulkWrite để tương thích với mọi phiên bản Mongoose, tránh lỗi "Cannot pass an array to query updates..."
         const products = await productModel.find(filter);
         if (products.length === 0) {
             return res.json({ success: false, message: 'Không tìm thấy sản phẩm nào để giảm giá.' });
@@ -287,105 +279,338 @@ const bulkDiscount = async (req, res) => {
     }
 };
 
-const bulkImport = async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.json({ success: false, message: 'Không tìm thấy file CSV' });
-        }
-
-        const filePath = req.file.path;
-        const buffer = fs.readFileSync(filePath);
+// Helper: Parse raw product text with improved category/subcategory detection
+const parseRawProductText = (text) => {
+    const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+    const products = [];
+    
+    const categoryRules = {
+        ChatGPT: 'ChatGPT',
+        Claude: 'Claude',
+        Cursor: 'Cursor',
+        Canva: 'Canva',
+        CapCut: 'CapCut',
+        Gemini: 'Gemini',
+        Kling: 'Kling AI',
+        Veo: 'Google Veo',
+        YouTube: 'YouTube',
+        Nord: 'NordVPN',
+        HMA: 'HMA',
+        Duolingo: 'Duolingo',
+        TradingView: 'TradingView',
+        Adobe: 'Adobe',
+        Microsoft: 'Microsoft',
+        ElevenLabs: 'ElevenLabs',
+        Suno: 'Suno AI',
+        OpenArt: 'OpenArt',
+        Gamma: 'Gamma',
+        Meitu: 'Meitu',
+        Drive: 'Google Drive',
+        ExpressVPN: 'ExpressVPN',
+    };
+    
+    const subCategoryRules = [
+        'Plus', 'Pro', 'Premium', 'Team', 'API', 'Request', 
+        'Creator', 'Edu', 'Max', 'Family', 'Credit', 'SVIP', 'VPN'
+    ];
+    
+    for (const line of lines) {
+        if (!line.includes('—')) continue;
         
-        // Nhận diện Encoding thông minh: Thử UTF-8, nếu lỗi dùng Win-1258 hoặc UTF-16LE
-        let content = "";
-        const utf8Content = iconv.decode(buffer, 'utf-8');
-        if (utf8Content.includes('\uFFFD')) {
-            const win1258Content = iconv.decode(buffer, 'win1258');
-            if (win1258Content.includes('\uFFFD')) {
-                content = iconv.decode(buffer, 'utf-16le');
-            } else {
-                content = win1258Content;
+        // Remove bullet points
+        const cleanLine = line.replace(/^[•\-*]\s*/, '').trim();
+        
+        // Split name and price
+        const [left, right] = cleanLine.split('—');
+        if (!left || !right) continue;
+        
+        const name = left.trim();
+        
+        // Parse price: remove parentheses content, dots, convert k to 000
+        let price = right.replace(/\(.*?\)/g, '').trim().toLowerCase();
+        price = price.replace(/\./g, '').replace('k', '000');
+        price = Number(price) || 0;
+        
+        if (price === 0) continue;
+        
+        // Detect category
+        let category = 'Khác';
+        for (const key in categoryRules) {
+            if (name.toLowerCase().includes(key.toLowerCase())) {
+                category = categoryRules[key];
+                break;
             }
-        } else {
-            content = utf8Content;
+        }
+        
+        // Detect subcategory
+        let subcategory = 'Khác';
+        for (const sub of subCategoryRules) {
+            if (name.toLowerCase().includes(sub.toLowerCase())) {
+                subcategory = sub;
+                break;
+            }
+        }
+        
+        // Special fallback rules
+        if (category === 'TradingView') {
+            subcategory = 'Premium';
+        }
+        if (category === 'HMA' || category === 'NordVPN') {
+            subcategory = 'VPN';
+        }
+        
+        // Extract duration
+        const durationMatch = name.match(/(\d+[-–]?\d*\s?(ngày|tháng|năm|giờ))/i);
+        const duration = durationMatch ? durationMatch[0] : '1 tháng';
+        
+        // Determine bestseller
+        const bestsellerBrands = [
+            'ChatGPT', 'Claude', 'Canva', 'CapCut', 
+            'Cursor', 'Gemini', 'TradingView'
+        ];
+        const bestseller = bestsellerBrands.includes(category);
+        
+        products.push({
+            name,
+            description: `Tài khoản ${name}`,
+            category,
+            subCategory: subcategory,
+            price,
+            oldPrice: Math.round(price * 1.2),
+            duration,
+            bestseller,
+            sizes: ['Default'],
+            colors: [],
+        });
+    }
+    
+    return products;
+};
+
+const parseTextForImport = async (req, res) => {
+    try {
+        const { text } = req.body;
+        if (!text || !text.trim()) {
+            return res.json({ success: false, message: 'Vui lòng nhập dữ liệu' });
         }
 
-        // Loại bỏ BOM và chuẩn hóa chuỗi
-        content = content.replace(/^\uFEFF/, '').trim();
+        // Get existing metadata for smart matching
+        const existingCategories = await categoryModel.find({ status: true }).select('name');
+        const existingSubCategories = await subCategoryModel.find({ status: true }).select('name');
+        const categoryNames = existingCategories.map(c => c.name.toLowerCase());
+        const subCategoryNames = existingSubCategories.map(s => s.name.toLowerCase());
 
-        // Sử dụng PapaParse để bóc tách dữ liệu
-        const parsedData = Papa.parse(content, {
-            header: true,
-            skipEmptyLines: true,
-            dynamicTyping: false,
+        // Parse products using the improved parser
+        const products = parseRawProductText(text);
+
+        if (products.length === 0) {
+            return res.json({ success: false, message: 'Không tìm thấy sản phẩm nào trong dữ liệu' });
+        }
+
+        // Smart category/subcategory matching with existing database
+        const enrichedProducts = products.map(p => {
+            // Try to match with existing categories (case-insensitive)
+            const matchedCategory = existingCategories.find(
+                c => c.name.toLowerCase() === p.category.toLowerCase()
+            );
+            if (matchedCategory) {
+                p.category = matchedCategory.name; // Use exact name from DB
+            }
+
+            // Try to match with existing subcategories (case-insensitive)
+            const matchedSubCategory = existingSubCategories.find(
+                s => s.name.toLowerCase() === p.subCategory.toLowerCase()
+            );
+            if (matchedSubCategory) {
+                p.subCategory = matchedSubCategory.name; // Use exact name from DB
+            }
+
+            return p;
         });
 
-        if (parsedData.errors && parsedData.errors.length > 0) {
-            console.log('PapaParse Errors:', parsedData.errors);
+        // Check existing products
+        const existingProducts = await productModel.find({
+            name: { $in: enrichedProducts.map(p => p.name) }
+        }).select('name');
+        const existingProductNames = new Set(existingProducts.map(p => p.name));
+
+        // Get unique categories and subcategories from parsed data
+        const uniqueCategories = [...new Set(enrichedProducts.map(p => p.category))];
+        const uniqueSubCategories = [...new Set(enrichedProducts.map(p => p.subCategory).filter(Boolean))];
+
+        // Check which are new
+        const existingCategorySet = new Set(existingCategories.map(c => c.name));
+        const existingSubCategorySet = new Set(existingSubCategories.map(s => s.name));
+
+        // Mark products as update or new
+        const finalProducts = enrichedProducts.map(p => ({
+            ...p,
+            isUpdate: existingProductNames.has(p.name)
+        }));
+
+        // Identify new categories and subcategories
+        const newCategories = uniqueCategories.filter(cat => !existingCategorySet.has(cat));
+        const newSubCategories = finalProducts
+            .filter(p => p.subCategory && !existingSubCategorySet.has(p.subCategory))
+            .map(p => ({ name: p.subCategory, category: p.category }))
+            .filter((v, i, a) => a.findIndex(t => t.name === v.name && t.category === v.category) === i);
+
+        const summary = {
+            total: finalProducts.length,
+            newProducts: finalProducts.filter(p => !p.isUpdate).length,
+            existingProducts: finalProducts.filter(p => p.isUpdate).length,
+        };
+
+        res.json({
+            success: true,
+            message: `Phân tích thành công ${finalProducts.length} sản phẩm`,
+            products: finalProducts,
+            newCategories,
+            newSubCategories,
+            summary
+        });
+    } catch (error) {
+        console.error('Parse Text Error:', error);
+        res.json({ success: false, message: 'Lỗi phân tích: ' + error.message });
+    }
+};
+
+const bulkImport = async (req, res) => {
+    try {
+        const { products } = req.body;
+        if (!products || !Array.isArray(products) || !products.length) {
+            return res.json({ success: false, message: 'Không có dữ liệu để import' });
         }
 
-        const results = parsedData.data;
+        let createdProducts = 0;
+        let updatedProducts = 0;
+        let failedProducts = 0;
+        let createdCategories = 0;
+        let createdSubCategories = 0;
+        const errors = [];
 
-        const validProducts = results.map((row) => {
-            const cleanRow = {};
-            // Làm sạch triệt để Key và Value
-            Object.keys(row).forEach(key => {
-                // Xóa mọi ký tự không in được và trim
-                const cleanKey = key.replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '').trim().toLowerCase();
-                let value = (row[key] || '').toString().replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '').trim();
-                // Bóc dấu ngoặc kép bọc quanh
-                value = value.replace(/^["']|["']$/g, '').trim();
-                cleanRow[cleanKey] = value;
+        // Get all unique categories and subcategories
+        const uniqueCategories = [...new Set(products.map(p => p.category))];
+        const uniqueSubCategories = [...new Set(products.map(p => p.subCategory).filter(Boolean))];
+
+        // Create missing categories
+        for (const categoryName of uniqueCategories) {
+            const existing = await categoryModel.findOne({ name: categoryName });
+            if (!existing) {
+                await categoryModel.create({
+                    name: categoryName,
+                    image: '',
+                    status: true,
+                    date: Date.now()
+                });
+                createdCategories++;
+                console.log(`✅ Created category: ${categoryName}`);
+            }
+        }
+
+        // Get category IDs for subcategories
+        const categoryDocs = await categoryModel.find({ 
+            name: { $in: uniqueCategories } 
+        });
+        const categoryMap = {};
+        categoryDocs.forEach(cat => {
+            categoryMap[cat.name] = cat._id;
+        });
+
+        // Create missing subcategories (avoid duplicates)
+        const createdSubCategorySet = new Set();
+        for (const product of products) {
+            if (!product.subCategory) continue;
+            
+            const categoryId = categoryMap[product.category];
+            if (!categoryId) continue;
+
+            const subCategoryKey = `${product.subCategory}|${categoryId}`;
+            if (createdSubCategorySet.has(subCategoryKey)) continue;
+
+            const existing = await subCategoryModel.findOne({ 
+                name: product.subCategory,
+                categoryId: categoryId
             });
 
-            // Map cột linh hoạt (Tiếng Việt & Tiếng Anh)
-            const name = (cleanRow.name || cleanRow['tên sản phẩm'] || cleanRow['product name'] || '').normalize('NFC');
-            const category = (cleanRow.category || cleanRow['danh mục'] || '').normalize('NFC');
-            
-            if (!name || !category) return null;
-
-            // Xử lý giá tiền (loại bỏ dấu chấm, phẩy, ký tự tiền tệ)
-            const parsePrice = (val) => {
-                const cleaned = val.toString().replace(/[^0-9]/g, '');
-                return Number(cleaned) || 0;
-            };
-
-            const price = parsePrice(cleanRow.price || cleanRow['giá'] || '0');
-            const oldPrice = parsePrice(cleanRow.oldprice || cleanRow['giá cũ'] || '0');
-
-            // Xử lý ảnhlink sạch
-            const rawImage = cleanRow.image || cleanRow['hình ảnh'] || cleanRow['ảnh'];
-            const imageList = rawImage 
-                ? rawImage.split('|').map(i => i.trim().replace(/^["']|["']$/g, '').trim()) 
-                : ['https://via.placeholder.com/600'];
-
-            return {
-                name: name,
-                description: (cleanRow.description || cleanRow['mô tả'] || name).normalize('NFC'),
-                price: price,
-                oldPrice: oldPrice > price ? oldPrice : 0, // Đảm bảo logic SALE hợp lý
-                category: category,
-                subCategory: (cleanRow.subcategory || cleanRow['danh mục phụ'] || 'Khác').normalize('NFC'),
-                sizes: (cleanRow.sizes || 'M|L|XL').split('|').map(s => s.trim()),
-                colors: (cleanRow.colors || '').split('|').map(c => c.trim()).filter(c => c),
-                videoUrl: cleanRow.videourl || '',
-                bestseller: cleanRow.bestseller?.toLowerCase() === 'true' || cleanRow.bestseller === '1',
-                image: imageList,
-                date: Date.now()
-            };
-        }).filter(p => p !== null);
-
-        if (validProducts.length === 0) {
-            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            return res.json({ success: false, message: 'Dữ liệu không hợp lệ hoặc sai cấu trúc cột (Cần: Tên sản phẩm, Danh mục, Giá...)' });
+            if (!existing) {
+                await subCategoryModel.create({
+                    name: product.subCategory,
+                    categoryId: categoryId,
+                    status: true,
+                    date: Date.now()
+                });
+                createdSubCategories++;
+                createdSubCategorySet.add(subCategoryKey);
+                console.log(`✅ Created subcategory: ${product.subCategory} (${product.category})`);
+            }
         }
 
-        await productModel.insertMany(validProducts);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-        
-        res.json({ success: true, message: `Thành công! Đã nhập ${validProducts.length} sản phẩm.` });
+        // Import/update products
+        for (const product of products) {
+            try {
+                const existingProduct = await productModel.findOne({ name: product.name });
+
+                const productData = {
+                    name: product.name,
+                    description: product.description || `Tài khoản ${product.name}`,
+                    price: product.price,
+                    oldPrice: product.oldPrice || 0,
+                    category: product.category,
+                    subCategory: product.subCategory || '',
+                    duration: product.duration || '',
+                    bestseller: product.bestseller || false,
+                    sizes: product.sizes || ['Default'],
+                    colors: product.colors || [],
+                    image: product.image || ['https://via.placeholder.com/600x600?text=No+Image'],
+                };
+
+                if (existingProduct) {
+                    // Update existing product
+                    await productModel.findByIdAndUpdate(existingProduct._id, productData);
+                    updatedProducts++;
+                    console.log(`🔄 Updated: ${product.name}`);
+                } else {
+                    // Create new product
+                    await productModel.create({
+                        ...productData,
+                        date: Date.now()
+                    });
+                    createdProducts++;
+                    console.log(`✨ Created: ${product.name}`);
+                }
+            } catch (error) {
+                failedProducts++;
+                errors.push({ product: product.name, error: error.message });
+                console.error(`❌ Failed: ${product.name} - ${error.message}`);
+            }
+        }
+
+        // Log action
+        if (req.adminEmail) {
+            await logAction(
+                req.adminEmail, 
+                req.adminName, 
+                'BULK_IMPORT', 
+                `Imported ${createdProducts + updatedProducts} products (${createdProducts} new, ${updatedProducts} updated)`,
+                'BULK'
+            );
+        }
+
+        res.json({
+            success: true,
+            message: `Import thành công: ${createdProducts} sản phẩm mới, ${updatedProducts} sản phẩm cập nhật`,
+            details: {
+                createdProducts,
+                updatedProducts,
+                failedProducts,
+                createdCategories,
+                createdSubCategories,
+                errors: errors.length > 0 ? errors : undefined
+            }
+        });
     } catch (error) {
-        console.error('System Error:', error);
+        console.error('Bulk Import Error:', error);
         res.json({ success: false, message: 'Lỗi hệ thống: ' + error.message });
     }
 };
@@ -460,4 +685,69 @@ const getProductStock = async (req, res) => {
     }
 };
 
-export { addProduct, removeProduct, singleProduct, listProducts, updateProduct, bulkDiscount, bulkImport, getInventory, getProductStock };
+// Get all metadata for import (categories, subcategories, existing products)
+const getImportMetadata = async (req, res) => {
+    try {
+        // Get all categories
+        const categories = await categoryModel.find({ status: true })
+            .select('name image')
+            .sort({ name: 1 });
+
+        // Get all subcategories with category info
+        const subcategories = await subCategoryModel.aggregate([
+            { $match: { status: true } },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'categoryId',
+                    foreignField: '_id',
+                    as: 'categoryInfo'
+                }
+            },
+            {
+                $unwind: '$categoryInfo'
+            },
+            {
+                $project: {
+                    name: 1,
+                    categoryName: '$categoryInfo.name',
+                    categoryId: 1
+                }
+            },
+            { $sort: { categoryName: 1, name: 1 } }
+        ]);
+
+        // Get all product names for duplicate checking
+        const products = await productModel.find()
+            .select('name category subCategory')
+            .sort({ name: 1 });
+
+        // Get unique sizes and colors from existing products
+        const allSizes = await productModel.distinct('sizes');
+        const allColors = await productModel.distinct('colors');
+
+        res.json({
+            success: true,
+            metadata: {
+                categories: categories.map(c => ({ name: c.name, image: c.image })),
+                subcategories: subcategories.map(s => ({
+                    name: s.name,
+                    category: s.categoryName,
+                    categoryId: s.categoryId
+                })),
+                products: products.map(p => ({
+                    name: p.name,
+                    category: p.category,
+                    subCategory: p.subCategory
+                })),
+                sizes: allSizes.flat().filter((v, i, a) => a.indexOf(v) === i),
+                colors: allColors.flat().filter((v, i, a) => a.indexOf(v) === i)
+            }
+        });
+    } catch (error) {
+        console.error('Get Import Metadata Error:', error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+export { addProduct, removeProduct, singleProduct, listProducts, updateProduct, bulkDiscount, bulkImport, parseTextForImport, getInventory, getProductStock, getImportMetadata };

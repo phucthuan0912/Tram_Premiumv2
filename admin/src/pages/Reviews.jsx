@@ -227,14 +227,13 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
 
         <div className={compactStatsRowClass}>
           {stats.map((item) => (
-            <Card key={item.key} bordered={false} className={compactStatCardClass}>
-              <Statistic title={item.title} value={item.value} prefix={item.icon} valueStyle={{ color: '#0f172a' }} />
+            <Card key={item.key} className={compactStatCardClass}>
+              <Statistic title={item.title} value={item.value} prefix={item.icon}  />
             </Card>
           ))}
         </div>
 
         <Card
-          bordered={false}
           className='mb-4 md:mb-6 shadow-sm'
           bodyStyle={{ padding: 12 }}
         >
@@ -259,17 +258,17 @@ const Reviews = ({ token, backendUrl: backendUrlFromProps }) => {
         </Card>
 
         {loading ? (
-          <Card bordered={false} className='shadow-sm'>
+          <Card className='shadow-sm'>
             <div className='py-10 text-center text-sm text-slate-500'>Loading reviews...</div>
           </Card>
         ) : filteredList.length === 0 ? (
-          <Card bordered={false} className='shadow-sm'>
+          <Card className='shadow-sm'>
             <Empty description='No matching reviews found' image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </Card>
         ) : (
           <div className='space-y-4'>
             {filteredList.map((item) => (
-              <Card key={item._id} bordered={false} className='shadow-sm' bodyStyle={{ padding: '16px 12px' }}>
+              <Card key={item._id} className='shadow-sm' bodyStyle={{ padding: '16px 12px' }}>
                 <div className='flex flex-col gap-3 md:gap-4 lg:flex-row'>
                   <div className='xl:w-[210px] xl:shrink-0'>
                     <div className='flex items-center gap-2 md:gap-3 rounded-xl md:rounded-2xl border border-slate-100 bg-slate-50 px-2 py-2 md:px-3 md:py-2.5'>

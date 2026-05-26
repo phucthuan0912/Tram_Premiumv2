@@ -272,15 +272,14 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
 
         <div className={compactStatsRowClass}>
           {stats.map((item) => (
-            <Card key={item.key} bordered={false} className={compactStatCardClass}>
-              <Statistic title={item.title} value={item.value} prefix={item.icon} valueStyle={{ color: '#0f172a' }} />
+            <Card key={item.key} className={compactStatCardClass}>
+              <Statistic title={item.title} value={item.value} prefix={item.icon}  />
             </Card>
           ))}
         </div>
 
         <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
-            bordered={false}
             className='shadow-sm'
             title={
               <Space size={10}>
@@ -338,7 +337,6 @@ const SubCategories = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
 
           <Card
-            bordered={false}
             className='shadow-sm'
             title={
               <div>

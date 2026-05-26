@@ -478,7 +478,7 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
         </div>
 
         <div className={`${compactStatsRowClass} items-stretch`}>
-          <Card bordered={false} className='min-w-[430px] flex-[2.2] shadow-sm'>
+          <Card className='min-w-[430px] flex-[2.2] shadow-sm'>
             <div className='flex h-full items-center justify-center'>
               <div className='h-[220px] w-full max-w-[300px] shrink-0'>
                   <ResponsiveContainer width='100%' height='100%'>
@@ -531,19 +531,18 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
             </div>
           </Card>
 
-          <Card bordered={false} className={compactStatCardClass}>
+          <Card className={compactStatCardClass}>
             <Statistic
               title={t('orders.liveRevenue')}
               value={currencyFormatter.format(orderStatusOverview.revenue)}
               prefix={<WalletOutlined style={{ color: '#2563eb' }} />}
-              valueStyle={{ color: '#0f172a' }}
+              
             />
 
           </Card>
         </div>
 
         <Card
-          bordered={false}
             className='shadow-sm'
             title={
               <div>

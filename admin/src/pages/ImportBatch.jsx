@@ -454,7 +454,11 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 }
                 setEditFormData(nextValues)
                 editForm.setFieldsValue({
-                  ...nextValues,
+                  size: nextValues.size,
+                  remainingQty: nextValues.remainingQty,
+                  supplier: nextValues.supplier,
+                  note: nextValues.note,
+                  status: nextValues.status,
                   costPrice: formatCurrency(String(batch.costPrice || '')),
                 })
               }}
@@ -491,15 +495,14 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
 
         <div className={compactStatsRowClass}>
           {stats.map((item) => (
-            <Card key={item.key} bordered={false} className={compactStatCardClass}>
-              <Statistic title={item.title} value={item.value} prefix={item.icon} valueStyle={{ color: '#0f172a' }} />
+            <Card key={item.key} className={compactStatCardClass}>
+              <Statistic title={item.title} value={item.value} prefix={item.icon}  />
             </Card>
           ))}
         </div>
 
         <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
-            bordered={false}
             className='shadow-sm'
             title={
               <Space size={10}>
@@ -626,7 +629,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                       <div className='min-w-0'>
                         <div className='text-sm font-semibold text-slate-900'>{selectedProduct.name}</div>
                         <div className='mt-1 text-xs text-amber-800'>
-                        Selling price đang để bán: <span className='font-semibold'>{formatVnd(selectedProduct.price)}</span>
+                        Giá đang để bán: <span className='font-semibold'>{formatVnd(selectedProduct.price)}</span>
                         </div>
                     </div>
                     </div>
@@ -645,7 +648,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                   {selectedProductSizes.length > 0 ? (
                     <div className='mt-3'>
                       <div className='mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500'>
-                        Thời hạn gói đang bán
+                        Gói dịch vụ có sẵn
                       </div>
                       <div className='flex flex-wrap gap-2'>
                         {selectedProductSizes.map((sizeOption) => (
@@ -738,7 +741,6 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
 
           <Card
-            bordered={false}
             className='shadow-sm'
             title={
               <div>
@@ -832,14 +834,15 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 name='status'
                 rules={[{ required: true, message: 'Please choose status' }]}
               >
-                <select
+                <Select
+                  size='middle'
                   value={editFormData.status}
-                  onChange={(event) => setEditFormData((prev) => ({ ...prev, status: event.target.value }))}
-                  className={nativeSelectClass}
-                >
-                  <option value='Active'>Active</option>
-                  <option value='Hidden'>Hidden</option>
-                </select>
+                  onChange={(value) => setEditFormData((prev) => ({ ...prev, status: value }))}
+                  options={[
+                    { value: 'Active', label: 'Active' },
+                    { value: 'Hidden', label: 'Hidden' },
+                  ]}
+                />
               </Form.Item>
             </div>
 
@@ -852,6 +855,7 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 <Input
                   size='middle'
                   style={{ width: '100%', fontSize: '14px', fontWeight: 600 }}
+                  placeholder='100.000'
                   value={formatCurrency(editFormData.costPrice)}
                   onChange={(event) =>
                     setEditFormData((prev) => ({ ...prev, costPrice: parseCurrency(event.target.value) }))
@@ -863,7 +867,6 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 label='Remaining Quantity'
                 name='remainingQty'
                 rules={[{ required: true, message: 'Please enter remaining quantity' }]}
-                help={<div className="mt-2 text-rose-600 font-medium">Lưu ý: Không cộng dồn sản phẩm MỚI vào lô cũ. Hãy tạo "New Batch" (Tạo lô mới) để không bị hỏng báo cáo tính Lãi/Lỗ!</div>}
               >
                 <InputNumber
                   size='middle'
@@ -874,6 +877,14 @@ const ImportBatch = ({ token, backendUrl: backendUrlFromProps }) => {
                 />
               </Form.Item>
             </div>
+
+            <Alert
+              message='Lưu ý quan trọng'
+              description='Không cộng dồn sản phẩm mới vào lô cũ. Hãy tạo lô mới để báo cáo Lãi/Lỗ chính xác'
+              type='warning'
+              style={{ marginBottom: 16 }}
+              showIcon
+            />
 
             <Form.Item label='Supplier' name='supplier'>
               <Input

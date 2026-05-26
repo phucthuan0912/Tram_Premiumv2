@@ -1,5 +1,5 @@
 import express from 'express';
-import { listProducts, addProduct, removeProduct, singleProduct, updateProduct, bulkDiscount, bulkImport, getInventory, getProductStock } from '../controllers/productController.js';
+import { listProducts, addProduct, removeProduct, singleProduct, updateProduct, bulkDiscount, bulkImport, parseTextForImport, getInventory, getProductStock, getImportMetadata } from '../controllers/productController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import upload from '../middleware/multer.js';
 const productRouter = express.Router();
@@ -21,7 +21,9 @@ productRouter.post('/single', singleProduct);
 productRouter.get('/list', listProducts);
 
 productRouter.post('/bulk-discount', adminAuth, bulkDiscount);
-productRouter.post('/bulk-import', adminAuth, upload.single('file'), bulkImport);
+productRouter.post('/parse-text', adminAuth, parseTextForImport);
+productRouter.post('/bulk-import', adminAuth, bulkImport);
+productRouter.get('/import-metadata', adminAuth, getImportMetadata);
 productRouter.get('/inventory', adminAuth, getInventory);
 productRouter.get('/stock/:id', getProductStock);
 

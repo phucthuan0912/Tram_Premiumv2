@@ -478,14 +478,13 @@ const List = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
 
         <div className={compactStatsRowClass}>
           {stats.map((item) => (
-            <Card key={item.key} bordered={false} className={compactStatCardClass}>
-              <Statistic title={item.title} value={item.value} prefix={item.icon} valueStyle={{ color: '#0f172a' }} />
+            <Card key={item.key} className={compactStatCardClass}>
+              <Statistic title={item.title} value={item.value} prefix={item.icon}  />
             </Card>
           ))}
         </div>
 
         <Card
-          bordered={false}
           className='shadow-sm'
           title={
             <div>
