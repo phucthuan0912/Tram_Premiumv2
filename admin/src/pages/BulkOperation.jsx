@@ -43,6 +43,7 @@ import {
   getSelectPopupContainer,
   pageShellClass,
   pageStickyHeaderClass,
+  pageContentMarginClass,
 } from '../lib/adminAntd'
 
 const { Title, Text, Paragraph } = Typography
@@ -608,7 +609,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='mt-4'>
+        <div className={pageContentMarginClass}>
           {/* ── Import Result ── */}
           {importResult && (
           <Card

@@ -35,6 +35,7 @@ import {
   getSelectPopupContainer,
   pageShellClass,
   pageStickyHeaderClass,
+  pageContentMarginClass,
 } from '../lib/adminAntd'
 
 const { Title, Text } = Typography
@@ -376,7 +377,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           </Title>
         </div>
 
-        <div className='mt-4'>
+        <div className={pageContentMarginClass}>
           <div className={compactStatsRowClass}>
           {stats.map((item) => (
             <Card key={item.key} className={compactStatCardClass}>
@@ -494,6 +495,7 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               />
             </div>
           </Card>
+        </div>
         </div>
         </div>
       </div>

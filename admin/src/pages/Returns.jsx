@@ -143,12 +143,12 @@ const Returns = ({ token }) => {
 
     return (
         <div className="p-6">
-        <div className="sticky top-0 z-10 bg-white py-3 -mx-6 px-6 border-b border-slate-100 shadow-sm flex justify-between items-center">
+        <div className="fixed top-[81px] left-0 right-0 z-20 bg-white py-3 px-6 border-b border-slate-100 shadow-sm flex justify-between items-center">
             <Text className="text-xl font-bold text-slate-800">Yêu cầu hoàn trả (RMA)</Text>
             <Button icon={<ReloadOutlined />} onClick={fetchReturns} loading={loading}>Làm mới</Button>
         </div>
         
-        <div className="mt-4">
+        <div className="mt-[80px]">
             <Table
                 dataSource={returns}
                 columns={columns}

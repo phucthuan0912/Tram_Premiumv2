@@ -30,6 +30,7 @@ import {
   nativeSelectClass,
   pageShellClass,
   pageStickyHeaderClass,
+  pageContentMarginClass,
 } from '../lib/adminAntd'
 
 const { Text } = Typography
@@ -480,7 +481,7 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
           </div>
         </div>
 
-        <div className='mt-4'>
+        <div className={pageContentMarginClass}>
           <div className={`${compactStatsRowClass} items-stretch`}>
           <Card className='min-w-[430px] flex-[2.2] shadow-sm'>
             <div className='flex h-full items-center justify-center'>
