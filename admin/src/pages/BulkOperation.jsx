@@ -42,6 +42,7 @@ import {
   compactStatsRowClass,
   getSelectPopupContainer,
   pageShellClass,
+  pageStickyHeaderClass,
 } from '../lib/adminAntd'
 
 const { Title, Text, Paragraph } = Typography
@@ -582,7 +583,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
         {/* ── Header ── */}
-        <div className="mb-3 md:mb-6">
+        <div className={pageStickyHeaderClass}>
           <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '18px' }}>
             Smart Import
           </Title>
@@ -590,6 +591,8 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
             Dán dữ liệu sản phẩm dạng bảng hoặc danh sách, xem trước và xác nhận import hàng loạt.
           </Text>
         </div>
+
+        <div className='mt-4'>
 
         {/* ── Top stats row ── */}
         <div className={compactStatsRowClass}>
@@ -605,8 +608,9 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        {/* ── Import Result ── */}
-        {importResult && (
+        <div className='mt-4'>
+          {/* ── Import Result ── */}
+          {importResult && (
           <Card
             className="mb-4 shadow-sm"
             title={
@@ -694,66 +698,38 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
           </Card>
         )}
 
-        {/* ── ChatGPT Helper section ── */}
+        {/* ── ChatGPT Helper section - Mini version ── */}
         {!parsedProducts && !importResult && (
-          <Card
-            className="mb-4 shadow-sm"
-            size="small"
-          >
-            <Collapse size="small" ghost>
-              <Panel 
-                header={
-                  <Space>
-                    <RobotOutlined style={{ color: '#6366f1' }} />
-                    <Text strong style={{ fontSize: '13px' }}>🤖 ChatGPT Helper - Click để copy prompt</Text>
-                  </Space>
-                } 
-                key="1"
-              >
-                <div className="space-y-3">
-                  {/* Quick Prompt */}
-                  <div className="rounded border border-slate-200 bg-slate-50 p-3">
-                    <div className="mb-2 flex items-center justify-between">
-                      <Text strong style={{ color: '#059669', fontSize: '12px' }}>📋 Prompt Nhanh</Text>
-                      <Button 
-                        size="small" 
-                        type="primary"
-                        icon={<CopyOutlined />}
-                        onClick={() => handleCopyPrompt(CHATGPT_PROMPT_QUICK)}
-                      >
-                        Copy
-                      </Button>
-                    </div>
-                    <div className="bg-white p-2 rounded border text-xs text-slate-600 font-mono max-h-32 overflow-y-auto">
-                      {CHATGPT_PROMPT_QUICK.substring(0, 200)}...
-                    </div>
-                  </div>
-
-                  {/* Advanced Prompt */}
-                  <div className="rounded border border-slate-200 bg-slate-50 p-3">
-                    <div className="mb-2 flex items-center justify-between">
-                      <Text strong style={{ color: '#dc2626', fontSize: '12px' }}>🚀 Prompt Nâng Cao</Text>
-                      <Button 
-                        size="small" 
-                        type="primary"
-                        icon={<CopyOutlined />}
-                        onClick={() => handleCopyPrompt(CHATGPT_PROMPT_ADVANCED)}
-                      >
-                        Copy
-                      </Button>
-                    </div>
-                    <div className="bg-white p-2 rounded border text-xs text-slate-600 font-mono max-h-32 overflow-y-auto">
-                      {CHATGPT_PROMPT_ADVANCED.substring(0, 200)}...
-                    </div>
-                  </div>
-
-                  {/* Quick Guide */}
-                  <div className="text-xs text-slate-500 bg-blue-50 p-2 rounded">
-                    <strong>Cách dùng:</strong> Copy prompt → Paste vào ChatGPT → Thay dữ liệu thô → Copy kết quả → Paste vào textarea trên
-                  </div>
-                </div>
-              </Panel>
-            </Collapse>
+          <Card className="mb-3 shadow-sm" size="small" style={{ backgroundColor: '#f0f9ff' }}>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <RobotOutlined style={{ color: '#6366f1' }} />
+                <Text strong style={{ fontSize: '12px' }}>🤖 ChatGPT Helper</Text>
+              </div>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <Button 
+                  size="small" 
+                  type="default"
+                  icon={<CopyOutlined />}
+                  onClick={() => handleCopyPrompt(CHATGPT_PROMPT_QUICK)}
+                  block
+                >
+                  📋 Copy Prompt Nhanh
+                </Button>
+                <Button 
+                  size="small" 
+                  type="default"
+                  icon={<CopyOutlined />}
+                  onClick={() => handleCopyPrompt(CHATGPT_PROMPT_ADVANCED)}
+                  block
+                >
+                  🚀 Copy Prompt Nâng Cao
+                </Button>
+              </div>
+              <Text type="secondary" style={{ fontSize: '10px' }}>
+                💡 Copy → Paste vào ChatGPT → Thay dữ liệu thô → Copy kết quả → Paste dưới đây
+              </Text>
+            </div>
           </Card>
         )}
 
@@ -887,26 +863,28 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
             )}
 
             {/* Products table */}
-            <Table
-              rowKey="_rowKey"
-              dataSource={parsedProducts}
-              columns={columns}
-              rowSelection={rowSelection}
-              size="small"
-              pagination={{
-                pageSize: 10,
-                showSizeChanger: true,
-                pageSizeOptions: ['10', '20', '50', '100'],
-                size: 'small',
-                showTotal: (total, range) => (
-                  <Text style={{ fontSize: 11, color: '#64748b' }}>
-                    {range[0]}-{range[1]} / {total} sản phẩm
-                  </Text>
-                ),
-              }}
-              scroll={{ x: 1100 }}
-              style={{ marginBottom: 16 }}
-            />
+            <div style={{ overflowX: 'auto' }}>
+              <Table
+                rowKey="_rowKey"
+                dataSource={parsedProducts}
+                columns={columns}
+                rowSelection={rowSelection}
+                size="small"
+                pagination={{
+                  pageSize: 10,
+                  showSizeChanger: true,
+                  pageSizeOptions: ['10', '20', '50', '100'],
+                  size: 'small',
+                  showTotal: (total, range) => (
+                    <Text style={{ fontSize: 11, color: '#64748b' }}>
+                      {range[0]}-{range[1]} / {total} sản phẩm
+                    </Text>
+                  ),
+                }}
+                scroll={{ x: 1400 }}
+                style={{ marginBottom: 16 }}
+              />
+            </div>
 
             {/* Action buttons */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
@@ -933,6 +911,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
             </div>
           </Card>
         )}
+        </div>
       </div>
     </ConfigProvider>
   )

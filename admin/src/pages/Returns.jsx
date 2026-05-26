@@ -143,11 +143,12 @@ const Returns = ({ token }) => {
 
     return (
         <div className="p-6">
-            <div className="mb-4 flex justify-between items-center">
-                <Text className="text-xl font-bold text-slate-800">Yêu cầu hoàn trả (RMA)</Text>
-                <Button icon={<ReloadOutlined />} onClick={fetchReturns} loading={loading}>Làm mới</Button>
-            </div>
-            
+        <div className="sticky top-0 z-10 bg-white py-3 -mx-6 px-6 border-b border-slate-100 shadow-sm flex justify-between items-center">
+            <Text className="text-xl font-bold text-slate-800">Yêu cầu hoàn trả (RMA)</Text>
+            <Button icon={<ReloadOutlined />} onClick={fetchReturns} loading={loading}>Làm mới</Button>
+        </div>
+        
+        <div className="mt-4">
             <Table
                 dataSource={returns}
                 columns={columns}
@@ -167,26 +168,26 @@ const Returns = ({ token }) => {
                     <div className="space-y-4 pt-4">
                         <div>
                             <Text className="block text-sm font-semibold text-slate-500 mb-1">Lý do của khách:</Text>
-                            <div className="p-3 bg-slate-50 rounded-lg text-slate-700">
+                            <div className="p-3 bg-slate-50 rounded-2xl text-slate-700">
                                 {currentReturn.reason}
                             </div>
                         </div>
 
                         <div>
                             <Text className="block text-sm font-semibold text-slate-500 mb-1">Trạng thái hiện tại:</Text>
-                            <Tag color={STATUS_COLORS[currentReturn.status]}>{currentReturn.status}</Tag>
+                            <Tag color={STATUS_COLORS[currentReturn.status]} style={{ borderRadius: 999, fontSize: 12, padding: '6px 12px' }}>{currentReturn.status}</Tag>
                         </div>
 
                         <div>
                             <Text className="block text-sm font-semibold text-slate-500 mb-1">Phương thức hoàn tiền:</Text>
                             {currentReturn.refundMethod === 'Wallet' ? (
-                                <Tag color="green">Ví Điện Tử (Tự động)</Tag>
+                                <Tag color="green" style={{ borderRadius: 999, fontSize: 12, padding: '6px 12px' }}>Ví Điện Tử (Tự động)</Tag>
                             ) : (
-                                <Tag color="orange">Chuyển Khoản Ngân Hàng</Tag>
+                                <Tag color="orange" style={{ borderRadius: 999, fontSize: 12, padding: '6px 12px' }}>Chuyển Khoản Ngân Hàng</Tag>
                             )}
                             
                             {currentReturn.refundMethod === 'Bank' && currentReturn.bankDetails && (
-                                <div className="mt-2 p-3 bg-slate-50 rounded-lg text-sm text-slate-700">
+                                <div className="mt-2 p-3 bg-slate-50 rounded-2xl text-sm text-slate-700">
                                     <p><strong>Ngân hàng:</strong> {currentReturn.bankDetails.bankName}</p>
                                     <p><strong>Số tài khoản:</strong> {currentReturn.bankDetails.accountNumber}</p>
                                     <p><strong>Chủ tài khoản:</strong> {currentReturn.bankDetails.accountName}</p>
@@ -197,7 +198,7 @@ const Returns = ({ token }) => {
                         <div>
                             <Text className="block text-sm font-semibold text-slate-500 mb-1">Ghi chú Nội bộ (Admin):</Text>
                             <TextArea 
-                                rows={3} 
+                                rows={4} 
                                 value={adminNote} 
                                 onChange={(e) => setAdminNote(e.target.value)} 
                                 placeholder="Ghi chú về việc từ chối hoặc bồi thường..."
@@ -209,6 +210,7 @@ const Returns = ({ token }) => {
                                 <>
                                     <Button 
                                         danger 
+                                        size="large"
                                         icon={<CloseCircleOutlined />} 
                                         loading={submitting} 
                                         onClick={() => handleUpdateStatus('Rejected')}
@@ -216,7 +218,8 @@ const Returns = ({ token }) => {
                                         Từ chối (Từ chối hoàn trả)
                                     </Button>
                                     <Button 
-                                        type="primary" 
+                                        type="primary"
+                                        size="large"
                                         style={{ backgroundColor: '#f59e0b', borderColor: '#f59e0b' }}
                                         loading={submitting} 
                                         onClick={() => handleUpdateStatus('Approved')}
@@ -228,7 +231,8 @@ const Returns = ({ token }) => {
                             
                             {currentReturn.status === 'Approved' && (
                                 <Button 
-                                    type="primary" 
+                                    type="primary"
+                                    size="large"
                                     icon={<CheckCircleOutlined />} 
                                     loading={submitting} 
                                     onClick={() => handleUpdateStatus('Completed')}

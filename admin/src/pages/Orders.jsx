@@ -29,6 +29,7 @@ import {
   getSelectPopupContainer,
   nativeSelectClass,
   pageShellClass,
+  pageStickyHeaderClass,
 } from '../lib/adminAntd'
 
 const { Text } = Typography
@@ -454,33 +455,36 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-3 flex justify-end'>
-          <Space size={12} wrap>
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className={`${nativeSelectClass} min-w-[180px]`}
-            >
-              <option value='All'>{t('orders.allStatuses')}</option>
-              {ORDER_STATUSES.map((status) => (
-                <option key={status} value={status}>
-                  {statusLabel(status)}
-                </option>
-              ))}
-            </select>
-            <Button size='middle' icon={<ReloadOutlined />} loading={loading} onClick={() => fetchOrders()}>
-              {t('orders.refresh')}
-            </Button>
-            <Button size='middle' icon={<ExportOutlined />} onClick={exportToCsv}>
-              {t('orders.export')}
-            </Button>
-          </Space>
+        <div className={pageStickyHeaderClass}>
+          <div className='flex justify-end'>
+            <Space size={12} wrap>
+              <select
+                value={statusFilter}
+                onChange={(event) => setStatusFilter(event.target.value)}
+                className={`${nativeSelectClass} min-w-[180px]`}
+              >
+                <option value='All'>{t('orders.allStatuses')}</option>
+                {ORDER_STATUSES.map((status) => (
+                  <option key={status} value={status}>
+                    {statusLabel(status)}
+                  </option>
+                ))}
+              </select>
+              <Button size='middle' icon={<ReloadOutlined />} loading={loading} onClick={() => fetchOrders()}>
+                {t('orders.refresh')}
+              </Button>
+              <Button size='middle' icon={<ExportOutlined />} onClick={exportToCsv}>
+                {t('orders.export')}
+              </Button>
+            </Space>
+          </div>
         </div>
 
-        <div className={`${compactStatsRowClass} items-stretch`}>
+        <div className='mt-4'>
+          <div className={`${compactStatsRowClass} items-stretch`}>
           <Card className='min-w-[430px] flex-[2.2] shadow-sm'>
             <div className='flex h-full items-center justify-center'>
-              <div className='h-[220px] w-full max-w-[300px] shrink-0'>
+              <div style={{ height: '220px', width: '300px' }}>
                   <ResponsiveContainer width='100%' height='100%'>
                     <PieChart>
                       <Pie
@@ -550,19 +554,22 @@ const Orders = ({ token, backendUrl: backendUrlFromProps }) => {
               </div>
             }
           >
-          <Table
-            rowKey='_id'
-            columns={columns}
-            dataSource={visibleOrders}
-            loading={loading}
-            size='small'
-            pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-
+          <div style={{ overflowX: 'auto' }}>
+            <Table
+              rowKey='_id'
+              columns={columns}
+              dataSource={visibleOrders}
+              loading={loading}
+              size='small'
+              pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
+              scroll={{ x: 1400 }}
               locale={{
               emptyText: <Empty description={t('orders.noOrders')} image={Empty.PRESENTED_IMAGE_SIMPLE} />,
               }}
             />
+          </div>
           </Card>
+        </div>
       </div>
     </ConfigProvider>
   )

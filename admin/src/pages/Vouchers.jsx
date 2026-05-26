@@ -34,6 +34,7 @@ import {
   compactStatsRowClass,
   getSelectPopupContainer,
   pageShellClass,
+  pageStickyHeaderClass,
 } from '../lib/adminAntd'
 
 const { Title, Text } = Typography
@@ -369,13 +370,14 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
   return (
     <ConfigProvider theme={adminAntdTheme} getPopupContainer={getSelectPopupContainer}>
       <div className={pageShellClass}>
-        <div className='mb-3 md:mb-6'>
+        <div className={pageStickyHeaderClass}>
           <Title level={4} style={{ margin: 0, color: '#0f172a', fontSize: '14px' }}>
             Voucher Studio
           </Title>
         </div>
 
-        <div className={compactStatsRowClass}>
+        <div className='mt-4'>
+          <div className={compactStatsRowClass}>
           {stats.map((item) => (
             <Card key={item.key} className={compactStatCardClass}>
               <Statistic title={item.title} value={item.value} prefix={item.icon}  />
@@ -383,7 +385,8 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
           ))}
         </div>
 
-        <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
+        <div className='mt-4'>
+          <div className='grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)]'>
           <Card
             className='shadow-sm'
             title={
@@ -476,19 +479,22 @@ const Vouchers = ({ token, setToken, backendUrl: backendUrlFromProps }) => {
               </div>
             }
           >
-            <Table
-              rowKey='_id'
-              columns={columns}
-              dataSource={vouchers}
-              loading={loading}
-              size='small'
-              pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
-
-              locale={{
-                emptyText: <Empty description='No vouchers found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
-              }}
-            />
+            <div style={{ overflowX: 'auto' }}>
+              <Table
+                rowKey='_id'
+                columns={columns}
+                dataSource={vouchers}
+                loading={loading}
+                size='small'
+                pagination={{ pageSize: 6, showSizeChanger: false, size: 'small' }}
+                scroll={{ x: 1000 }}
+                locale={{
+                  emptyText: <Empty description='No vouchers found' image={Empty.PRESENTED_IMAGE_SIMPLE} />,
+                }}
+              />
+            </div>
           </Card>
+        </div>
         </div>
       </div>
     </ConfigProvider>

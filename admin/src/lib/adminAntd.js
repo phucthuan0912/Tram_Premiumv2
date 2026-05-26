@@ -46,6 +46,7 @@ export const adminAntdTheme = {
 }
 
 export const pageShellClass = 'w-full px-2 py-2 md:px-4 xl:px-5'
+export const pageStickyHeaderClass = 'sticky top-0 z-10 bg-white py-2 md:py-3 -mx-2 md:-mx-4 xl:-mx-5 px-2 md:px-4 xl:px-5 border-b border-slate-100 shadow-sm'
 export const compactStatsRowClass = 'mb-2 md:mb-4 flex flex-wrap gap-2 md:gap-3 lg:flex-nowrap'
 export const compactStatCardClass = 'min-h-[72px] min-w-[150px] md:min-w-[220px] flex-1 shadow-sm'
 export const sectionGridGapClass = 'grid gap-4'
