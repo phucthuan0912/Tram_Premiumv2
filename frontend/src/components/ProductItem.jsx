@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
+import { useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { usePageTransition } from '../context/PageTransitionContext';
 import { formatMoney } from '../lib/locale';
 
 const copyByLanguage = {
@@ -25,6 +27,9 @@ const parsePrice = (p) => {
 const ProductItem = ({ id, image, name, price, oldPrice }) => {
     const { language } = useLanguage();
     const t = copyByLanguage[language];
+    const navigate = useNavigate();
+    const { startTransition } = usePageTransition();
+    const imageRef = useRef(null);
 
     const imageSrc = Array.isArray(image)
         ? image[0]
@@ -38,10 +43,37 @@ const ProductItem = ({ id, image, name, price, oldPrice }) => {
         discountPercent = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
     }
 
+    const handleClick = useCallback((e) => {
+        e.preventDefault();
+
+        const imgEl = imageRef.current;
+        if (imgEl) {
+            const rect = imgEl.getBoundingClientRect();
+            startTransition({
+                sourceRect: {
+                    top: rect.top,
+                    left: rect.left,
+                    width: rect.width,
+                    height: rect.height,
+                },
+                imageSrc: imgEl.src || imageSrc,
+                productId: id,
+            });
+        }
+
+        // Navigate after a tiny delay so the overlay can paint first
+        requestAnimationFrame(() => {
+            navigate(`/product/${id}`);
+        });
+    }, [id, imageSrc, navigate, startTransition]);
+
     return (
-        <Link
+        <div
             className="group block h-full cursor-pointer"
-            to={`/product/${id}`}
+            onClick={handleClick}
+            role="link"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleClick(e); }}
         >
             <article className="relative flex h-full flex-col overflow-hidden transition-all duration-700 hover:-translate-y-1">
                 {/* Image Section - Editorial Style */}
@@ -52,6 +84,7 @@ const ProductItem = ({ id, image, name, price, oldPrice }) => {
                         </div>
                     )}
                     <img
+                        ref={imageRef}
                         className="absolute inset-0 h-full w-full object-contain p-2 sm:p-3 transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
                         src={imageSrc}
                         alt={name}
@@ -85,7 +118,7 @@ const ProductItem = ({ id, image, name, price, oldPrice }) => {
                     </div>
                 </div>
             </article>
-        </Link>
+        </div>
     );
 };
 

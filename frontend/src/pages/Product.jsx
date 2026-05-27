@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Star } from 'lucide-react';
 import { ShopContext } from '../context/ShopContext';
 import { useLanguage } from '../context/LanguageContext';
+import { usePageTransition } from '../context/PageTransitionContext';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
 import ReviewSystem from '../components/ReviewSystem';
@@ -172,6 +173,21 @@ const Product = () => {
     const { products, cartItems, addToCart, getProductStock, logBehavior, navigate } = useContext(ShopContext);
     const { language } = useLanguage();
     const t = copyByLanguage[language];
+    const { transitionData } = usePageTransition();
+    const [isTransitioning, setIsTransitioning] = useState(!!transitionData);
+
+    // Fade in page content after shared element transition lands
+    useEffect(() => {
+        if (!transitionData) {
+            setIsTransitioning(false);
+            return;
+        }
+        // Give the flying image time to land, then fade in content
+        const timer = setTimeout(() => {
+            setIsTransitioning(false);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [transitionData]);
 
     const [productData, setProductData] = useState(null);
     const [image, setImage] = useState('');
@@ -647,7 +663,14 @@ const Product = () => {
     }
 
     return (
-        <div className="space-y-3 py-3 md:space-y-4 md:py-4 w-full">
+        <div
+            className="space-y-3 py-3 md:space-y-4 md:py-4 w-full"
+            style={{
+                opacity: isTransitioning ? 0 : 1,
+                transform: isTransitioning ? 'translateY(12px)' : 'translateY(0)',
+                transition: 'opacity 0.45s cubic-bezier(0.22,1,0.36,1), transform 0.45s cubic-bezier(0.22,1,0.36,1)',
+            }}
+        >
             <section className="section-shell px-2 py-3 md:px-5 md:py-5 mx-2 md:mx-0">
                 <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-[1fr_1fr] lg:gap-8 items-start w-full">
                     <div className="flex flex-col-reverse gap-2 lg:grid lg:grid-cols-[90px_minmax(0,1fr)] lg:gap-4">
@@ -679,6 +702,7 @@ const Product = () => {
                             onMouseLeave={handleMouseLeave}
                         >
                             <img
+                                data-transition-target="product-image"
                                 className="aspect-[4/5] w-full rounded-[8px] md:rounded-[16px] object-cover"
                                 src={image}
                                 alt={productData.name}
