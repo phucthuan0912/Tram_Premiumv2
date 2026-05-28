@@ -147,6 +147,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
   // ── Import state ──
   const [isImporting, setIsImporting] = useState(false)
   const [importResult, setImportResult] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   const apiBaseUrl = useMemo(
     () => (backendUrlFromProps || defaultBackendUrl || '').trim().replace(/\/+$/, ''),
@@ -201,10 +202,21 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
     try {
       setIsImporting(true)
 
+      const formData = new FormData()
+      formData.append('products', JSON.stringify(payload))
+      if (imageFile) {
+        formData.append('image', imageFile)
+      }
+
       const { data } = await axios.post(
         `${apiBaseUrl}/api/product/bulk-import`,
-        { products: payload },
-        { headers: { token } },
+        formData,
+        { 
+          headers: { 
+            token,
+            'Content-Type': 'multipart/form-data'
+          } 
+        },
       )
 
       if (data.success) {
@@ -227,6 +239,7 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
     setParseResponse(null)
     setSelectedKeys([])
     setImportResult(null)
+    setImageFile(null)
   }, [])
 
   const handleCancelPreview = useCallback(() => {
@@ -447,6 +460,25 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
             )
           )
         },
+      },
+      {
+        title: 'Mô tả',
+        dataIndex: 'description',
+        ellipsis: true,
+        width: 250,
+        render: (val, record) => {
+          const isEditing = editingKey === record._rowKey
+          return isEditing ? (
+            <Input
+              value={editingRecord?.description || ''}
+              onChange={(e) => handleFieldChange('description', e.target.value)}
+              size="small"
+              style={{ fontSize: 11 }}
+            />
+          ) : (
+            <Text style={{ fontSize: 11, color: '#64748b' }} title={val}>{val || '—'}</Text>
+          )
+        }
       },
       {
         title: 'Trạng thái',
@@ -863,6 +895,37 @@ const BulkOperation = ({ token, backendUrl: backendUrlFromProps }) => {
                 style={{ marginBottom: 12 }}
               />
             )}
+
+            {/* Image upload section */}
+            <div className="mb-4 mt-2 flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <div className="font-semibold text-slate-800">Ảnh đại diện chung cho lô sản phẩm (Tuỳ chọn)</div>
+              <Text type="secondary" style={{ fontSize: 12 }}>
+                Nếu bạn tải lên 1 ảnh, tất cả sản phẩm trong lô này sẽ dùng ảnh đó làm ảnh bìa. 
+                Nếu để trống, ảnh mặc định sẽ được sử dụng.
+              </Text>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setImageFile(e.target.files[0])
+                  } else {
+                    setImageFile(null)
+                  }
+                }}
+                className="mt-2 block w-full text-sm text-slate-500
+                  file:mr-4 file:rounded-md file:border-0
+                  file:bg-indigo-50 file:px-4
+                  file:py-2 file:text-sm
+                  file:font-semibold file:text-indigo-600
+                  hover:file:bg-indigo-100"
+              />
+              {imageFile && (
+                <div className="mt-2 text-xs text-emerald-600">
+                  ✓ Đã chọn: {imageFile.name}
+                </div>
+              )}
+            </div>
 
             {/* Products table */}
             <div style={{ overflowX: 'auto' }}>

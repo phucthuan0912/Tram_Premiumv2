@@ -312,6 +312,7 @@ const parseRawProductText = (text) => {
     
     const categoryRules = {
         ChatGPT: 'ChatGPT',
+        GPT: 'ChatGPT',
         Claude: 'Claude',
         Cursor: 'Cursor',
         Canva: 'Canva',
@@ -333,11 +334,17 @@ const parseRawProductText = (text) => {
         Meitu: 'Meitu',
         Drive: 'Google Drive',
         ExpressVPN: 'ExpressVPN',
+        Grok: 'Grok',
+        Runway: 'Runway',
+        Midjourney: 'Midjourney',
+        Spotify: 'Spotify',
+        Netflix: 'Netflix'
     };
     
     const subCategoryRules = [
         'Plus', 'Pro', 'Premium', 'Team', 'API', 'Request', 
-        'Creator', 'Edu', 'Max', 'Family', 'Credit', 'SVIP', 'VPN'
+        'Creator', 'Edu', 'Max', 'Family', 'Credit', 'SVIP', 'VPN', 'Ultra', 'L1', 'L2',
+        '12k5', '25k', '10k', '5k', '0 tín'
     ];
     
     for (const line of lines) {
@@ -506,9 +513,19 @@ const parseTextForImport = async (req, res) => {
 
 const bulkImport = async (req, res) => {
     try {
-        const { products } = req.body;
+        let products = req.body.products;
+        if (typeof products === 'string') {
+            products = JSON.parse(products);
+        }
+        
         if (!products || !Array.isArray(products) || !products.length) {
             return res.json({ success: false, message: 'Không có dữ liệu để import' });
+        }
+        
+        let batchImageUrl = '/banner-sponsor.png';
+        if (req.file) {
+            let result = await cloudinary.uploader.upload(req.file.path, { resource_type: 'image' });
+            batchImageUrl = result.secure_url;
         }
 
         let createdProducts = 0;
@@ -591,7 +608,7 @@ const bulkImport = async (req, res) => {
                     bestseller: product.bestseller || false,
                     sizes: product.sizes || ['Default'],
                     colors: product.colors || [],
-                    image: product.image || ['/banner-sponsor.png'], // Default image
+                    image: product.image || [batchImageUrl], // Default image from upload
                 };
 
                 if (existingProduct) {

@@ -23,7 +23,7 @@ productRouter.get('/list', listProducts);
 
 productRouter.post('/bulk-discount', adminAuth, bulkDiscount);
 productRouter.post('/parse-text', adminAuth, parseTextForImport);
-productRouter.post('/bulk-import', adminAuth, bulkImport);
+productRouter.post('/bulk-import', adminAuth, upload.single('image'), bulkImport);
 productRouter.get('/import-metadata', adminAuth, getImportMetadata);
 productRouter.get('/inventory', adminAuth, getInventory);
 productRouter.get('/stock/:id', getProductStock);
