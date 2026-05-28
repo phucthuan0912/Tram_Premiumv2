@@ -12,6 +12,10 @@ const copyByLanguage = {
             'Trạm Premium giúp bạn tiếp cận các công cụ AI hàng đầu thế giới với chi phí tiết kiệm nhất.',
         intro2:
             'Cung cấp đa dạng tài khoản: ChatGPT, Canva, CapCut... phục vụ học tập, làm việc và sáng tạo nội dung.',
+        contactTitle: 'Liên hệ Thanh Bình',
+        contactZalo: 'Liên hệ Zalo: Thanh Bình',
+        contactPhone: 'Điện thoại: 0362253932 (Bình)',
+        contactNote: 'Giá thay đổi theo thời gian nên liên hệ để cập nhật giá mới nhất ạ',
         missionTitle: 'Sứ mệnh',
         missionBody:
             'Trao quyền bằng công cụ AI tiên tiến, dịch vụ ổn định và hỗ trợ tận tâm.',
@@ -34,6 +38,10 @@ const copyByLanguage = {
             'Trạm Premium helps you access world-class AI tools at the most affordable cost.',
         intro2:
             'Offering various accounts: ChatGPT, Canva, CapCut... for study, work and content creation.',
+        contactTitle: 'Contact Thanh Binh',
+        contactZalo: 'Contact via Zalo: Thanh Binh',
+        contactPhone: 'Phone: 0362253932 (Binh)',
+        contactNote: 'Prices change over time, please contact for the latest pricing',
         missionTitle: 'Mission',
         missionBody:
             'Empower through advanced AI tools, stable services, and dedicated support.',
@@ -78,6 +86,36 @@ const About = () => {
                         <div className="rounded-[12px] md:rounded-[20px] border border-[var(--border)] bg-white p-2 md:p-4">
                             <b className="text-[11px] md:text-base text-slate-900">{t.missionTitle}</b>
                             <p className="mt-1 md:mt-3">{t.missionBody}</p>
+                        </div>
+
+                        {/* Contact Section with Avatars */}
+                        <div className="rounded-[12px] md:rounded-[20px] border border-rose-200 bg-rose-50 p-2 md:p-4">
+                            <b className="text-[11px] md:text-base text-rose-900">{t.contactTitle}</b>
+                            
+                            {/* Avatar Images */}
+                            <div className="mt-2 md:mt-3 flex gap-2 md:gap-3">
+                                <div className="flex-1 overflow-hidden rounded-[8px] md:rounded-[12px] border border-rose-200 bg-white">
+                                    <img
+                                        className="w-full h-auto"
+                                        src="/avatar/z7875110615078_4857e20544a3a887936e0248dc355571.jpg"
+                                        alt="Thanh Binh Avatar 1"
+                                    />
+                                </div>
+                                <div className="flex-1 overflow-hidden rounded-[8px] md:rounded-[12px] border border-rose-200 bg-white">
+                                    <img
+                                        className="w-full h-auto"
+                                        src="/avatar/z7875112271408_f34f0bda2559e7cff9d751810b9b3d5d.jpg"
+                                        alt="Thanh Binh Avatar 2"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Contact Info */}
+                            <div className="mt-2 md:mt-3 space-y-1 text-[9px] md:text-xs">
+                                <p className="font-semibold text-rose-900">{t.contactZalo}</p>
+                                <p className="font-semibold text-rose-900">{t.contactPhone}</p>
+                                <p className="text-rose-700 italic">{t.contactNote}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
