@@ -912,8 +912,8 @@ const Product = () => {
                             )}
                         </div>
 
-                        {/* QR Code Zalo khi hết hàng */}
-                        {availableToAdd !== null && availableToAdd <= 0 && !hasAnyAvailableVariant && (
+                        {/* QR Code Zalo - Luôn hiển thị */}
+                        {availableToAdd !== null && (
                             <div className="mt-3 sm:mt-6 rounded-[16px] sm:rounded-[24px] border-2 border-[#0068FF] bg-gradient-to-br from-blue-50 to-white p-3 sm:p-6 shadow-sm">
                                 <div className="flex flex-col lg:flex-row items-center gap-3 sm:gap-6">
                                     <div className="flex-shrink-0">

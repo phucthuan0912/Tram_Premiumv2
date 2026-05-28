@@ -90,7 +90,7 @@ const About = () => {
 
                         {/* Contact Section with Avatars */}
                         <div className="rounded-[12px] md:rounded-[20px] border border-rose-200 bg-rose-50 p-2 md:p-4">
-                            <b className="text-[11px] md:text-base text-rose-900">{t.contactTitle}</b>
+                            <b className="text-[11px] md:text-base text-rose-900">Thanh Binh AI</b>
                             
                             {/* Avatar Images */}
                             <div className="mt-2 md:mt-3 flex gap-2 md:gap-3">
@@ -98,23 +98,22 @@ const About = () => {
                                     <img
                                         className="w-full h-auto"
                                         src="/avatar/z7875110615078_4857e20544a3a887936e0248dc355571.jpg"
-                                        alt="Thanh Binh Avatar 1"
+                                        alt="Thanh Binh"
                                     />
                                 </div>
                                 <div className="flex-1 overflow-hidden rounded-[8px] md:rounded-[12px] border border-rose-200 bg-white">
                                     <img
                                         className="w-full h-auto"
                                         src="/avatar/z7875112271408_f34f0bda2559e7cff9d751810b9b3d5d.jpg"
-                                        alt="Thanh Binh Avatar 2"
+                                        alt="Thanh Binh"
                                     />
                                 </div>
                             </div>
 
                             {/* Contact Info */}
                             <div className="mt-2 md:mt-3 space-y-1 text-[9px] md:text-xs">
-                                <p className="font-semibold text-rose-900">{t.contactZalo}</p>
-                                <p className="font-semibold text-rose-900">{t.contactPhone}</p>
-                                <p className="text-rose-700 italic">{t.contactNote}</p>
+                                <p className="font-semibold text-rose-900">📱 0362253932</p>
+                                <p className="text-rose-700">Thanh Binh AI - Cung cấp tài khoản AI chất lượng</p>
                             </div>
                         </div>
                     </div>
