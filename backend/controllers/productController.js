@@ -2,6 +2,9 @@ import importBatchModel from '../models/importBatchModel.js';
 import productModel from '../models/productModel.js';
 import categoryModel from '../models/categoryModel.js';
 import subCategoryModel from '../models/subCategoryModel.js';
+import reviewModel from '../models/reviewModel.js';
+import cartModel from '../models/cartModel.js';
+import orderModel from '../models/orderModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import logAction from '../utils/logger.js';
 import { getTikTokHDLink } from '../utils/tiktok.js';
@@ -92,13 +95,34 @@ const removeProduct = async (req, res) => {
     try {
         const { id } = req.body;
         const product = await productModel.findById(id);
+        
         if (product) {
+            // Import models for cascade delete
+            const reviewModel = (await import('../models/reviewModel.js')).default;
+            const importBatchModel = (await import('../models/importBatchModel.js')).default;
+            const cartModel = (await import('../models/cartModel.js')).default;
+            const orderModel = (await import('../models/orderModel.js')).default;
+
+            // Delete all related data
+            await reviewModel.deleteMany({ productId: id });
+            await importBatchModel.deleteMany({ productId: id.toString() });
+            await cartModel.updateMany(
+                { 'items.productId': id },
+                { $pull: { items: { productId: id } } }
+            );
+            await orderModel.updateMany(
+                { 'items._id': id },
+                { $pull: { items: { _id: id } } }
+            );
+
+            // Delete product
             await productModel.findByIdAndDelete(id);
+            
             if (req.adminEmail) {
-                await logAction(req.adminEmail, req.adminName, 'DELETE_PRODUCT', `Deleted product: ${product.name}`, id);
+                await logAction(req.adminEmail, req.adminName, 'DELETE_PRODUCT', `Deleted product: ${product.name} with all related data`, id);
             }
         }
-        res.json({ success: true, message: 'Product Removed' });
+        res.json({ success: true, message: 'Product and all related data removed' });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: error.message });
@@ -759,16 +783,63 @@ const bulkDeleteProducts = async (req, res) => {
             return res.json({ success: false, message: 'No product IDs provided' });
         }
 
-        const result = await productModel.deleteMany({ _id: { $in: productIds } });
-        
+        // Import models for cascade delete
+        const reviewModel = (await import('../models/reviewModel.js')).default;
+        const importBatchModel = (await import('../models/importBatchModel.js')).default;
+        const cartModel = (await import('../models/cartModel.js')).default;
+        const orderModel = (await import('../models/orderModel.js')).default;
+
+        // Delete all related data
+        const deleteResults = {
+            products: 0,
+            reviews: 0,
+            inventory: 0,
+            carts: 0,
+            orders: 0
+        };
+
+        // 1. Delete reviews
+        const reviewResult = await reviewModel.deleteMany({ productId: { $in: productIds } });
+        deleteResults.reviews = reviewResult.deletedCount;
+
+        // 2. Delete inventory batches
+        const inventoryResult = await importBatchModel.deleteMany({ 
+            productId: { $in: productIds.map(id => id.toString()) } 
+        });
+        deleteResults.inventory = inventoryResult.deletedCount;
+
+        // 3. Remove from carts (remove items, keep cart if empty)
+        const cartResult = await cartModel.updateMany(
+            { 'items.productId': { $in: productIds } },
+            { $pull: { items: { productId: { $in: productIds } } } }
+        );
+        deleteResults.carts = cartResult.modifiedCount;
+
+        // 4. Remove from orders (remove items, keep order if empty)
+        const orderResult = await orderModel.updateMany(
+            { 'items._id': { $in: productIds } },
+            { $pull: { items: { _id: { $in: productIds } } } }
+        );
+        deleteResults.orders = orderResult.modifiedCount;
+
+        // 5. Delete products
+        const productResult = await productModel.deleteMany({ _id: { $in: productIds } });
+        deleteResults.products = productResult.deletedCount;
+
         if (req.adminEmail) {
-            await logAction(req.adminEmail, req.adminName, 'BULK_DELETE_PRODUCTS', `Deleted ${result.deletedCount} products`, null);
+            await logAction(
+                req.adminEmail, 
+                req.adminName, 
+                'BULK_DELETE_PRODUCTS', 
+                `Deleted ${deleteResults.products} products with cascade: ${deleteResults.reviews} reviews, ${deleteResults.inventory} inventory batches, ${deleteResults.carts} carts updated, ${deleteResults.orders} orders updated`, 
+                null
+            );
         }
 
         res.json({ 
             success: true, 
-            message: `${result.deletedCount} products deleted successfully`,
-            deletedCount: result.deletedCount
+            message: `Deleted ${deleteResults.products} products and all related data`,
+            details: deleteResults
         });
     } catch (error) {
         console.log(error);
