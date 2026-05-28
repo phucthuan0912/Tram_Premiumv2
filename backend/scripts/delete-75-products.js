@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import productModel from '../models/productModel.js';
 import reviewModel from '../models/reviewModel.js';
 import importBatchModel from '../models/importBatchModel.js';
-import cartModel from '../models/cartModel.js';
+import userModel from '../models/userModel.js';
 import orderModel from '../models/orderModel.js';
 import dotenv from 'dotenv';
 
@@ -37,9 +37,14 @@ const deleteProducts = async () => {
         console.log(`  ✓ Deleted ${inventoryResult.deletedCount} inventory batches`);
 
         console.log('Removing from carts...');
-        const cartResult = await cartModel.updateMany(
-            { 'items.productId': { $in: productIds } },
-            { $pull: { items: { productId: { $in: productIds } } } }
+        const unsetQuery = {};
+        productIds.forEach(id => {
+            unsetQuery[`cartData.${id}`] = "";
+        });
+        
+        const cartResult = await userModel.updateMany(
+            { $or: productIds.map(id => ({ [`cartData.${id}`]: { $exists: true } })) },
+            { $unset: unsetQuery }
         );
         console.log(`  ✓ Updated ${cartResult.modifiedCount} carts`);
 

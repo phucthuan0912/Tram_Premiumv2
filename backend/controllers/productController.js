@@ -3,7 +3,7 @@ import productModel from '../models/productModel.js';
 import categoryModel from '../models/categoryModel.js';
 import subCategoryModel from '../models/subCategoryModel.js';
 import reviewModel from '../models/reviewModel.js';
-import cartModel from '../models/cartModel.js';
+// import cartModel from '../models/cartModel.js';
 import orderModel from '../models/orderModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import logAction from '../utils/logger.js';
@@ -100,15 +100,17 @@ const removeProduct = async (req, res) => {
             // Import models for cascade delete
             const reviewModel = (await import('../models/reviewModel.js')).default;
             const importBatchModel = (await import('../models/importBatchModel.js')).default;
-            const cartModel = (await import('../models/cartModel.js')).default;
+            const userModel = (await import('../models/userModel.js')).default;
             const orderModel = (await import('../models/orderModel.js')).default;
 
             // Delete all related data
             await reviewModel.deleteMany({ productId: id });
             await importBatchModel.deleteMany({ productId: id.toString() });
-            await cartModel.updateMany(
-                { 'items.productId': id },
-                { $pull: { items: { productId: id } } }
+            
+            // Remove product from all carts
+            await userModel.updateMany(
+                { [`cartData.${id}`]: { $exists: true } },
+                { $unset: { [`cartData.${id}`]: "" } }
             );
             await orderModel.updateMany(
                 { 'items._id': id },
@@ -786,7 +788,7 @@ const bulkDeleteProducts = async (req, res) => {
         // Import models for cascade delete
         const reviewModel = (await import('../models/reviewModel.js')).default;
         const importBatchModel = (await import('../models/importBatchModel.js')).default;
-        const cartModel = (await import('../models/cartModel.js')).default;
+        const userModel = (await import('../models/userModel.js')).default;
         const orderModel = (await import('../models/orderModel.js')).default;
 
         // Delete all related data
@@ -809,9 +811,14 @@ const bulkDeleteProducts = async (req, res) => {
         deleteResults.inventory = inventoryResult.deletedCount;
 
         // 3. Remove from carts (remove items, keep cart if empty)
-        const cartResult = await cartModel.updateMany(
-            { 'items.productId': { $in: productIds } },
-            { $pull: { items: { productId: { $in: productIds } } } }
+        const unsetQuery = {};
+        productIds.forEach(id => {
+            unsetQuery[`cartData.${id}`] = "";
+        });
+        
+        const cartResult = await userModel.updateMany(
+            { $or: productIds.map(id => ({ [`cartData.${id}`]: { $exists: true } })) },
+            { $unset: unsetQuery }
         );
         deleteResults.carts = cartResult.modifiedCount;
 
