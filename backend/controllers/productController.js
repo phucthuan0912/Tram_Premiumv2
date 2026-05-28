@@ -751,4 +751,29 @@ const getImportMetadata = async (req, res) => {
     }
 };
 
-export { addProduct, removeProduct, singleProduct, listProducts, updateProduct, bulkDiscount, bulkImport, parseTextForImport, getInventory, getProductStock, getImportMetadata };
+const bulkDeleteProducts = async (req, res) => {
+    try {
+        const { productIds } = req.body;
+        
+        if (!Array.isArray(productIds) || productIds.length === 0) {
+            return res.json({ success: false, message: 'No product IDs provided' });
+        }
+
+        const result = await productModel.deleteMany({ _id: { $in: productIds } });
+        
+        if (req.adminEmail) {
+            await logAction(req.adminEmail, req.adminName, 'BULK_DELETE_PRODUCTS', `Deleted ${result.deletedCount} products`, null);
+        }
+
+        res.json({ 
+            success: true, 
+            message: `${result.deletedCount} products deleted successfully`,
+            deletedCount: result.deletedCount
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+export { addProduct, removeProduct, singleProduct, listProducts, updateProduct, bulkDiscount, bulkImport, parseTextForImport, getInventory, getProductStock, getImportMetadata, bulkDeleteProducts };
