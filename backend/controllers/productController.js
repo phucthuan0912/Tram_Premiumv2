@@ -346,14 +346,16 @@ const parseRawProductText = (text) => {
         // Remove bullet points
         const cleanLine = line.replace(/^[•\-*]\s*/, '').trim();
         
-        // Split name and price
-        const [left, right] = cleanLine.split('—');
-        if (!left || !right) continue;
+        // Split name, price and description
+        const parts = cleanLine.split('—').map(p => p.trim());
+        if (parts.length < 2) continue;
         
-        const name = left.trim();
+        const name = parts[0];
+        let priceStr = parts[1];
+        let desc = parts.length > 2 ? parts.slice(2).join('—').trim() : `Tài khoản ${name}`;
         
         // Parse price: remove parentheses content, dots, convert k to 000
-        let price = right.replace(/\(.*?\)/g, '').trim().toLowerCase();
+        let price = priceStr.replace(/\(.*?\)/g, '').trim().toLowerCase();
         price = price.replace(/\./g, '').replace('k', '000');
         price = Number(price) || 0;
         
@@ -398,7 +400,7 @@ const parseRawProductText = (text) => {
         
         products.push({
             name,
-            description: `Tài khoản ${name}`,
+            description: desc,
             category,
             subCategory: subcategory,
             price,

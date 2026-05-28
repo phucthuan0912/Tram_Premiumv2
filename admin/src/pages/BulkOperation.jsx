@@ -67,18 +67,19 @@ Claude Pro Team - 540k`
 const CHATGPT_PROMPT_QUICK = `Bạn là trợ lý format dữ liệu sản phẩm. Chuyển đổi dữ liệu thô thành định dạng chuẩn.
 
 **ĐỊNH DẠNG ĐẦU RA:**
-• Tên sản phẩm — Giá
+• Tên sản phẩm — Giá — Mô tả sản phẩm
 
 **QUY TẮC:**
 1. Mỗi dòng bắt đầu bằng •
-2. Tên và giá cách nhau bằng —
+2. Tên, giá, mô tả cách nhau bằng —
 3. Giá có đơn vị "k" (80k, 450k)
 4. Loại bỏ emoji, ký tự đặc biệt
 5. Giữ thông tin thời hạn và loại tài khoản
+6. Mô tả viết 1 câu ngắn gọn về sản phẩm
 
 **VÍ DỤ:**
 Đầu vào: ChatGPT Plus Mail iCloud 80.000đ
-Đầu ra: • ChatGPT Plus Mail iCloud — 80k
+Đầu ra: • ChatGPT Plus Mail iCloud — 80k — Tài khoản ChatGPT Plus sử dụng mail iCloud an toàn.
 
 **DỮ LIỆU CẦN FORMAT:**
 [PASTE DỮ LIỆU THÔ VÀO ĐÂY]`
@@ -86,16 +87,16 @@ const CHATGPT_PROMPT_QUICK = `Bạn là trợ lý format dữ liệu sản phẩ
 const CHATGPT_PROMPT_ADVANCED = `Bạn là trợ lý format dữ liệu sản phẩm chuyên nghiệp.
 
 **ĐỊNH DẠNG ĐẦU RA:**
-• Tên sản phẩm — Giá
+• Tên sản phẩm — Giá — Mô tả sản phẩm
 
 **QUY TẮC XỬ LÝ:**
 1. Loại bỏ emoji, ký tự đặc biệt
 2. Chuẩn hóa giá: 80.000đ → 80k, 450000 → 450k
 3. Giữ thời hạn trong tên (1 tháng, 1 năm, 20-30 ngày)
 4. Giữ loại tài khoản (Plus, Pro, Premium, Team, API, Max, Family)
-5. Loại bỏ ghi chú bảo hành, ưu đãi trong ngoặc
+5. MÔ TẢ SẢN PHẨM: Viết một câu giới thiệu ngắn gọn, hấp dẫn về sản phẩm dựa vào tên.
 6. Mỗi dòng một sản phẩm, bắt đầu bằng •
-7. Phân cách tên và giá bằng —
+7. Phân cách tên, giá, mô tả bằng —
 
 **VÍ DỤ:**
 Đầu vào:
@@ -104,9 +105,9 @@ const CHATGPT_PROMPT_ADVANCED = `Bạn là trợ lý format dữ liệu sản ph
 ⭐ Canva Pro 1 năm | 85.000 | Ưu đãi
 
 Đầu ra:
-• ChatGPT Plus Mail iCloud — 80k
-• Claude Pro 1 tháng — 450k
-• Canva Pro 1 năm — 85k
+• ChatGPT Plus Mail iCloud — 80k — Tài khoản ChatGPT Plus sử dụng mail iCloud, hỗ trợ mọi tính năng.
+• Claude Pro 1 tháng — 450k — Trải nghiệm Claude Pro mượt mà trong 1 tháng, hỗ trợ công việc.
+• Canva Pro 1 năm — 85k — Thiết kế chuyên nghiệp không giới hạn với Canva Pro bản quyền 1 năm.
 
 **DỮ LIỆU CẦN FORMAT:**
 [PASTE DỮ LIỆU THÔ VÀO ĐÂY]`
