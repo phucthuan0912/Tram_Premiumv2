@@ -672,9 +672,9 @@ const Product = () => {
             }}
         >
             <section className="section-shell px-2 py-3 md:px-5 md:py-5 mx-2 md:mx-0">
-                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-[1fr_1fr] lg:gap-8 items-start w-full">
-                    <div className="flex flex-col-reverse gap-2 lg:grid lg:grid-cols-[90px_minmax(0,1fr)] lg:gap-4">
-                        <div className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col lg:overflow-y-auto">
+                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-8 items-start w-full">
+                    <div className="flex flex-col-reverse gap-2 lg:grid lg:grid-cols-[70px_minmax(0,1fr)] lg:gap-3">
+                        <div className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col lg:overflow-y-auto lg:max-h-[420px]">
                             {productData.image.map((item, index) => (
                                 <button
                                     key={index}
@@ -688,7 +688,7 @@ const Product = () => {
                                 >
                                     <img
                                         src={item}
-                                        className="h-10 w-8 md:h-16 md:w-12 object-cover lg:h-20 lg:w-full"
+                                        className="h-10 w-8 md:h-14 md:w-10 object-cover lg:h-16 lg:w-full"
                                         alt={productData.name}
                                     />
                                 </button>
@@ -697,13 +697,13 @@ const Product = () => {
 
                         <div
                             ref={mainImageRef}
-                            className="relative overflow-hidden rounded-[12px] md:rounded-[20px] border border-white/80 bg-white/60 p-1 md:p-2 shadow-sm cursor-crosshair backdrop-blur-sm"
+                            className="relative overflow-hidden rounded-[12px] md:rounded-[20px] border border-white/80 bg-white/60 p-1 md:p-2 shadow-sm cursor-crosshair backdrop-blur-sm max-h-[280px] sm:max-h-[360px] lg:max-h-[460px]"
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
                             <img
                                 data-transition-target="product-image"
-                                className="aspect-[4/5] w-full rounded-[8px] md:rounded-[16px] object-cover"
+                                className="w-full h-full rounded-[8px] md:rounded-[16px] object-contain"
                                 src={image}
                                 alt={productData.name}
                             />

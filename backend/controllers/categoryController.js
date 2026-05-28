@@ -1,5 +1,6 @@
 import categoryModel from '../models/categoryModel.js';
 import subCategoryModel from '../models/subCategoryModel.js';
+import productModel from '../models/productModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 
 // Add Category
@@ -45,10 +46,18 @@ const listCategories = async (req, res) => {
 // Remove Category
 const removeCategory = async (req, res) => {
     try {
-        await categoryModel.findByIdAndDelete(req.body.id);
-        // Also remove linked subcategories
-        await subCategoryModel.deleteMany({ categoryId: req.body.id });
-        res.json({ success: true, message: 'Category Removed' });
+        const categoryId = req.body.id;
+        
+        // Remove all products in this category
+        await productModel.deleteMany({ category: categoryId });
+        
+        // Remove all subcategories in this category
+        await subCategoryModel.deleteMany({ categoryId });
+        
+        // Remove the category itself
+        await categoryModel.findByIdAndDelete(categoryId);
+        
+        res.json({ success: true, message: 'Category and all related products removed' });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: error.message });
